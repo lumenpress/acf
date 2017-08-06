@@ -1,0 +1,6 @@
+{
+    "name": "lumenpress/acf",
+    "require": {
+        "lumenpress/models": "dev",
+    }
+}
