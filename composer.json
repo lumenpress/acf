@@ -1,11 +1,11 @@
 {
     "name": "lumenpress/acf",
     "require": {
-        "lumenpress/models": "dev-master",
+        "lumenpress/models": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "Lumenpress\\Models\\Acf\\": "src",
+            "Lumenpress\\Models\\Acf\\": "src"
         }
     }
 }
