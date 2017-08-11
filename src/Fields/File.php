@@ -26,17 +26,9 @@ class File extends Field
      */
     public function setValueAttribute($value)
     {
-        // if (!$value) {
-        //     return $this;
-        // }
-        // d($value);
         if (!$this->fullName) {
             $this->fullName = $this->name;
         }
-        // if(wsk_is_url($value)) {
-        //     $this->rawValue = $value;
-        //     return $this;
-        // }
         $this->rawValue = $value;
         return $this;
     }
@@ -56,7 +48,7 @@ class File extends Field
             return wp_get_attachment_url( $this->rawValue );
         }
 
-        if(wsk_is_url($this->rawValue)) {
+        if(preg_match('@^//@', $this->rawValue) || filter_var($this->rawValue, FILTER_VALIDATE_URL) !== false) {
             return $this->rawValue;
         }
 
@@ -65,8 +57,8 @@ class File extends Field
                 . ';base64,' . base64_encode(file_get_contents($this->rawValue));
         }
 
-        if (file_exists(ROOTPATH.'client/src/'.$this->rawValue)) {
-            return get_template_directory_uri() . '/client/build/' . $this->rawValue;
+        if (file_exists(config('wordpress.assets.base_path').$this->rawValue)) {
+            return config('wordpress.assets.base_url').$this->rawValue;
         }
     }
 
@@ -76,7 +68,7 @@ class File extends Field
             return false;
         }
 
-        if (!is_numeric($this->rawValue) && file_exists(client_path('src/'.$this->rawValue))) {
+        if (!is_numeric($this->rawValue) && file_exists(config('wordpress.assets.base_path').$this->rawValue)) {
             $this->rawValue = wpp_insert_asset($this->rawValue);
         }
 

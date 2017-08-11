@@ -1,6 +1,6 @@
 {
     "name": "lumenpress/acf",
     "require": {
-        "lumenpress/models": "dev",
+        "lumenpress/models": "dev-master",
     }
 }
