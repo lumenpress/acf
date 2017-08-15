@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Fields;
+namespace Lumenpress\Acf\Fields;
 
 class Url extends Field
 {

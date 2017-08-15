@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Models\Acf;
+namespace Lumenpress\Acf\Models;
 
 use Lumenpress\Models\Post;
 

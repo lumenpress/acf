@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Builders;
+namespace Lumenpress\Acf\Builders;
 
 use Illuminate\Database\Eloquent\Builder;
 

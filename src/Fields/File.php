@@ -1,9 +1,9 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Fields;
+namespace Lumenpress\Acf\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Lumenpress\Models\Acf\PostAcf;
+use Lumenpress\Acf\Models\PostAcf;
 
 class File extends Field
 {

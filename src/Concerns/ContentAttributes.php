@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Concerns;
+namespace Lumenpress\Acf\Concerns;
 
 trait ContentAttributes
 {

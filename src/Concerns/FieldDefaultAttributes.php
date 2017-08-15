@@ -1,8 +1,8 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Concerns;
+namespace Lumenpress\Acf\Concerns;
 
-use Lumenpress\Models\Acf\PostAcf;
+use Lumenpress\Acf\Models\PostAcf;
 use Illuminate\Database\Eloquent\Model;
 
 trait FieldDefaultAttributes

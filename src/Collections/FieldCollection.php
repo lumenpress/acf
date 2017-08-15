@@ -1,10 +1,10 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Collections;
+namespace Lumenpress\Acf\Collections;
 
 use Illuminate\Database\Eloquent\Model;
 use Lumenpress\Models\Collections\AbstractCollection;
-use Lumenpress\Models\Acf\Fields\Field;
+use Lumenpress\Acf\Fields\Field;
 
 class FieldCollection extends AbstractCollection
 {

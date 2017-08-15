@@ -1,8 +1,6 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Fields;
-
-use Lumenpress\Models\Acf\PostAcf;
+namespace Lumenpress\Acf\Fields;
 
 class Repeater extends Field implements \IteratorAggregate 
 {

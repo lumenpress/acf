@@ -1,8 +1,8 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Concerns;
+namespace Lumenpress\Acf\Concerns;
 
-use Lumenpress\Models\Acf\FieldGroup;
+use Lumenpress\Acf\Models\FieldGroup;
 use Lumenpress\Models\Post;
 
 trait HasAdvancedCustomFields
@@ -47,7 +47,7 @@ trait HasAdvancedCustomFields
             foreach ($item->fields as $field) {
                 $field->object = $this;
                 // d(get_class($field));
-                if ($field instanceof \Lumenpress\Models\Acf\Fields\Repeater) {
+                if ($field instanceof \Lumenpress\Acf\Fields\Repeater) {
                     # code...
                 } else {
                     $field->value = $this->meta->{$field->name};
@@ -113,15 +113,15 @@ trait HasAdvancedCustomFields
     {
         switch ($this->table) {
             case 'posts':
-                return \Lumenpress\Models\Acf\PostAcf::class;
+                return \Lumenpress\Acf\Models\PostAcf::class;
             case 'terms':
-                return \Lumenpress\Models\Acf\TermAcf::class;
+                return \Lumenpress\Acf\Models\TermAcf::class;
             case 'users':
-                return \Lumenpress\Models\Acf\UserAcf::class;
+                return \Lumenpress\Acf\Models\UserAcf::class;
             case 'comments':
-                return \Lumenpress\Models\Acf\CommentAcf::class;
+                return \Lumenpress\Acf\Models\CommentAcf::class;
             default:
-                return \Lumenpress\Models\Acf\OptionAcf::class;
+                return \Lumenpress\Acf\Models\OptionAcf::class;
         }
         return PostAcf::class;
     }

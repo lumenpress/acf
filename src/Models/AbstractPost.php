@@ -1,13 +1,14 @@
 <?php
 
-namespace Lumenpress\Models\Acf;
+namespace Lumenpress\Acf\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as AbstractModel;
+use Lumenpress\Acf\Concerns\ContentAttributes;
 
 abstract class AbstractPost extends AbstractModel
 {
-    use Concerns\ContentAttributes;
+    use ContentAttributes;
 
     const CREATED_AT = 'post_date';
 

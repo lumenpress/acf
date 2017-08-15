@@ -1,12 +1,13 @@
 <?php 
 
-namespace Lumenpress\Models\Acf;
+namespace Lumenpress\Acf\Models;
 
 use Illuminate\Support\Str;
+use Lumenpress\Acf\Concerns\FieldDefaultAttributes;
 
 abstract class AbstractField extends AbstractPost
 {
-    use Concerns\FieldDefaultAttributes;
+    use FieldDefaultAttributes;
 
     /**
      * [$types description]

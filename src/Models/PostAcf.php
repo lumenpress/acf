@@ -1,10 +1,10 @@
 <?php 
 
-namespace Lumenpress\Models\Acf;
+namespace Lumenpress\Acf\Models;
 
 use Lumenpress\Models\PostMeta;
-use Lumenpress\Models\Acf\Builders\PostAcfBuilder;
-use Lumenpress\Models\Acf\Collections\FieldCollection;
+use Lumenpress\Acf\Builders\PostAcfBuilder;
+use Lumenpress\Acf\Collections\FieldCollection;
 
 class PostAcf extends PostMeta
 {

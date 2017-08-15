@@ -1,8 +1,8 @@
 <?php 
 
-namespace Lumenpress\Models\Acf\Fields;
+namespace Lumenpress\Acf\Fields;
 
-use Lumenpress\Models\Acf\AbstractField;
+use Lumenpress\Acf\Models\AbstractField;
 
 class Field extends AbstractField
 {
