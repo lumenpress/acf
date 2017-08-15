@@ -2,11 +2,29 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Fields
+    |--------------------------------------------------------------------------
+    |
+    | Field extension
+    |
+    */
     'fields' => [
         'clone' => Lumenpress\Acf\Fields\CloneField::class,
         'flexible' => Lumenpress\Acf\Fields\FlexibleContent::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | options pages
+    |--------------------------------------------------------------------------
+    |
+    | @menu: acf_add_options_page
+    | @sub_menu: acf_add_options_sub_page
+    |
+    | https://www.advancedcustomfields.com/resources/options-page/
+    */
     'options_pages' => [
 
         'theme-settings' => [
