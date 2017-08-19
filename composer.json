@@ -4,6 +4,9 @@
         "lumenpress/models": "dev-master"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "Lumenpress\\Acf\\": "src"
         }

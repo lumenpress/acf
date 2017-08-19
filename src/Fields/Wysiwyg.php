@@ -23,7 +23,7 @@ class Wysiwyg extends Field
      */
     public function getValueAttribute($value)
     {
-        return apply_filters('the_content', $this->rawValue);
+        return luemnpress_get_the_content($this->rawValue);
     }
 
     // *

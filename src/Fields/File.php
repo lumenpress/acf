@@ -45,10 +45,10 @@ class File extends Field
         }
 
         if (is_numeric($this->rawValue)) {
-            return wp_get_attachment_url( $this->rawValue );
+            return lumenpress_get_attachment_url($this->rawValue);
         }
 
-        if(preg_match('@^//@', $this->rawValue) || filter_var($this->rawValue, FILTER_VALIDATE_URL) !== false) {
+        if(lumenpress_asset_url($this->rawValue)) {
             return $this->rawValue;
         }
 
@@ -69,7 +69,7 @@ class File extends Field
         }
 
         if (!is_numeric($this->rawValue) && file_exists(config('wordpress.assets.base_path').$this->rawValue)) {
-            $this->rawValue = wpp_insert_asset($this->rawValue);
+            $this->rawValue = lumenpress_insert_asset($this->rawValue);
         }
 
         if (is_numeric($this->rawValue)) {

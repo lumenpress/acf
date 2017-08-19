@@ -1,13 +1,20 @@
 <?php 
 
-function lumenpress_is_url($src)
-{
-    return preg_match('@^//@', $src) or filter_var($src, FILTER_VALIDATE_URL) !== false;
+if (!function_exists('lumenpress_is_url')) {
+    function lumenpress_is_url($value)
+    {
+        return preg_match('@^//@', $value) or filter_var($value, FILTER_VALIDATE_URL) !== false;
+    }
 }
 
-function lumenpress_asset_url($url)
-{
-    // $uri = ;
+if (!function_exists('lumenpress_asset_url')) {
+    function lumenpress_asset_url($value)
+    {
+        if (lumenpress_is_url($value)) {
+            return $value;
+        }
+        return config('wordpress.assets.base_url').$value;
+    }
 }
 
 function _lumenpress_asset_uniqid($src)
@@ -37,7 +44,7 @@ function lumenpress_insert_asset($src, $force = false)
     if (lumenpress_is_url($src)) {
         $tmp = download_url($src, 5000);
     } else {
-        $url = file_exists($src) ? $src : config('wordpress.client_path').$src;
+        $url = file_exists($src) ? $src : lumenpress_asset_url($src);
         $tmp = wp_tempnam($url);
         @copy($url, $tmp);
     }
@@ -81,4 +88,24 @@ function lumenpress_insert_asset($src, $force = false)
     @unlink($file_array['tmp_name']);
 
     return $id;
+}
+
+if (function_exists('lumenpress_get_attachment_url')) {
+    function lumenpress_get_attachment_url($id = 0)
+    {
+        if (function_exists('wp_get_attachment_url')) {
+            return wp_get_attachment_url($id);
+        }
+        return '';
+    }
+}
+
+if (function_exists('luemnpress_get_the_content')) {
+    function luemnpress_get_the_content($value)
+    {
+        if (function_exists('apply_filters')) {
+            return apply_filters('the_content', $value);
+        }
+        return $value;
+    }
 }
