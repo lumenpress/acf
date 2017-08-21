@@ -5,6 +5,7 @@ namespace Lumenpress\Acf\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as AbstractModel;
 use Lumenpress\Acf\Concerns\ContentAttributes;
+use Lumenpress\Acf\Fields\Field;
 
 abstract class AbstractPost extends AbstractModel
 {
@@ -113,7 +114,7 @@ abstract class AbstractPost extends AbstractModel
      */
     public function fields($callable = null)
     {
-        $relation = $this->hasMany(Fields\Field::class, 'post_parent');
+        $relation = $this->hasMany(Field::class, 'post_parent');
         if (is_callable($callable)) {
             if (!isset($this->relations['fields'])) {
                 $this->relations['fields'] = $relation->get();

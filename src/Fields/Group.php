@@ -2,7 +2,7 @@
 
 namespace Lumenpress\Acf\Fields;
 
-class Object extends Repeater
+class Group extends Field implements \IteratorAggregate 
 {
     /**
      * [$with description]
@@ -18,12 +18,18 @@ class Object extends Repeater
         // 'key' => 'field_5979ac4d766e1',
         // 'label' => 'Repeater',
         // 'name' => 'repeater',
-        'type' => 'repeater',
-        'collapsed' => '',
-        'min' => 1,
-        'max' => 1,
+        'type' => 'group',
         'layout' => 'block',
-        'button_label' => '',
         // 'sub_fields' => []
     ];
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->value);
+    }
+
+    public function count()
+    {
+        return count($this->value);
+    }
 }

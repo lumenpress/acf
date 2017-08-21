@@ -69,6 +69,7 @@ Schema::create('field_group_1', function (FieldGroup $group) {
         $fields->select('select')->choices(['value1', 'value2']);;
 
         // Relational
+        $fields->link('link');
         $fields->page_link('page_link');
         $fields->post_object('post_object');
         $fields->relationship('relationship');
@@ -85,12 +86,18 @@ Schema::create('field_group_1', function (FieldGroup $group) {
         // Layout
         $fields->message('Message Content');
         $fields->tab('tab');
+        
+        $fields->group('group')->layout('block')->fields(function($fields) {
+            $fields->text('text')->label('Text');
+        });
+        
         $fields->repeater('repeater')->layout('row')->fields(function($fields) {
             $fields->text('text')->label('Text');
             $fields->repeater('repeater')->layout('row')->fields(function($fields) {
                 $fields->text('text')->label('Text');
             });
         });
+        
         $fields->flexible('flexible')->layouts(function($flexible) {
             $flexible->layout('layout1')->label('Layout 1')->fields(function($fields) {
                 $fields->textarea('textarea')->label('Textarea');
@@ -99,6 +106,7 @@ Schema::create('field_group_1', function (FieldGroup $group) {
                 $fields->text('text')->label('Text');
             });
         });
+
         $fields->clone(['field_group_1.text']);
     });
 });

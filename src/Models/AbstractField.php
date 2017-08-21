@@ -3,6 +3,11 @@
 namespace Lumenpress\Acf\Models;
 
 use Illuminate\Support\Str;
+use Lumenpress\Acf\Fields\Text;
+use Lumenpress\Acf\Fields\CloneField;
+use Lumenpress\Acf\Fields\FlexibleContent;
+use Lumenpress\Acf\Builders\FieldBuilder;
+use Lumenpress\Acf\Collections\Fields;
 use Lumenpress\Acf\Concerns\FieldDefaultAttributes;
 
 abstract class AbstractField extends AbstractPost
@@ -14,8 +19,8 @@ abstract class AbstractField extends AbstractPost
      * @var array
      */
     protected static $types = [
-        'clone' => Fields\CloneField::class,
-        'flexible' => Fields\FlexibleContent::class,
+        'clone' => CloneField::class,
+        'flexible' => FlexibleContent::class,
     ];
 
     /**
@@ -99,7 +104,7 @@ abstract class AbstractField extends AbstractPost
      */
     public function newEloquentBuilder($query)
     {
-        return new Builders\FieldBuilder($query);
+        return new FieldBuilder($query);
     }
 
     /**
@@ -111,7 +116,7 @@ abstract class AbstractField extends AbstractPost
      */
     public function newCollection(array $models = [])
     {
-        return new Collections\Fields($models);
+        return new Fields($models);
     }
 
     /**
@@ -159,7 +164,7 @@ abstract class AbstractField extends AbstractPost
      * @param  bool  $exists
      * @return static
      */
-    public function newInstance($attributes = [], $exists = false, $fieldClass = Fields\Text::class)
+    public function newInstance($attributes = [], $exists = false, $fieldClass = Text::class)
     {
         // This method just provides a convenient way for us to generate fresh model
         // instances of this current model. It is particularly useful during the
@@ -256,9 +261,9 @@ abstract class AbstractField extends AbstractPost
             return static::$types[$type];
         }
 
-        $class = __NAMESPACE__.'\\Fields\\'.studly_case($type);
+        $class = 'Lumenpress\\Acf\\Fields\\'.studly_case($type);
 
-        return class_exists($class) ? $class : Fields\Text::class;
+        return class_exists($class) ? $class : Text::class;
     }
 
     /**
