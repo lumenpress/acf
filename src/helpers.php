@@ -110,7 +110,7 @@ if (function_exists('lumenpress_get_attachment_url')) {
     }
 }
 
-if (function_exists('luemnpress_get_the_content')) {
+if (!function_exists('luemnpress_get_the_content')) {
     function luemnpress_get_the_content($value)
     {
         if (function_exists('apply_filters')) {
