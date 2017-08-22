@@ -2,7 +2,7 @@
 
 namespace Lumenpress\Acf\Models;
 
-use Lumenpress\Models\Post;
+use Lumenpress\ORM\Models\Post;
 
 class FieldGroup extends AbstractPost
 {

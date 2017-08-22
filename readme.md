@@ -236,7 +236,7 @@ Schema::table('field_group_1', function (FieldGroup $group) {
 ## Models
 
 ```php
-class Post extends \Lumenpress\Models\Post
+class Post extends \Lumenpress\ORM\Models\Post
 {
     use HasAdvancedCustomFields;
 }

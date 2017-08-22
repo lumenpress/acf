@@ -51,6 +51,9 @@ class ServiceProvider extends Provider
 
     protected function registerOptionsPages()
     {
+        if (!function_exists('add_action')) {
+            return;
+        }
         add_action('after_setup_theme', function()
         {
             if ( wp_installing() and 'wp-activate.php' !== $GLOBALS['pagenow'] ) {

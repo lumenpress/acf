@@ -3,7 +3,7 @@
 namespace Lumenpress\Acf\Collections;
 
 use Illuminate\Database\Eloquent\Model;
-use Lumenpress\Models\Collections\AbstractCollection;
+use Lumenpress\ORM\Collections\AbstractCollection;
 use Lumenpress\Acf\Fields\Field;
 
 class FieldCollection extends AbstractCollection

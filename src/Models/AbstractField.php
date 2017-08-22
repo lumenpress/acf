@@ -112,7 +112,7 @@ abstract class AbstractField extends AbstractPost
      *
      * @param array $models
      *
-     * @return \Lumenpress\Models\PostMetaCollection
+     * @return \Lumenpress\Database\PostMetaCollection
      */
     public function newCollection(array $models = [])
     {

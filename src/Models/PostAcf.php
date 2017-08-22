@@ -2,7 +2,7 @@
 
 namespace Lumenpress\Acf\Models;
 
-use Lumenpress\Models\PostMeta;
+use Lumenpress\ORM\Models\PostMeta;
 use Lumenpress\Acf\Builders\PostAcfBuilder;
 use Lumenpress\Acf\Collections\FieldCollection;
 
@@ -13,7 +13,7 @@ class PostAcf extends PostMeta
      *
      * @param array $models
      *
-     * @return \Lumenpress\Models\PostMetaCollection
+     * @return \Lumenpress\Database\PostMetaCollection
      */
     public function newCollection(array $models = [])
     {

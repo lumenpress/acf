@@ -3,7 +3,7 @@
 namespace Lumenpress\Acf\Concerns;
 
 use Lumenpress\Acf\Models\FieldGroup;
-use Lumenpress\Models\Post;
+use Lumenpress\ORM\Models\Post;
 
 trait HasAdvancedCustomFields
 {

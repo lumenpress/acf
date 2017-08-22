@@ -1,7 +1,7 @@
 {
     "name": "lumenpress/acf",
     "require": {
-        "lumenpress/models": "dev-master"
+        "lumenpress/orm": "dev-master"
     },
     "autoload": {
         "files": [
