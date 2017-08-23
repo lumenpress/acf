@@ -3,14 +3,19 @@
 namespace Lumenpress\Acf\Models;
 
 use Illuminate\Support\Str;
+use Lumenpress\Acf\Fields\Field;
 use Lumenpress\Acf\Fields\Text;
 use Lumenpress\Acf\Fields\CloneField;
 use Lumenpress\Acf\Fields\FlexibleContent;
 use Lumenpress\Acf\Builders\FieldBuilder;
 use Lumenpress\Acf\Collections\Fields;
+use Lumenpress\Acf\Concerns\HasFieldAttributes;
+use Lumenpress\Acf\Collections\FieldCollection;
 
 abstract class AbstractField extends AbstractPost
 {
+    use HasFieldAttributes;
+
     /**
      * [$types description]
      * @var array
@@ -20,12 +25,22 @@ abstract class AbstractField extends AbstractPost
         'flexible' => FlexibleContent::class,
     ];
 
+    protected $postType = 'acf-field';
+
     protected $aliases = [
         'id' => 'ID',
         'label' => 'post_title',
         'name' => 'post_excerpt',
         'key' => 'post_name',
         'order' => 'menu_order',
+    ];
+
+    protected $appends = [
+        'full_name',
+    ];
+
+    protected $hidden = [
+        // 'parent'
     ];
 
     public function __construct(array $attributes = [])
@@ -45,6 +60,18 @@ abstract class AbstractField extends AbstractPost
 
         $this->type = 'text';
         $this->post_name = uniqid('field_');
+    }
+
+    /**
+     * Override newCollection() to return a custom collection.
+     *
+     * @param array $models
+     *
+     * @return \Lumenpress\ORM\PostMetaCollection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new FieldCollection($models);
     }
 
     /**
@@ -88,7 +115,7 @@ abstract class AbstractField extends AbstractPost
 
         $type = isset($settings['type']) ? $settings['type'] : 'text';
 
-        $model = $this->newInstance([], true, static::getClassNameByType($type));
+        $model = $this->newInstance([], true, static::getClassNameByType($type, Text::class));
 
         $model->setRawAttributes((array) $attributes, true);
 
@@ -114,7 +141,7 @@ abstract class AbstractField extends AbstractPost
         static::$types[$type] = $className;
     }
 
-    public static function getClassNameByType($type)
+    public static function getClassNameByType($type, $default = null)
     {
         if (isset(static::$types[$type])) {
             return static::$types[$type];
@@ -122,7 +149,7 @@ abstract class AbstractField extends AbstractPost
 
         $class = 'Lumenpress\\Acf\\Fields\\'.studly_case($type);
 
-        return class_exists($class) ? $class : Text::class;
+        return class_exists($class) ? $class : $default;
     }
 
 }

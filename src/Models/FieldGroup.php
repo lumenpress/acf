@@ -18,7 +18,6 @@ class FieldGroup extends AbstractPost
         'instruction_placement' => 'label',
         'hide_on_screen' => '',
         'description' => '',
-        'active' => 1,
     ];
 
     protected $aliases = [
@@ -27,6 +26,10 @@ class FieldGroup extends AbstractPost
         'name' => 'post_excerpt',
         'key' => 'post_name',
         'order' => 'menu_order',
+    ];
+
+    protected $appends = [
+        'active',
     ];
 
     public function __construct(array $attributes = [])

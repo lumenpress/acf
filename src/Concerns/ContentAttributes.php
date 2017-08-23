@@ -13,6 +13,27 @@ trait ContentAttributes
     protected $defaults = [];
 
     /**
+     * Mutator for post name attribute.
+     *
+     * @return void
+     */
+    public function setPostNameAttribute($value)
+    {
+        $this->attributes['post_name'] = $value;
+    }
+
+    /**
+     * Mutator for postTitle attribute.
+     *
+     * @return void
+     */
+    public function setPostTitleAttribute($value)
+    {
+        $this->attributes['post_title'] = $value;
+        $this->post_excerpt = str_slug($value, '_');
+    }
+
+    /**
      * Accessor for content attribute.
      *
      * @return returnType

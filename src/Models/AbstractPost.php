@@ -34,6 +34,7 @@ abstract class AbstractPost extends Post
             'menu_order',
             'guid',
             'post_excerpt',
+            'post_status',
         ]);
 
         $this->append(array_keys($this->defaults));
@@ -43,6 +44,15 @@ abstract class AbstractPost extends Post
         foreach ($this->defaults as $key => $value) {
             $this->$key = $value;
         }
+    }
+
+    public function __call($method, $parameters)
+    {
+        if (in_array($method, $this->appends) || array_key_exists($method, $this->aliases)) {
+            $this->$method = array_shift($parameters);
+            return $this;
+        }
+        return parent::__call($method, $parameters);
     }
 
     /**
@@ -65,7 +75,7 @@ abstract class AbstractPost extends Post
         $relation = $this->hasMany(Field::class, 'post_parent');
         if (is_callable($callable)) {
             if (!isset($this->relations['fields'])) {
-                $this->relations['fields'] = $relation->get();
+                $this->setRelation('fields', $relation->get());
             }
             if (property_exists($this, 'currentLayoutKey') and $this->currentLayoutKey) {
                 $this->fields->setLayoutKey($this->currentLayoutKey);

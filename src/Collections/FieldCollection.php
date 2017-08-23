@@ -2,112 +2,51 @@
 
 namespace Lumenpress\Acf\Collections;
 
-use Illuminate\Database\Eloquent\Model;
-use Lumenpress\ORM\Collections\AbstractCollection;
 use Lumenpress\Acf\Fields\Field;
+use Lumenpress\ORM\Collections\Concerns\HasRelationships;
+use Illuminate\Database\Eloquent\Collection;
 
-class FieldCollection extends AbstractCollection
+class FieldCollection extends Collection
 {
+    use HasRelationships;
 
-    protected $fields = [];
-
-    /**
-     * Determine if an item exists at an offset.
-     *
-     * @param  mixed  $key
-     * @return bool
-     */
-    public function offsetExists($key)
-    {
-        if (is_string($key)) {
-            return !empty($this->offsetGet($key)->value);
-        } else {
-            return array_key_exists($key, $this->items);
-        }
-    }
+    protected $layoutKey;
 
     /**
-     * Get an item at a given offset.
-     *
-     * @param  mixed  $key
-     * @return mixed
+     * [__call description]
+     * @param  [type] $method     [description]
+     * @param  [type] $parameters [description]
+     * @return [type]             [description]
      */
-    public function offsetGet($key)
+    public function __call($type, $parameters)
     {
-        if (is_string($key)) {
-            foreach ($this->items as $item) {
-                if (isset($this->fields[$key]) && $item->key == $key) {
-                    $field = $this->fields[$key];
-                    $field->value = $item->value;
-                    return $field;
-                }
+        foreach ($this->items as $key => $item) {
+            if ($item->name == $parameters[0]) {
+                return $item;
             }
-        } else {
-            return $this->items[$key];
         }
-    }
-
-    /**
-     * Set the item at a given offset.
-     *
-     * @param  mixed  $key
-     * @param  mixed  $value
-     * @return void
-     */
-    public function offsetSet($key, $value)
-    {
-        if (isset($this->fields[$key])) {
-            $field = $this->fields[$key];
-            $field->value = $value;
-            $this->items[] = $this->fields[$key] = $field;
+        if ($className = Field::getClassNameByType($type)) {
+            $field = new $className;
+            // if ($this->layoutKey) {
+            //     $field->setContentAttribute('parent_layout', $this->layoutKey);
+            // }
+            $field->name = str_slug($parameters[0], '_');
+            $field->label = ucwords(str_replace('_', ' ', $field->name));
+            return $this->items[] = $field;
         }
+        return parent::__call($type, $parameters);
     }
 
-    public function has($key)
+    public function setLayoutKey($key)
     {
-        if (is_string($key)) {
-            return isset($this->fields[$key]);
-        }
-        return parent::has($key);
+        $this->layoutKey = $key;
     }
 
-    public function setFields($fields)
-    {
-        $this->fields = $fields;
-    }
-
-    /**
-     * [save description]
-     * @param  [type] $objectId [description]
-     * @return [type]           [description]
-     */
     public function save()
     {
-        // foreach ( as $key => $field) {
-        //     d($this->$key);
-        // }
-
-        foreach ($this->items as $index => $item) {
-            if ($item instanceof Field) {
-                $item->updateValue($this->object);
-            } else {
-                unset($this->items[$index]);
-            }
+        foreach ($this->items as $item) {
+            $item->post_parent = $this->relatedParent->id;
+            $item->save();
         }
-        $this->items = array_values($this->items);
-
-        // $flag = false;
-        // foreach ($this->items as $item) {
-        //     if (isset($this->changedKeys[$item->key])) {
-        //         $item->objectId = $objectId;
-        //         $flag = $item->save() || $flag;
-        //     }
-        // }
-        // foreach ($this->extraItems as $item) {
-        //     $flag = $item->delete() || $flag;
-        // }
-        // $this->changedKeys = [];
-        // $this->extraItems = [];
-        // return $flag;
     }
 }
