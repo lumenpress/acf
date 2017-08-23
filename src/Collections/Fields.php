@@ -10,6 +10,8 @@ class Fields extends Collection
 {
     protected $layoutKey;
 
+    protected $object;
+
     /**
      * [__call description]
      * @param  [type] $method     [description]
@@ -37,10 +39,15 @@ class Fields extends Collection
         $this->layoutKey = $key;
     }
 
+    public function setObject(&$object)
+    {
+        $this->object = $object;
+    }
+
     public function save(Model $parent)
     {
         foreach ($this->items as $item) {
-            $item->post_parent = $parent->getKey();
+            $item->post_parent = $this->object->id;
             $item->save();
         }
     }

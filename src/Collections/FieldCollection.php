@@ -81,7 +81,7 @@ class FieldCollection extends AbstractCollection
      * @param  [type] $objectId [description]
      * @return [type]           [description]
      */
-    public function save(Model $object)
+    public function save()
     {
         // foreach ( as $key => $field) {
         //     d($this->$key);
@@ -89,7 +89,7 @@ class FieldCollection extends AbstractCollection
 
         foreach ($this->items as $index => $item) {
             if ($item instanceof Field) {
-                $item->updateValue($object);
+                $item->updateValue($this->object);
             } else {
                 unset($this->items[$index]);
             }

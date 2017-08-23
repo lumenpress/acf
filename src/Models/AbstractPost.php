@@ -2,95 +2,47 @@
 
 namespace Lumenpress\Acf\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model as AbstractModel;
-use Lumenpress\Acf\Concerns\ContentAttributes;
 use Lumenpress\Acf\Fields\Field;
+use Lumenpress\Acf\Concerns\ContentAttributes;
+use Lumenpress\ORM\Models\AbstractPost as Post;
 
-abstract class AbstractPost extends AbstractModel
+abstract class AbstractPost extends Post
 {
     use ContentAttributes;
 
-    const CREATED_AT = 'post_date';
-
-    const UPDATED_AT = 'post_modified';
-
-    /**
-     * [$table description]
-     * @var string
-     */
-    protected $table = 'posts';
-
-    /**
-     * [$primaryKey description]
-     * @var string
-     */
-    protected $primaryKey = 'ID';
-
-    /**
-     * [$foreignKey description]
-     * @var string
-     */
-    protected $foreignKey = 'post_id';
-
-    /**
-     * [$dates description]
-     * @var [type]
-     */
-    protected $dates = [
-        'post_date', 
-        'post_date_gmt', 
-        'post_modified', 
-        'post_modified_gmt'
-    ];
-
-    /**
-     * [$hidden description]
-     * @var [type]
-     */
-    protected $hidden = [
-        'post_title',
-        'post_name',
-        'post_excerpt',
-        // 'post_content',
-        'post_parent',
-        'post_status',
-        'guid',
-        'post_date_gmt',
-        'post_date',
-        'post_modified',
-        'post_modified_gmt',
-        'post_author',
-        'comment_count',
-        'post_mime_type',
-        'post_type',
-        'ping_status',
-        'comment_status',
-        'post_password',
-        'pinged',
-        'to_ping',
-        'post_content_filtered'
-    ];
-
-    /**
-     * [__construct description]
-     * @param array $attributes [description]
-     */
     public function __construct(array $attributes = [])
     {
-        if (!$this->postType) {
-            throw new \Exception("This postType is not declared.", 1);
-        }
+        $this->addHidden([
+            'ID',
+            'post_title',
+            'post_name',
+            'post_type',
+            'post_author',
+            'ping_status',
+            'comment_status',
+            'post_password',
+            'pinged',
+            'to_ping',
+            'post_content_filtered',
+            'post_mime_type',
+            'comment_count',
+            'post_date',
+            'post_date_gmt',
+            'post_modified',
+            'post_modified_gmt',
+            'post_parent',
+            'menu_order',
+            'guid',
+            'post_excerpt',
+        ]);
+
+        $this->append(array_keys($this->defaults));
 
         parent::__construct($attributes);
 
-        $this->post_type = $this->postType;
-        $this->ID = 0;
-        $this->post_parent = 0;
-        $this->menu_order = 0;
-        $this->post_status = 'publish';
-        $this->comment_status = 'closed';
-        $this->post_author = (int) get_current_user_id();
+        foreach ($this->defaults as $key => $value) {
+            $this->$key = $value;
+        }
     }
 
     /**
@@ -100,11 +52,7 @@ abstract class AbstractPost extends AbstractModel
      */
     public function newQuery()
     {
-        $builder = parent::newQuery();
-
-        $builder->where('post_type', $this->postType)->orderBy('menu_order');
-
-        return $builder;
+        return parent::newQuery()->orderBy('menu_order');
     }
 
     /**
@@ -136,16 +84,7 @@ abstract class AbstractPost extends AbstractModel
             return false;
         }
 
-        if (!$this->post_date_gmt) {
-            $this->post_date_gmt = $this->post_date->tz('UTC');
-        }
-
-        $this->post_modified_gmt = $this->post_modified->tz('UTC');
-        $this->guid = get_permalink($this->ID);
-
-        if (in_array('fields', $this->with)) {
-            $this->fields->save($this);
-        }
+        $this->fields->save();
 
         return parent::save();
     }

@@ -113,15 +113,15 @@ trait HasAdvancedCustomFields
     {
         switch ($this->table) {
             case 'posts':
-                return \Lumenpress\Acf\Models\PostAcf::class;
+                return \Lumenpress\Acf\Models\PostField::class;
             case 'terms':
-                return \Lumenpress\Acf\Models\TermAcf::class;
+                return \Lumenpress\Acf\Models\TermField::class;
             case 'users':
-                return \Lumenpress\Acf\Models\UserAcf::class;
+                return \Lumenpress\Acf\Models\UserField::class;
             case 'comments':
-                return \Lumenpress\Acf\Models\CommentAcf::class;
+                return \Lumenpress\Acf\Models\CommentField::class;
             default:
-                return \Lumenpress\Acf\Models\OptionAcf::class;
+                return \Lumenpress\Acf\Models\OptionField::class;
         }
         return PostAcf::class;
     }

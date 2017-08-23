@@ -2,9 +2,9 @@
 
 namespace Lumenpress\Acf\Fields;
 
-use Lumenpress\Acf\Models\AbstractField;
+use Lumenpress\Acf\Models\AbstractPost;
 
-class Field extends AbstractField
+class Field extends AbstractPost
 {
 
 }

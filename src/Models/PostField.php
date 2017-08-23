@@ -6,7 +6,7 @@ use Lumenpress\ORM\Models\PostMeta;
 use Lumenpress\Acf\Builders\PostAcfBuilder;
 use Lumenpress\Acf\Collections\FieldCollection;
 
-class PostAcf extends PostMeta
+class PostField extends PostMeta
 {
     /**
      * Override newCollection() to return a custom collection.
@@ -17,7 +17,7 @@ class PostAcf extends PostMeta
      */
     public function newCollection(array $models = [])
     {
-        return FieldCollection::create($models, static::class, $this);
+        return FieldCollection::create($models, static::class);
     }
 
     /**
@@ -26,8 +26,8 @@ class PostAcf extends PostMeta
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function newEloquentBuilder($query)
-    {
-        return new PostAcfBuilder($query);
-    }
+    // public function newEloquentBuilder($query)
+    // {
+    //     return new FieldBuilder($query);
+    // }
 }
