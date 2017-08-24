@@ -42,11 +42,35 @@ $app->register(Lumenpress\Acf\ServiceProvider::class);
 use Lumenpress\Acf\Schema;
 use Lumenpress\Acf\Models\FieldGroup;
 
-Schema::create('uniqid_name', function (FieldGroup $group) {
+Schema::create($groupKey, function (FieldGroup $group) {
     $group->title('Title'); // required
-    $group->location('post_type', 'post'); // required
+    $group->location('post_type', 'page'); // required
 });
 ```
+
+The `$groupKey` should be unique, usually have `group_` as a prefix.
+
+```php
+Schema::create('group_599d8daf5e131', function (FieldGroup $group) {
+    $group->title('Title'); // required
+    $group->location('post_type', 'page'); // required
+});
+```
+
+If you do not start with `group_`, the key will be encrypted using md5.
+
+```php
+Schema::create('home_page', function (FieldGroup $group) {
+    $group->title('Home'); // required
+    $group->location('post_type', 'page'); // required
+});
+
+// algorithm
+echo 'group_'.substr(hash('md5', 'home_page'), 8, 16);
+// group_3f239af6fe3db5c0
+```
+
+Available Field Group Settings
 
 - `$group->title('string')` required
 - `$group->location($param, $operator, $value)` required
@@ -56,7 +80,7 @@ Schema::create('uniqid_name', function (FieldGroup $group) {
 - `$group->instruction_placement('label')`
 - `$group->hide_on_screen('metabox')`
 - `$group->description('string')`
-- `$group->order('number')`
+- `$group->order(0)`
 - `$group->active(true)` `true` or `false`
 
 **Location**
@@ -109,13 +133,13 @@ $group->location($param, $operator, $value)  // A
 To rename an existing field group, use the `rename` method:
 
 ```php
-Schema::rename($oldname, $newname);
+Schema::rename($oldKey, $newKey);
 ```
 
 To drop an existing field group, you may use the `drop` methods:
 
 ```php
-Schema::drop('uniqid_name');
+Schema::drop($groupKey);
 ```
 
 ### Fields
@@ -123,7 +147,7 @@ Schema::drop('uniqid_name');
 #### Creating Fields
 
 ```php
-Schema::create('uniqid_key', function (FieldGroup $group) {
+Schema::create($groupKey, function (FieldGroup $group) {
     $group->title('Demo'); // required
     $group->location('post_type', 'post'); // required
     $group->fields(function($field) {
@@ -136,61 +160,61 @@ Available Field Types
 
 ```php
 // Basic
-$fields->text('text')->label('Text');
-$fields->textarea('textarea')->label('Textarea');
-$fields->number('number')->label('Number');
-$fields->email('email')->label('Email');
-$fields->url('url')->label('URL');
-$fields->password('password')->label('Password');
+$field->text('text')->label('Text');
+$field->textarea('textarea')->label('Textarea');
+$field->number('number')->label('Number');
+$field->email('email')->label('Email');
+$field->url('url')->label('URL');
+$field->password('password')->label('Password');
 
 // Content
-$fields->wysiwyg('wysiwyg');
-$fields->oembed('oembed');
-$fields->image('image');
-$fields->file('file');
-$fields->gallery('gallery');
+$field->wysiwyg('wysiwyg');
+$field->oembed('oembed');
+$field->image('image');
+$field->file('file');
+$field->gallery('gallery');
 
 // Choice
-$fields->true_false('true_false');
-$fields->checkbox('checkbox')->choices(['value1', 'value2']);
-$fields->radio('radio')->choices(['value1', 'value2']);;
-$fields->select('select')->choices(['value1', 'value2']);;
+$field->true_false('true_false');
+$field->checkbox('checkbox')->choices(['value1', 'value2']);
+$field->radio('radio')->choices(['value1', 'value2']);;
+$field->select('select')->choices(['value1', 'value2']);;
 
 // Relational
-$fields->link('link');
-$fields->page_link('page_link');
-$fields->post_object('post_object');
-$fields->relationship('relationship');
-$fields->taxonomy('taxonomy');
-$fields->user('user');
+$field->link('link');
+$field->page_link('page_link');
+$field->post_object('post_object');
+$field->relationship('relationship');
+$field->taxonomy('taxonomy');
+$field->user('user');
 
 // JQuery
-$fields->google_map('google_map');
-$fields->date_picker('date_picker');
-$fields->date_time_picker('date_time_picker');
-$fields->time_picker('time_picker');
-$fields->color_picker('color_picker');
+$field->google_map('google_map');
+$field->date_picker('date_picker');
+$field->date_time_picker('date_time_picker');
+$field->time_picker('time_picker');
+$field->color_picker('color_picker');
 
 // Layout
-$fields->message('Message Content');
-$fields->tab('tab');
-$fields->group('group')->fields(function($fields) {
-    $fields->text('text');
-    $fields->image('image');
+$field->message('Message Content');
+$field->tab('tab');
+$field->group('group')->fields(function($field) {
+    $field->text('text');
+    $field->image('image');
 });
-$fields->repeater('repeater')->fields(function($fields) {
-    $fields->text('text')->label('Text');
-    $fields->image('image');
+$field->repeater('repeater')->fields(function($field) {
+    $field->text('text')->label('Text');
+    $field->image('image');
 });
-$fields->flexible('flexible')->layouts(function($flexible) {
-    $flexible->layout('layout1')->label('Layout 1')->fields(function($fields) {
-        $fields->textarea('textarea')->label('Textarea');
+$field->flexible('flexible')->layouts(function($flexible) {
+    $flexible->layout('layout1')->label('Layout 1')->fields(function($field) {
+        $field->textarea('textarea')->label('Textarea');
     });
-    $flexible->layout('layout2')->label('Layout 2')->fields(function($fields) {
-        $fields->text('text')->label('Text');
+    $flexible->layout('layout2')->label('Layout 2')->fields(function($field) {
+        $field->text('text')->label('Text');
     });
 });
-$fields->clone(['group_key.field_name']);
+$field->clone(['group_key.field_name']);
 ```
 
 #### Modifying Fields
@@ -198,8 +222,8 @@ $fields->clone(['group_key.field_name']);
 Updating Field Attributes
 
 ```php
-Schema::group('uniqid_key', function (FieldGroup $group) {
-    $group->fields(function($fields) {
+Schema::group($groupKey, function (FieldGroup $group) {
+    $group->fields(function($field) {
         $field->text('text')->label('Text2');
     });
 });
@@ -208,8 +232,8 @@ Schema::group('uniqid_key', function (FieldGroup $group) {
 Renaming Fields
 
 ```php
-Schema::group('uniqid_key', function (FieldGroup $group) {
-    $group->fields(function($fields) {
+Schema::group($groupKey, function (FieldGroup $group) {
+    $group->fields(function($field) {
         $field->rename('oldname', 'newname');
     });
 });
@@ -218,12 +242,14 @@ Schema::group('uniqid_key', function (FieldGroup $group) {
 #### Dropping Fields
 
 ```php
-Schema::group('uniqid_key', function (FieldGroup $group) {
-    $group->fields(function($fields) {
+Schema::group($groupKey, function (FieldGroup $group) {
+    $group->fields(function($field) {
         // single field
-        $fields->drop('text');
+        $field->drop('text');
         // multiple fields
-        $fields->drop(['text', 'textarea']);
+        $field->drop('text', 'textarea');
+        // all
+        $field->dropAll();
     });
 });
 ```

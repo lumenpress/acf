@@ -134,9 +134,19 @@ class FieldCollection extends AbstractCollection
         }
     }
 
-    public function drop($name)
+    public function drop()
     {
-        unset($this->$name);
+        foreach (func_get_args() as $name) {
+            unset($this->$name);
+        }
+    }
+
+    public function dropAll()
+    {
+        foreach ($this->items as $index => $item) {
+            $this->extraItems[] = $item;
+            unset($this->items[$index]);
+        }
     }
 
     /**
