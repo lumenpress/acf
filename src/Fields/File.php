@@ -8,9 +8,6 @@ use Lumenpress\Acf\Models\PostAcf;
 class File extends Field
 {
     protected $defaults = [
-        // 'key' => 'field_5979aad89eb60',
-        // 'label' => 'File',
-        // 'name' => 'file',
         'type' => 'file',
         'return_format' => 'array',
         'library' => 'all',
@@ -19,47 +16,29 @@ class File extends Field
         'mime_types' => ''
     ];
 
-    /**
-     * Mutator for value attribute.
-     *
-     * @return void
-     */
-    public function setValueAttribute($value)
-    {
-        if (!$this->fullName) {
-            $this->fullName = $this->name;
-        }
-        $this->rawValue = $value;
-        return $this;
-    }
-
-    /**
-     * Accessor for Value attribute.
-     *
-     * @return returnType
-     */
     public function getValueAttribute($value)
     {
-        if (!$this->rawValue) {
-            return;
-        }
+        return parent::getValueAttribute($value);
+        // if (!$this->rawValue) {
+        //     return;
+        // }
 
-        if (is_numeric($this->rawValue)) {
-            return lumenpress_get_attachment_url($this->rawValue);
-        }
+        // if (is_numeric($this->rawValue)) {
+        //     return lumenpress_get_attachment_url($this->rawValue);
+        // }
 
-        if(lumenpress_asset_url($this->rawValue)) {
-            return $this->rawValue;
-        }
+        // if(lumenpress_asset_url($this->rawValue)) {
+        //     return $this->rawValue;
+        // }
 
-        if (file_exists($this->rawValue)) {
-            return 'data:image/' . pathinfo($this->rawValue, PATHINFO_EXTENSION) 
-                . ';base64,' . base64_encode(file_get_contents($this->rawValue));
-        }
+        // if (file_exists($this->rawValue)) {
+        //     return 'data:image/' . pathinfo($this->rawValue, PATHINFO_EXTENSION) 
+        //         . ';base64,' . base64_encode(file_get_contents($this->rawValue));
+        // }
 
-        if (file_exists(config('wordpress.assets.base_path').$this->rawValue)) {
-            return config('wordpress.assets.base_url').$this->rawValue;
-        }
+        // if (file_exists(config('wordpress.assets.base_path').$this->rawValue)) {
+        //     return config('wordpress.assets.base_url').$this->rawValue;
+        // }
     }
 
     public function updateValue(Model $object)

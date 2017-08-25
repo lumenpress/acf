@@ -102,7 +102,7 @@ class FieldGroup extends AbstractPost
         return $this->location($param, $operator, $value, $boolean = 'or');
     }
 
-    public function showIn($object)
+    public function locationRuleMatch($object)
     {
         $bool = false;
         foreach ($this->location as $location) {

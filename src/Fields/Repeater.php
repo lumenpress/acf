@@ -37,22 +37,27 @@ class Repeater extends Field implements \IteratorAggregate
         return count($this->value);
     }
 
-    public function getAttribute($key)
-    {
-        if (count($this->rawValue) == 1 && isset($this->rawValue[0][$key])) {
-            return $this->rawValue[0][$key];
-        }
-        return parent::getAttribute($key);
-    }
-
     /**
      * Accessor for Value attribute.
      *
      * @return returnType
      */
-    public function getValueAttribute($value)
+    public function getMetaValueAttribute($value)
     {
-        return is_array($this->rawValue) ? $this->rawValue : [];
+        if (is_null(parent::getMetaValueAttribute($value))) {
+            return;
+        }
+        $values = [];
+        foreach ($this->fields as $field) {
+            $field->setRelatedParent($this);
+            for ($i=0; $i < $this->metaValue?:0; $i++) {
+                $field = clone $field;
+                $field->meta_key = "{$this->meta_key}_{$i}_{$field->name}";
+                $field->meta_value = $this->relatedParent->meta->{"{$this->meta_key}_{$i}_{$field->name}"};
+                $values[$i][$field->name] = $field;
+            }
+        }
+        return $values;
     }
 
     /**
@@ -60,39 +65,9 @@ class Repeater extends Field implements \IteratorAggregate
      *
      * @return void
      */
-    public function setValueAttribute($value)
+    public function setMetaValueAttribute($value)
     {
-        if (!isset($value[0])) {
-            $value = [$value];
-        }
-        if (!$this->fullName) {
-            $this->fullName = $this->name;
-        }
-        if (!is_array($value)) {
-            $values = [];
-            for ($i=0; $i < $value; $i++) { 
-                $object = [];
-                foreach ($this->fields as $field) {
-                    $field->fullName = $this->fullName . '_' . $i . '_' . $field->name;
-                    $field->value = $this->object->meta->{$field->fullName};
-                    $object[$field->name] = clone $field;
-                }
-                $values[] = $object;
-            }
-            $this->rawValue = $values;
-            return;
-        }
-        foreach ($value as $index => $object) {
-            foreach ($object as $key => $val) {
-                $field = clone $this->fields->filter(function($item) use ($key) {
-                    return $item->name == $key;
-                })->first();
-                $field->value = $val;
-                $field->fullName = "{$this->fullName}_{$index}_{$key}";
-                $value[$index][$key] = $field;
-            }
-        }
-        $this->rawValue = $value;
+        parent::setMetaValueAttribute($value);
     }
 
 }

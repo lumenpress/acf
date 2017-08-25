@@ -7,9 +7,9 @@ use Lumenpress\Acf\Fields\Field;
 
 trait HasFieldAttributes
 {
-    protected $fullName = '';
+    protected $metaKey;
 
-    protected $rawValue = '';
+    protected $metaValue;
 
     public function setPostExcerptAttribute($value)
     {
@@ -41,12 +41,15 @@ trait HasFieldAttributes
      *
      * @return returnType
      */
-    public function getFullNameAttribute($value)
+    public function getMetaKeyAttribute($value)
     {
-        if (!$this->fullName) {
-            $this->fullName = $this->name;
+        if (!$this->relatedParent) {
+            return;
         }
-        return $this->fullName;
+        if (!$this->metaKey) {
+            $this->metaKey = $this->name;
+        }
+        return $this->metaKey;
     }
 
     /**
@@ -54,9 +57,35 @@ trait HasFieldAttributes
      *
      * @return void
      */
-    public function setFullNameAttribute($value)
+    public function setMetaKeyAttribute($value)
     {
-        $this->fullName = $value;
+        $this->metaKey = $value;
+    }
+
+    /**
+     * Accessor for Value attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        if (is_null($this->metaValue)) {
+            if (is_null($this->relatedParent)) {
+                return;
+            }
+            $this->metaValue = $this->relatedParent->meta->{$this->name};
+        }
+        return $this->metaValue;
+    }
+
+    /**
+     * Mutator for value attribute.
+     *
+     * @return void
+     */
+    public function setMetaValueAttribute($value)
+    {
+        $this->metaValue = $value;
     }
 
     /**
@@ -66,7 +95,7 @@ trait HasFieldAttributes
      */
     public function getValueAttribute($value)
     {
-        return $this->rawValue;
+        return $this->getMetaValueAttribute($value);
     }
 
     /**
@@ -76,7 +105,7 @@ trait HasFieldAttributes
      */
     public function setValueAttribute($value)
     {
-        $this->rawValue = $value;
+        $this->setMetaValueAttribute($value);
     }
 
 }

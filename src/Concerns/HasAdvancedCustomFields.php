@@ -42,17 +42,12 @@ trait HasAdvancedCustomFields
     {
         $fields = [];
         FieldGroup::where('post_status', 'publish')->get()->filter(function($item) {
-            return $item->showIn($this);
+            return $item->locationRuleMatch($this);
         })->each(function($item) use (&$fields) {
             foreach ($item->fields as $field) {
-                $field->object = $this;
-                // d(get_class($field));
-                if ($field instanceof \Lumenpress\Acf\Fields\Repeater) {
-                    # code...
-                } else {
-                    $field->value = $this->meta->{$field->name};
-                }
-                // $field->value = $this->meta->{"_".$field->fullName};
+                $field->setRelatedParent($this);
+                $field->meta_key = $field->name;
+                $field->meta_value = $this->meta->{$field->name};
                 $fields[$field->name] = $field;
             }
         });
@@ -123,6 +118,5 @@ trait HasAdvancedCustomFields
             default:
                 return \Lumenpress\Acf\Models\OptionField::class;
         }
-        return PostAcf::class;
     }
 }

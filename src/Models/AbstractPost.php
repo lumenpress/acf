@@ -19,6 +19,7 @@ abstract class AbstractPost extends Post
             'post_name',
             'post_type',
             'post_author',
+            'post_content',
             'ping_status',
             'comment_status',
             'post_password',
@@ -96,6 +97,7 @@ abstract class AbstractPost extends Post
 
     public function save(array $options = [])
     {
+        $this->attributes['post_type'] = $this->postType;
         $this->post_content = serialize($this->post_content);
 
         if (!parent::save($options)) {

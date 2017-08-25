@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\JsonEncodingException;
 
 class FlexibleLayout implements Jsonable
 {
-    protected $relatedParent;
+    public $fields;
 
-    protected $fields;
+    protected $relatedParent;
 
     protected $attributes = [
         'display' => 'block',

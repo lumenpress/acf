@@ -3,7 +3,7 @@
 namespace Lumenpress\Acf\Models;
 
 use Lumenpress\ORM\Models\PostMeta;
-use Lumenpress\Acf\Collections\FieldCollection;
+use Lumenpress\Acf\Collections\FieldMetaCollection;
 
 class PostField extends PostMeta
 {
@@ -16,7 +16,7 @@ class PostField extends PostMeta
      */
     public function newCollection(array $models = [])
     {
-        return FieldCollection::create($models, static::class);
+        return FieldMetaCollection::create($models, static::class);
     }
 
     /**

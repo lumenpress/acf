@@ -18,6 +18,7 @@ class Schema
         $group = new FieldGroup;
         $group->key = $key;
         $callable($group);
+        $group->save();
 
         return $group;
     }

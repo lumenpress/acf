@@ -61,6 +61,34 @@ class FlexibleContent extends Field
         return $this->layouts;
     }
 
+    /**
+     * Accessor for Value attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        if (is_null(parent::getMetaValueAttribute($value))) {
+            return;
+        }
+        $values = [];
+        foreach ($this->metaValue as $index => $name) {
+            foreach ($this->layouts as $layout) {
+                $values[$index]['acf_layout'] = $name;
+                if ($layout->name == $name) {
+                    foreach ($layout->fields as $field) {
+                        $field = clone $field;
+                        $field->setRelatedParent($this);
+                        $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
+                        $field->meta_value = $this->relatedParent->meta->{"{$this->meta_key}_{$index}_{$field->name}"};
+                        $values[$index][$field->name] = $field;
+                    }
+                }
+            }
+        }
+        return $values;
+    }
+
     public function attributesToArray()
     {
         $attributes = parent::attributesToArray();
