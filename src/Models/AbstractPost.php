@@ -3,13 +3,13 @@
 namespace Lumenpress\Acf\Models;
 
 use Lumenpress\Acf\Fields\Field;
-use Lumenpress\Acf\Concerns\ContentAttributes;
+use Lumenpress\Acf\Concerns\HasContentAttributes;
 use Lumenpress\ORM\Models\AbstractPost as Post;
 use Lumenpress\ORM\Collections\AbstractCollection as Collection;
 
 abstract class AbstractPost extends Post
 {
-    use ContentAttributes;
+    use HasContentAttributes;
 
     public function __construct(array $attributes = [])
     {

@@ -37,9 +37,7 @@ abstract class AbstractField extends AbstractPost
 
     protected $appends = [];
 
-    protected $hidden = [
-        // 'parent'
-    ];
+    protected $hidden = [];
 
     public function __construct(array $attributes = [])
     {
@@ -132,14 +130,6 @@ abstract class AbstractField extends AbstractPost
         unset($settings, $type);
 
         return $model;
-    }
-
-    public static function register($type, $className)
-    {
-        if (!class_exists($className)) {
-            throw new \Exception("{$className} class doesn't exist.", 1);
-        }
-        static::$registeredTypes[$type] = $className;
     }
 
     public static function getClassNameByType($type, $default = null)

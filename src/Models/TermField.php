@@ -3,7 +3,7 @@
 namespace Lumenpress\Acf\Models;
 
 use Lumenpress\ORM\Models\TermMeta;
-use Lumenpress\Acf\Collections\FieldCollection;
+use Lumenpress\Acf\Collections\FieldMetaCollection;
 
 class TermField extends TermMeta
 {
@@ -16,7 +16,7 @@ class TermField extends TermMeta
      */
     public function newCollection(array $models = [])
     {
-        return FieldCollection::create($models, static::class);
+        return FieldMetaCollection::create($models, static::class);
     }
 
     /**

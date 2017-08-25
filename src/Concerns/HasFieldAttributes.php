@@ -12,12 +12,28 @@ use Lumenpress\Acf\Models\OptionField;
 
 trait HasFieldAttributes
 {
+    /**
+     * [$relatedParent description]
+     * @var [type]
+     */
     protected $relatedParent;
 
+    /**
+     * [$metaKey description]
+     * @var [type]
+     */
     protected $metaKey;
 
+    /**
+     * [$metaValue description]
+     * @var [type]
+     */
     protected $metaValue;
 
+    /**
+     * [setRelatedParent description]
+     * @param [type] &$relatedParent [description]
+     */
     public function setRelatedParent(&$relatedParent)
     {
         $this->relatedParent = $relatedParent;
@@ -25,6 +41,10 @@ trait HasFieldAttributes
         return $this;
     }
 
+    /**
+     * [setPostExcerptAttribute description]
+     * @param [type] $value [description]
+     */
     public function setPostExcerptAttribute($value)
     {
         $this->attributes['post_excerpt'] = $value;
@@ -122,6 +142,10 @@ trait HasFieldAttributes
         $this->setMetaValueAttribute($value);
     }
 
+    /**
+     * [updateValue description]
+     * @return [type] [description]
+     */
     public function updateValue()
     {
         if (is_null($this->relatedParent)) {
@@ -166,5 +190,4 @@ trait HasFieldAttributes
 
         return $meta->save();
     }
-
 }

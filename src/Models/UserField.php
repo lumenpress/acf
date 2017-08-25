@@ -3,7 +3,7 @@
 namespace Lumenpress\Acf\Models;
 
 use Lumenpress\ORM\Models\UserMeta;
-use Lumenpress\Acf\Collections\FieldCollection;
+use Lumenpress\Acf\Collections\FieldMetaCollection;
 
 class UserField extends UserMeta
 {
@@ -16,7 +16,7 @@ class UserField extends UserMeta
      */
     public function newCollection(array $models = [])
     {
-        return FieldCollection::create($models, static::class);
+        return FieldMetaCollection::create($models, static::class);
     }
 
     /**

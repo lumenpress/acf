@@ -82,11 +82,19 @@ trait HasAdvancedCustomFields
         return $bool;
     }
 
+    /**
+     * [getAcfKey description]
+     * @return [type] [description]
+     */
     protected function getAcfKey()
     {
         return $this->table == 'options' ? 'option_key' : 'meta_key';
     }
 
+    /**
+     * [getAcfForeignKey description]
+     * @return [type] [description]
+     */
     protected function getAcfForeignKey()
     {
         switch ($this->table) {
@@ -104,6 +112,10 @@ trait HasAdvancedCustomFields
         }
     }
 
+    /**
+     * [getAcfRelated description]
+     * @return [type] [description]
+     */
     protected function getAcfRelated()
     {
         switch ($this->table) {
