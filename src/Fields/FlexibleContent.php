@@ -2,11 +2,11 @@
 
 namespace Lumenpress\Acf\Fields;
 
+use Lumenpress\Acf\Collections\LayoutCollection;
+
 class FlexibleContent extends Field
 {
-    protected $with = ['fields'];
-
-    protected $currentLayoutKey;
+    protected $layouts;
 
     protected $defaults = [
         // 'key' => 'field_5979ac6c766e3',
@@ -29,57 +29,51 @@ class FlexibleContent extends Field
         'max' => ''
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $layouts = $this->getContentAttribute('layouts', []);
+        foreach ($this->fields as $field) {
+            $layouts[$field->getContentAttribute('parent_layout')]['fields'][] = $field;
+        }
+        foreach ($layouts as $layout) {
+            $layouts[] = new FlexibleLayout($layout);
+        }
+        $this->layouts = LayoutCollection::create($layouts, FlexibleLayout::class);
+        $this->layouts->setRelatedParent($this);
+    }
+
     public function layouts(callable $callable)
     {
-        $callable($this);
+        $callable($this->layouts);
+        $this->setLayoutsAttribute($this->layouts);
         return $this;
     }
 
-    public function layout($name)
+    /**
+     * Mutator for layouts attribute.
+     *
+     * @return void
+     */
+    public function setLayoutsAttribute($layouts)
     {
-        $this->currentLayoutKey = $key = uniqid();
-        $layouts = $this->getContentAttribute('layouts');
-        $layouts[$key] = [
-            'key' => $key,
-            'name' => $name,
-            'label' => $name,
-            'display' => 'block',
-            'min' => '',
-            'max' => ''
-        ];
-        $this->setContentAttribute('layouts', $layouts);
-        return $this;
-    }
-
-    public function setLayoutAttribute($key, $value)
-    {
-        $layouts = $this->getContentAttribute('layouts');
-        if (!isset($layouts[$this->currentLayoutKey])) {
-            throw new \Exception("Current layout key does not exist.", 1);
+        $values = [];
+        foreach ($layouts as $layout) {
+            $values[] = $layout->getAttributes();
         }
-        $layouts[$this->currentLayoutKey][$key] = $value;
-        $this->setContentAttribute('layouts', $layouts);
-        return $this;
+        $this->setContentAttribute('layouts', $values);
     }
 
-    public function label($value)
+    public function save(array $options = [])
     {
-        return $this->setLayoutAttribute('label', $value);
-    }
+        if (!parent::save($options)) {
+            return false;
+        }
 
-    public function display($value)
-    {
-        return $this->setLayoutAttribute('display', $value);
-    }
+        $this->layouts->save();
+        $this->setLayoutsAttribute($this->layouts);
 
-    public function min($value)
-    {
-        return $this->setLayoutAttribute('min', $value);
-    }
-
-    public function max($value)
-    {
-        return $this->setLayoutAttribute('max', $value);
+        return true;
     }
 
 }

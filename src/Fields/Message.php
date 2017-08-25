@@ -13,4 +13,10 @@ class Message extends Field
         'new_lines' => 'wpautop',
         'esc_html' => 0
     ];
+
+    public function content($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
 }

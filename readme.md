@@ -5,7 +5,7 @@
   - [Field Groups](#field-groups)
     - [Creating Field Groups](#creating-field-groups)
     - [Renaming / Dropping Field Groups](#renaming--dropping-field-groups)
-  - [Fields](#)
+  - [Fields](#fields)
     - [Creating Fields](#creating-fields)
     - [Modifying Fields](#modifying-fields)
     - [Dropping Fields](#dropping-fields)
@@ -32,7 +32,7 @@ $app->configure('acf');
 $app->register(Lumenpress\Acf\ServiceProvider::class);
 ```
 
-## ACF Schema
+## Schema
 
 ### Field Groups
 
@@ -85,8 +85,41 @@ Available Field Group Settings
 
 **Location**
 
+**Parameters**
+
+- **Post**
+  - post_type
+  - post_template
+  - post_status
+  - post_format
+  - post_category
+  - post_taxonomy
+  - post
+- **Page**
+  - page_template
+  - page_type
+  - page_parent
+  - page
+- **User**
+  - current_user
+  - current_user_role
+  - user_form
+  - user_role
+- **Forms**
+  - taxonomy
+  - attachment
+  - comment
+  - widget
+  - nav_menu
+  - nav_menu_item
+  - options_page
+
+**Operator**
+
+`==` or `!=`
+
 ```php
-$group->location($param, $value); // operator is '=';
+$group->location($param, $value); // operator is '==';
 $group->location($param, $operator, $value);
 ```
 
@@ -196,16 +229,20 @@ $field->time_picker('time_picker');
 $field->color_picker('color_picker');
 
 // Layout
-$field->message('Message Content');
+
 $field->tab('tab');
+$field->message('Message')->content('Content');
+
 $field->group('group')->fields(function($field) {
     $field->text('text');
     $field->image('image');
 });
+
 $field->repeater('repeater')->fields(function($field) {
     $field->text('text')->label('Text');
     $field->image('image');
 });
+
 $field->flexible('flexible')->layouts(function($flexible) {
     $flexible->layout('layout1')->label('Layout 1')->fields(function($field) {
         $field->textarea('textarea')->label('Textarea');
@@ -214,7 +251,16 @@ $field->flexible('flexible')->layouts(function($flexible) {
         $field->text('text')->label('Text');
     });
 });
-$field->clone(['group_key.field_name']);
+
+// friendly
+$field->clone('clone')->fields('group');
+$field->clone('clone')->fields('group.text');
+$field->clone('clone')->fields('group.text', 'group.textarea');
+
+// strict
+$field->clone('clone')->fields('group_1b8797f52e1e7731');
+$field->clone('clone')->fields('field_599ec2068e143');
+$field->clone('clone')->fields('field_599ec2068e143', 'field_599ec6186b36b');
 ```
 
 #### Modifying Fields

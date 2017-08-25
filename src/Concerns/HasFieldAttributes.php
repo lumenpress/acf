@@ -17,6 +17,26 @@ trait HasFieldAttributes
     }
 
     /**
+     * Accessor for parent_layout attribute.
+     *
+     * @return returnType
+     */
+    public function getParentLayoutAttribute($value)
+    {
+        return $this->getContentAttribute('parent_layout');
+    }
+
+    /**
+     * Mutator for parent_layout attribute.
+     *
+     * @return void
+     */
+    public function setParentLayoutAttribute($value)
+    {
+        $this->setContentAttribute('parent_layout', $value);
+    }
+
+    /**
      * Accessor for fullName attribute.
      *
      * @return returnType

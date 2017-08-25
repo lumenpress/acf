@@ -30,7 +30,9 @@ trait ContentAttributes
     public function setPostTitleAttribute($value)
     {
         $this->attributes['post_title'] = $value;
-        $this->post_excerpt = str_slug($value, '_');
+        if (!$this->post_excerpt) {
+            $this->post_excerpt = str_slug($value, '_');
+        }
     }
 
     /**

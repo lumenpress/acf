@@ -8,7 +8,7 @@ class Schema
 {
     public static function create($key, callable $callable)
     {
-        $key = static::hashKey($key);
+        $key = static::getHashKey($key);
         $group = FieldGroup::where('post_name', $key)->first();
 
         if ($group) {
@@ -24,7 +24,7 @@ class Schema
 
     public static function createIfNotExist($key, callable $callable)
     {
-        $key = static::hashKey($key);
+        $key = static::getHashKey($key);
         $group = FieldGroup::where('post_name', $key)->first();
 
         if ($group) {
@@ -41,7 +41,7 @@ class Schema
 
     public static function group($key, callable $callable)
     {
-        $group = FieldGroup::where('post_name', static::hashKey($key))->first();
+        $group = FieldGroup::where('post_name', static::getHashKey($key))->first();
 
         if (!$group) {
             throw new \Exception("\"$key\" field group does not exist.", 1);
@@ -56,10 +56,10 @@ class Schema
 
     public static function drop($key)
     {
-        return FieldGroup::where('post_name', static::hashKey($key))->delete();
+        return FieldGroup::where('post_name', static::getHashKey($key))->delete();
     }
 
-    protected static function hashKey($key)
+    public static function getHashKey($key)
     {
         if (stripos($key, 'group_') !== 0) {
             $key = 'group_'.substr(hash('md5', $key), 8, 16);

@@ -20,7 +20,7 @@ abstract class AbstractField extends AbstractPost
      * [$types description]
      * @var array
      */
-    protected static $types = [
+    protected static $registeredTypes = [
         'clone' => CloneField::class,
         'flexible' => FlexibleContent::class,
     ];
@@ -109,11 +109,14 @@ abstract class AbstractField extends AbstractPost
         $settings = [];
 
         if ($attributes instanceof \stdClass) {
-            $settings = is_serialized($attributes->post_content) 
-                ? unserialize($attributes->post_content) : [];
+            if (is_array($attributes->post_content)) {
+                $settings = $attributes->post_content;
+            } elseif (is_serialized($attributes->post_content)) {
+                $settings = unserialize($attributes->post_content);
+            }
         }
 
-        $type = isset($settings['type']) ? $settings['type'] : 'text';
+        $type = isset($settings['type']) ? $settings['type'] : '';
 
         $model = $this->newInstance([], true, static::getClassNameByType($type, Text::class));
 
@@ -123,7 +126,7 @@ abstract class AbstractField extends AbstractPost
 
         switch ($type) {
             case 'repeater':
-            case 'flexible_content':
+            case 'group':
                 $model->setRelation('fields', $model->fields()->get());
                 break;
         }
@@ -138,16 +141,16 @@ abstract class AbstractField extends AbstractPost
         if (!class_exists($className)) {
             throw new \Exception("{$className} class doesn't exist.", 1);
         }
-        static::$types[$type] = $className;
+        static::$registeredTypes[$type] = $className;
     }
 
     public static function getClassNameByType($type, $default = null)
     {
-        if (isset(static::$types[$type])) {
-            return static::$types[$type];
+        if (isset(static::$registeredTypes[$type])) {
+            return static::$registeredTypes[$type];
         }
 
-        $class = 'Lumenpress\\Acf\\Fields\\'.studly_case($type);
+        $class = 'Lumenpress\\Acf\\Fields\\'.studly_case(str_replace('_', ' ', $type));
 
         return class_exists($class) ? $class : $default;
     }

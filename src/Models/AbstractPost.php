@@ -5,6 +5,7 @@ namespace Lumenpress\Acf\Models;
 use Lumenpress\Acf\Fields\Field;
 use Lumenpress\Acf\Concerns\ContentAttributes;
 use Lumenpress\ORM\Models\AbstractPost as Post;
+use Lumenpress\ORM\Collections\AbstractCollection as Collection;
 
 abstract class AbstractPost extends Post
 {
@@ -50,10 +51,18 @@ abstract class AbstractPost extends Post
 
     public function __call($method, $parameters)
     {
-        if (in_array($method, $this->appends) || array_key_exists($method, $this->aliases)) {
+        if (array_key_exists($method, $this->aliases)) {
+            $method = $this->aliases[$method];
+        }
+        if (isset($this->$method)) {
             $this->$method = array_shift($parameters);
             return $this;
         }
+        // d($method, $this->appends, in_array($method, $this->appends));
+        // if (in_array($method, $this->appends) || array_key_exists($method, $this->aliases)) {
+        //     $this->$method = array_shift($parameters);
+        //     return $this;
+        // }
         return parent::__call($method, $parameters);
     }
 
@@ -79,9 +88,6 @@ abstract class AbstractPost extends Post
             if (!isset($this->relations['fields'])) {
                 $this->setRelation('fields', $relation->get());
             }
-            if (property_exists($this, 'currentLayoutKey') and $this->currentLayoutKey) {
-                $this->fields->setLayoutKey($this->currentLayoutKey);
-            }
             $callable($this->fields);
             return $this;
         }
@@ -96,9 +102,11 @@ abstract class AbstractPost extends Post
             return false;
         }
 
-        $this->fields->save();
+        if ($this->fields instanceof Collection) {
+            $this->fields->save();
+        }
 
-        return parent::save();
+        return true;
     }
 
 }

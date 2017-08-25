@@ -3,10 +3,15 @@
 namespace Lumenpress\Acf\Collections;
 
 use Lumenpress\Acf\Fields\Field;
+use Lumenpress\Acf\Fields\FlexibleLayout;
 use Lumenpress\ORM\Collections\AbstractCollection;
 
 class FieldCollection extends AbstractCollection
 {
+    protected $loopIndex = 0;
+
+    protected $layoutKey;
+
     /**
      * [__call description]
      * @param  [type] $type       [description]
@@ -15,21 +20,46 @@ class FieldCollection extends AbstractCollection
      */
     public function __call($type, $arguments)
     {
+        if ($type === 'flexible') {
+            $type = 'flexible_content';
+        }
         $name = $arguments[0];
-        foreach ($this->items as $key => $item) {
+        // $flag = false;
+        foreach ($this->items as $index => $item) {
             if ($item->name == $name) {
+                $item->order = $this->loopIndex;
+                $this->loopIndex++;
+                // if ($flag) {
+                //     $this->extraItems[] = $item;
+                //     unset($this->items[$index]);
+                // }
+                if ($item->type !== $type) {
+                    $item->type = $type;
+                    $item = $item->newFromBuilder((object)$item->getAttributes());
+                }
+                if ($type === 'clone') {
+                    $item->setGroupKey($this->relatedParent->key);
+                }
                 $this->changedKeys[$name] = true;
-                return $item;
+                // $flag = true;
+                return $this->items[$index] = $item;
             }
         }
         if ($className = Field::getClassNameByType($type)) {
             $item = new $className;
+            $item->type = $type;
             // if ($this->layoutKey) {
             //     $field->setContentAttribute('parent_layout', $this->layoutKey);
             // }
-            $item->name = str_slug($name, '_');
             $item->label = ucwords(str_slug($name, ' '));
-            $this->changedKeys[$name] = true;
+            $item->name = str_slug($name, '_');
+            $item->order = $this->loopIndex;
+            $this->loopIndex++;
+            if ($type === 'clone') {
+                $item->setGroupKey($this->relatedParent->key);
+            }
+            // $item->label = ucwords(str_slug($name, ' '));
+            $this->changedKeys[$item->name] = true;
             return $this->items[] = $item;
         }
         unset($name);
@@ -147,6 +177,12 @@ class FieldCollection extends AbstractCollection
             $this->extraItems[] = $item;
             unset($this->items[$index]);
         }
+        $this->items = [];
+    }
+
+    public function setLayoutKey($key)
+    {
+        $this->layoutKey = $key;
     }
 
     /**
@@ -159,9 +195,13 @@ class FieldCollection extends AbstractCollection
             return false;
         }
         $flag = false;
-        foreach ($this->items as $item) {
+        foreach ($this->items as $index => $item) {
             if (isset($this->changedKeys[$item->name])) {
                 $item->post_parent = $this->relatedParent->id;
+                if ($this->relatedParent instanceof FlexibleLayout) {
+                    $item->setContentAttribute('parent_layout', $this->relatedParent->key);
+                    // d($item, $this->relatedParent->key);
+                }
                 $flag = $item->save() || $flag;
             }
         }
