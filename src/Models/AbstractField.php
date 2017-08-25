@@ -27,8 +27,6 @@ abstract class AbstractField extends AbstractPost
 
     protected $postType = 'acf-field';
 
-    protected $relatedParent;
-
     protected $aliases = [
         'id' => 'ID',
         'label' => 'post_title',
@@ -134,13 +132,6 @@ abstract class AbstractField extends AbstractPost
         unset($settings, $type);
 
         return $model;
-    }
-
-    public function setRelatedParent(&$relatedParent)
-    {
-        $this->relatedParent = $relatedParent;
-        $this->append('meta_key', 'meta_value');
-        return $this;
     }
 
     public static function register($type, $className)
