@@ -29,39 +29,36 @@ class FlexibleContent extends Field
         'max' => ''
     ];
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $layouts = $this->getContentAttribute('layouts', []);
-        foreach ($this->fields as $field) {
-            $layouts[$field->getContentAttribute('parent_layout')]['fields'][] = $field;
-        }
-        foreach ($layouts as $layout) {
-            $layouts[] = new FlexibleLayout($layout);
-        }
-        $this->layouts = LayoutCollection::create($layouts, FlexibleLayout::class);
-        $this->layouts->setRelatedParent($this);
-    }
-
     public function layouts(callable $callable)
     {
-        $callable($this->layouts);
+        $callable($this->layouts = $this->getLayoutsAttribute(null));
         $this->setLayoutsAttribute($this->layouts);
         return $this;
     }
 
     /**
-     * Mutator for layouts attribute.
+     * Accessor for layouts attribute.
      *
-     * @return void
+     * @return returnType
      */
-    public function setLayoutsAttribute($layouts)
+    public function getLayoutsAttribute($value)
     {
-        $values = [];
-        foreach ($layouts as $layout) {
-            $values[] = $layout->getAttributes();
+        if (!$this->layouts) {
+            $layouts = $this->getContentAttribute('layouts', []);
+
+            foreach ($this->fields()->get() as $field) {
+                $layouts[$field->getContentAttribute('parent_layout')]['fields'][] = $field;
+            }
+
+            foreach ($layouts as $layout) {
+                $layouts[] = new FlexibleLayout($layout);
+            }
+
+            $this->layouts = LayoutCollection::create($layouts, FlexibleLayout::class);
+            $this->layouts->setRelatedParent($this);
         }
-        $this->setContentAttribute('layouts', $values);
+
+        return $this->layouts;
     }
 
     public function save(array $options = [])
@@ -72,6 +69,15 @@ class FlexibleContent extends Field
 
         $this->layouts->save();
         $this->setLayoutsAttribute($this->layouts);
+
+        $values = [];
+
+        foreach ($layouts as $layout) {
+            $values[] = $layout->getAttributesWithoutFields();
+        }
+
+        $this->setContentAttribute('layouts', $values);
+        unset($values);
 
         return true;
     }

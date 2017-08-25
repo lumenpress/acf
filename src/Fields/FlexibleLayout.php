@@ -69,6 +69,11 @@ class FlexibleLayout
         return $this->attributes;
     }
 
+    public function getAttributesWithoutFields()
+    {
+        return array_except($this->attributes, 'fields');
+    }
+
     public function save()
     {
         return $this->fields->save();
