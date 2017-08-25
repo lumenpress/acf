@@ -32,7 +32,7 @@ class FlexibleContent extends Field
     public function layouts(callable $callable)
     {
         $callable($this->layouts = $this->getLayoutsAttribute(null));
-        $this->setLayoutsAttribute($this->layouts);
+        $this->setLayoutsToContent();
         return $this;
     }
 
@@ -46,12 +46,12 @@ class FlexibleContent extends Field
         if (!$this->layouts) {
             $layouts = $this->getContentAttribute('layouts', []);
 
-            foreach ($this->fields()->get() as $field) {
+            foreach ($this->fields as $field) {
                 $layouts[$field->getContentAttribute('parent_layout')]['fields'][] = $field;
             }
 
-            foreach ($layouts as $layout) {
-                $layouts[] = new FlexibleLayout($layout);
+            foreach ($layouts as $key => $layout) {
+                $layouts[$key] = (new FlexibleLayout($layout))->setRelatedParent($this);
             }
 
             $this->layouts = LayoutCollection::create($layouts, FlexibleLayout::class);
@@ -61,6 +61,17 @@ class FlexibleContent extends Field
         return $this->layouts;
     }
 
+    public function attributesToArray()
+    {
+        $attributes = parent::attributesToArray();
+
+        foreach ($this->layouts as $key => $layout) {
+            $attributes['layouts'][$key] = $layout->toArray();
+        }
+
+        return $attributes;
+    }
+
     public function save(array $options = [])
     {
         if (!parent::save($options)) {
@@ -68,18 +79,21 @@ class FlexibleContent extends Field
         }
 
         $this->layouts->save();
-        $this->setLayoutsAttribute($this->layouts);
+        $this->setLayoutsToContent();
 
+        return true;
+    }
+
+    protected function setLayoutsToContent()
+    {
         $values = [];
 
-        foreach ($layouts as $layout) {
-            $values[] = $layout->getAttributesWithoutFields();
+        foreach ($this->layouts as $key => $layout) {
+            $values[$key] = $layout->getAttributes();
         }
 
         $this->setContentAttribute('layouts', $values);
         unset($values);
-
-        return true;
     }
 
 }

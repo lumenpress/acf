@@ -20,7 +20,7 @@ class LayoutCollection extends AbstractCollection
         $item->name = $name;
         $item->label = $name;
         $item->setRelatedParent($this->relatedParent);
-        return $this->items[] = $item;;
+        return $this->items[$item->key] = $item;;
     }
 
     public function save()

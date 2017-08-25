@@ -3,20 +3,32 @@
 namespace Lumenpress\Acf\Fields;
 
 use Lumenpress\Acf\Collections\FieldCollection;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\JsonEncodingException;
 
-class FlexibleLayout
+class FlexibleLayout implements Jsonable
 {
     protected $relatedParent;
+
+    protected $fields;
 
     protected $attributes = [
         'display' => 'block',
         'min' => '',
         'max' => '',
-        'fields' => [],
     ];
 
     public function __construct(array $attributes = [])
     {
+        if (array_key_exists('fields', $attributes)) {
+            $this->fields = FieldCollection::create($attributes['fields'], Field::class);
+            unset($attributes['fields']);
+        } else {
+            $this->fields = FieldCollection::create([], Field::class);
+        }
+
+        $this->fields->setRelatedParent($this);
+
         foreach ($attributes as $key => $value) {
             $this->$key = $value;
         }
@@ -26,7 +38,6 @@ class FlexibleLayout
     {
         return isset($this->attributes[$key]);
     }
-
     public function __get($key)
     {
         if ($key === 'id') {
@@ -46,6 +57,27 @@ class FlexibleLayout
         return $this;
     }
 
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function toArray()
+    {
+        return array_merge($this->attributes, ['fields' => $this->fields]);
+    }
+
+    public function toJson($options = 0)
+    {
+        $json = json_encode($this->toArray(), $options);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw JsonEncodingException::forModel($this, json_last_error_msg());
+        }
+
+        return $json;
+    }
+
     public function getIdAttribute($value)
     {
         return $this->relatedParent->id;
@@ -57,25 +89,16 @@ class FlexibleLayout
         return $this;
     }
 
-    public function fields(callable $callable)
+    public function fields($callable = null)
     {
-        $this->fields = FieldCollection::create($this->fields, Field::class);
-        $this->fields->setRelatedParent($this);
-        $callable($this->fields);
-    }
-
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    public function getAttributesWithoutFields()
-    {
-        return array_except($this->attributes, 'fields');
+        if (is_callable($callable)) {
+            $callable($this->fields);
+        }
     }
 
     public function save()
     {
         return $this->fields->save();
     }
+
 }
