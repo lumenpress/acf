@@ -2,7 +2,6 @@
 
 namespace Lumenpress\Acf\Collections;
 
-use Illuminate\Database\Eloquent\Model;
 use Lumenpress\ORM\Collections\AbstractCollection;
 use Lumenpress\Acf\Fields\Field;
 
@@ -11,6 +10,52 @@ class FieldMetaCollection extends AbstractCollection
     public function schema($name)
     {
         # code...
+    }
+
+    public function offsetExists($key)
+    {
+        if (isset($this->items[$key])) {
+            if ($this->items[$key] instanceof Field) {
+                if (!is_null($this->items[$key]->value)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function offsetGet($key)
+    {
+        if (isset($this->items[$key])) {
+            if ($this->items[$key] instanceof Field) {
+                if (!is_null($this->items[$key]->value)) {
+                    return $this->items[$key];
+                }
+            }
+        }
+    }
+
+    public function offsetSet($key, $value)
+    {
+        if (isset($this->items[$key])) {
+            $this->changedKeys[$key] = true;
+            $this->items[$key]->value = $value;
+        } else {
+            throw new \Exception("{$key} Field not exists.", 1);
+        }
+    }
+
+    public function offsetUnset($key)
+    {
+        $this->extraItems[] = $this->items[$key];
+        unset($this->items[$key]);
+    }
+
+    public function setRelatedParent(&$relatedParent)
+    {
+        parent::setRelatedParent($relatedParent);
+        $this->items = $relatedParent->getAcfFieldObjects();
+        return $this;
     }
 
     public function save()
