@@ -16,15 +16,6 @@ abstract class AbstractField extends AbstractPost
 {
     use HasFieldAttributes;
 
-    /**
-     * [$types description]
-     * @var array
-     */
-    protected static $registeredTypes = [
-        'clone' => CloneField::class,
-        'flexible' => FlexibleContent::class,
-    ];
-
     protected $postType = 'acf-field';
 
     protected $aliases = [
@@ -131,16 +122,4 @@ abstract class AbstractField extends AbstractPost
 
         return $model;
     }
-
-    public static function getClassNameByType($type, $default = null)
-    {
-        if (isset(static::$registeredTypes[$type])) {
-            return static::$registeredTypes[$type];
-        }
-
-        $class = 'Lumenpress\\Acf\\Fields\\'.studly_case(str_replace('_', ' ', $type));
-
-        return class_exists($class) ? $class : $default;
-    }
-
 }
