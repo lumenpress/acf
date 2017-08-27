@@ -26,9 +26,9 @@ abstract class AbstractField extends AbstractPost
         'order' => 'menu_order',
     ];
 
-    protected $appends = [];
+    // protected $appends = [];
 
-    protected $hidden = [];
+    // protected $hidden = [];
 
     public function __construct(array $attributes = [])
     {
@@ -47,6 +47,11 @@ abstract class AbstractField extends AbstractPost
 
         $this->type = 'text';
         $this->post_name = uniqid('field_');
+    }
+
+    public function __toString()
+    {
+        return is_string($this->value) || is_numeric($this->value) ? $this->value : '';
     }
 
     /**

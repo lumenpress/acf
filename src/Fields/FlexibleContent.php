@@ -45,7 +45,7 @@ class FlexibleContent extends Field
     {
         if (!$this->layouts) {
             $layouts = $this->getContentAttribute('layouts', []);
-
+            
             foreach ($this->fields as $field) {
                 $layouts[$field->getContentAttribute('parent_layout')]['fields'][] = $field;
             }
@@ -68,8 +68,8 @@ class FlexibleContent extends Field
      */
     public function getMetaValueAttribute($value)
     {
-        if (is_null(parent::getMetaValueAttribute($value))) {
-            return;
+        if (!is_array(parent::getMetaValueAttribute($value))) {
+            return [];
         }
         $values = [];
         foreach ($this->metaValue as $index => $name) {

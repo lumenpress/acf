@@ -2,7 +2,7 @@
 
 namespace Lumenpress\Acf\Fields;
 
-class Checkbox extends Field
+class Checkbox extends Select
 {
     protected $defaults = [
         // 'key' => 'field_5979ab03ae3e8',

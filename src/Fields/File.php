@@ -13,29 +13,37 @@ class File extends Field
         'mime_types' => ''
     ];
 
-    public function getValueAttribute($value)
+    public function getMetaValueAttribute($value)
     {
-        return parent::getValueAttribute($value);
-        // if (!$this->rawValue) {
-        //     return;
-        // }
+        parent::getMetaValueAttribute($value);
 
-        // if (is_numeric($this->rawValue)) {
-        //     return lumenpress_get_attachment_url($this->rawValue);
-        // }
+        if (is_numeric($this->metaValue)) {
+            return lumenpress_get_attachment_url($this->metaValue);
+        }
 
-        // if(lumenpress_asset_url($this->rawValue)) {
-        //     return $this->rawValue;
-        // }
+        if(lumenpress_is_url($this->metaValue)) {
+            return $this->metaValue;
+        }
 
-        // if (file_exists($this->rawValue)) {
-        //     return 'data:image/' . pathinfo($this->rawValue, PATHINFO_EXTENSION) 
-        //         . ';base64,' . base64_encode(file_get_contents($this->rawValue));
-        // }
+        if (file_exists($file = lumenpress_asset_path($this->metaValue))) {
+            return 'data:image/' . pathinfo($file, PATHINFO_EXTENSION) 
+                . ';base64,' . base64_encode(file_get_contents($file));
+        }
+    }
 
-        // if (file_exists(config('wordpress.assets.base_path').$this->rawValue)) {
-        //     return config('wordpress.assets.base_url').$this->rawValue;
-        // }
+    /**
+     * [updateValue description]
+     * @return [type] [description]
+     */
+    public function updateValue()
+    {
+        if (is_string($this->metaValue)) {
+            $this->metaValue = lumenpress_insert_asset($this->metaValue);
+        }
+        if (!is_numeric($this->metaValue)) {
+            return;
+        }
+        return parent::updateValue();
     }
 
 }

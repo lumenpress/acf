@@ -27,6 +27,16 @@ if (!function_exists('lumenpress_asset_url')) {
     }
 }
 
+if (!function_exists('lumenpress_asset_path')) {
+    function lumenpress_asset_path($value)
+    {
+        if (file_exists($value)) {
+            return $value;
+        }
+        return config('wordpress.assets.base_path').$value;
+    }
+}
+
 function _lumenpress_asset_uniqid($src)
 {
     global $wpdb;

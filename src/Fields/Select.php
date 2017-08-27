@@ -18,4 +18,20 @@ class Select extends Field
         'return_format' => 'value',
         'placeholder' => ''
     ];
+
+    /**
+     * Mutator for choices attribute.
+     *
+     * @return void
+     */
+    public function setChoicesAttribute($choices)
+    {
+        foreach ($choices as $key => $value) {
+            if (is_numeric($key)) {
+                unset($choices[$key]);
+                $choices[$value] = $value;
+            }
+        }
+        $this->setContentAttribute('choices', $choices);
+    }
 }

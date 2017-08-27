@@ -16,7 +16,8 @@ class FieldMetaCollection extends AbstractCollection
     {
         if (isset($this->items[$key])) {
             if ($this->items[$key] instanceof Field) {
-                if (!is_null($this->items[$key]->value)) {
+                // null or array or ''
+                if (!empty($this->items[$key]->value)) {
                     return true;
                 }
             }

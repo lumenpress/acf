@@ -4,6 +4,8 @@ namespace Lumenpress\Acf\Collections;
 
 use Lumenpress\Acf\Fields\Field;
 use Lumenpress\Acf\Fields\FlexibleLayout;
+use Lumenpress\Acf\Fields\Repeater;
+use Lumenpress\Acf\Fields\FlexibleContent;
 use Lumenpress\ORM\Collections\AbstractCollection;
 
 class FieldCollection extends AbstractCollection
@@ -178,11 +180,6 @@ class FieldCollection extends AbstractCollection
             unset($this->items[$index]);
         }
         $this->items = [];
-    }
-
-    public function setLayoutKey($key)
-    {
-        $this->layoutKey = $key;
     }
 
     /**

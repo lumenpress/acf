@@ -15,4 +15,18 @@ class TrueFalse extends Field
         'ui_on_text' => '',
         'ui_off_text' => ''
     ];
+
+    /**
+     * Mutator for value attribute.
+     *
+     * @return void
+     */
+    public function setMetaValueAttribute($value)
+    {
+        if (!is_null($value)) {
+            $value = $value ? 1 : 0;
+        }
+        parent::setMetaValueAttribute($value);
+    }
+
 }

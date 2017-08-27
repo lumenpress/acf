@@ -60,7 +60,12 @@ abstract class AbstractPost extends Post
         //     return $this;
         // }
         // d($method, $this->appends, in_array($method, $this->appends));
+        // if (static::class == Lumenpress\Acf\Fields\Select::class) {
+        //     d($this->appends);
+        // }
+        // 
         if (in_array($method, $this->appends) || array_key_exists($method, $this->aliases)) {
+            // d(static::class, $method, in_array($method, $this->appends));
             $this->$method = array_shift($parameters);
             return $this;
         }

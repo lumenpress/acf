@@ -2,7 +2,7 @@
 
 namespace Lumenpress\Acf\Fields;
 
-class Radio extends Field
+class Radio extends Select
 {
     protected $defaults = [
         // 'key' => 'field_5979ab0dae3e9',

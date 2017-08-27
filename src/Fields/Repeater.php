@@ -45,7 +45,7 @@ class Repeater extends Field implements \IteratorAggregate
     public function getMetaValueAttribute($value)
     {
         if (is_null(parent::getMetaValueAttribute($value))) {
-            return;
+            return [];
         }
         $values = [];
         foreach ($this->fields as $field) {

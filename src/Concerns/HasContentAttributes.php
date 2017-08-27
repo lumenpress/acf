@@ -123,6 +123,10 @@ trait HasContentAttributes
      */
     public function setAttribute($key, $value)
     {
+        if ($this->hasSetMutator($key)) {
+            $method = 'set'.Str::studly($key).'Attribute';
+            return $this->{$method}($value);
+        }
         if (array_key_exists($key, $this->defaults)) {
             $this->setContentAttribute($key, $value);
             return $this;
