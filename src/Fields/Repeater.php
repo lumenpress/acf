@@ -61,6 +61,7 @@ class Repeater extends Field implements \IteratorAggregate
         if (!empty($this->values)) {
             return $this->values;
         }
+        // init
         if (is_null(parent::getMetaValueAttribute($value))) {
             return [];
         }
@@ -71,7 +72,7 @@ class Repeater extends Field implements \IteratorAggregate
                     continue;
                 }
                 $field = clone $field;
-                $field->setRelatedParent($this);
+                $field->setRelatedParent($this->relatedParent);
                 $field->meta_key = $metaKey;
                 $field->meta_value = $metaValue;
                 $this->values[$i][$field->name] = $field;
@@ -89,7 +90,7 @@ class Repeater extends Field implements \IteratorAggregate
     public function setMetaValueAttribute($values)
     {
         if (!is_array($values)) {
-            return $this;
+            return parent::setMetaValueAttribute($values);
         }
         foreach ($values as $index => $item) {
             if (!is_numeric($index)) {
@@ -100,7 +101,7 @@ class Repeater extends Field implements \IteratorAggregate
                     continue;
                 }
                 $field = clone $field;
-                $field->setRelatedParent($this);
+                $field->setRelatedParent($this->relatedParent);
                 $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
                 $field->meta_value = $item[$field->name];
                 $this->values[$index][$field->name] = $field;
@@ -111,14 +112,22 @@ class Repeater extends Field implements \IteratorAggregate
 
     public function updateValue()
     {
-        if (!parent::updateValue()) {
-            return false;
-        }
         foreach ($this->values as $item) {
             foreach ($item as $field) {
                 $field->updateValue();
             }
         }
+        return parent::updateValue();
+    }
+
+    public function deleteValue()
+    {
+        foreach ($this->values as $item) {
+            foreach ($item as $field) {
+                $field->deleteValue();
+            }
+        }
+        return parent::deleteValue();
     }
 
 }

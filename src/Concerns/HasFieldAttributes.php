@@ -190,4 +190,39 @@ trait HasFieldAttributes
 
         return $meta->save();
     }
+
+    public function deleteValue()
+    {
+        if (is_null($this->relatedParent)) {
+            return false;
+        }
+
+        $className = null;
+        $objectKey = null;
+        
+        switch ($this->relatedParent->getTable()) {
+            case 'posts':
+                $className = PostField::class;
+                $objectKey = 'post_id';
+                break;
+            case 'terms':
+                $className = TermField::class;
+                $objectKey = 'term_id';
+                break;
+            case 'comments':
+                $className = CommentField::class;
+                $objectKey = 'comment_id';
+                break;
+            case 'users':
+                $className = UserField::class;
+                $objectKey = 'user_id';
+                break;
+            default:
+                $className = OptionField::class;
+                break;
+        }
+
+        return $className::where('meta_key', $this->meta_key)
+            ->where($objectKey, $this->relatedParent->id)->delete();
+    }
 }

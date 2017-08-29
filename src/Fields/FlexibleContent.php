@@ -102,11 +102,12 @@ class FlexibleContent extends Field implements \IteratorAggregate
                 if ($layout->name == $name) {
                     foreach ($layout->fields as $field) {
                         $metaKey = "{$this->meta_key}_{$index}_{$field->name}";
+                        // d($this->relatedParent);
                         if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
                             continue;
                         }
                         $field = clone $field;
-                        $field->setRelatedParent($this);
+                        $field->setRelatedParent($this->relatedParent);
                         $field->meta_key = $metaKey;
                         $field->meta_value = $metaValue;
                         $this->values[$index][$field->name] = $field;
@@ -127,6 +128,10 @@ class FlexibleContent extends Field implements \IteratorAggregate
         if (!is_array($values)) {
             return $this;
         }
+        // init
+        if (!is_array($values[0])) {
+            return parent::setMetaValueAttribute($values);
+        }
         foreach ($values as $index => $item) {
             if (!is_numeric($index)) {
                 throw new \Exception("$index invalid", 1);
@@ -142,7 +147,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
                             continue;
                         }
                         $field = clone $field;
-                        $field->setRelatedParent($this);
+                        $field->setRelatedParent($this->relatedParent);
                         $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
                         $field->meta_value = $item[$field->name];
                         $this->values[$index][$field->name] = $field;
@@ -178,14 +183,14 @@ class FlexibleContent extends Field implements \IteratorAggregate
 
     public function updateValue()
     {
-        if (!parent::updateValue()) {
-            return false;
-        }
         foreach ($this->values as $item) {
             foreach ($item as $field) {
-                $field->updateValue();
+                if ($field instanceof Field) {
+                    $field->updateValue();
+                }
             }
         }
+        return parent::updateValue();
     }
 
     protected function setLayoutsToContent()

@@ -61,5 +61,20 @@ class FieldMetaCollection extends AbstractCollection
 
     public function save()
     {
+        if (!$this->relatedParent) {
+            return false;
+        }
+        $flag = false;
+        foreach ($this->items as $key => $item) {
+            if (isset($this->changedKeys[$key])) {
+                $flag = $item->updateValue() || $flag;
+            }
+        }
+        foreach ($this->extraItems as $item) {
+            $flag = $item->deleteValue() || $flag;
+        }
+        $this->changedKeys = [];
+        $this->extraItems = [];
+        return $flag;
     }
 }

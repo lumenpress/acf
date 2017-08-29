@@ -65,7 +65,7 @@ class Group extends Field implements \IteratorAggregate
                 continue;
             }
             $field = clone $field;
-            $field->setRelatedParent($this);
+            $field->setRelatedParent($this->relatedParent);
             $field->meta_key = $metaKey;
             $field->meta_value = $metaValue;
             $this->values[$field->name] = $field;
@@ -84,7 +84,7 @@ class Group extends Field implements \IteratorAggregate
                 continue;
             }
             $field = clone $field;
-            $field->setRelatedParent($this);
+            $field->setRelatedParent($this->relatedParent);
             $field->meta_key = "{$this->meta_key}_{$field->name}";
             $field->meta_value = $values[$field->name];
             $this->values[$field->name] = $field;
@@ -94,12 +94,10 @@ class Group extends Field implements \IteratorAggregate
 
     public function updateValue()
     {
-        if (!parent::updateValue()) {
-            return false;
-        }
         foreach ($this->values as $field) {
             $field->updateValue();
         }
+        return parent::updateValue();
     }
 
     // public function toArray()
