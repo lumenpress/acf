@@ -5,6 +5,11 @@ namespace Lumenpress\Acf\Fields;
 class Group extends Field implements \IteratorAggregate 
 {
     /**
+     * @var array
+     */
+    protected $values = [];
+
+    /**
      * [$with description]
      * @var array
      */
@@ -25,33 +30,64 @@ class Group extends Field implements \IteratorAggregate
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->value);
+        return new \ArrayIterator($this->values);
     }
 
     public function count()
     {
-        return count($this->value);
+        return count($this->values);
+    }
+
+    public function getAttribute($key)
+    {
+        if (isset($this->values[$key])) {
+            return $this->values[$key];
+        }
+        return parent::getAttribute($key);
     }
 
     /**
      * Accessor for Value attribute.
      *
-     * @return returnType
+     * @return mixed
      */
     public function getMetaValueAttribute($value)
     {
+        if (!empty($this->values)) {
+            return $this->values;
+        }
         if (is_null(parent::getMetaValueAttribute($value))) {
             return;
         }
-        $values = [];
         foreach ($this->fields as $field) {
             $field->setRelatedParent($this);
-            $field = clone $field;
+            // $field = clone $field;
             $field->meta_key = "{$this->meta_key}_{$field->name}";
             $field->meta_value = $this->relatedParent->meta->{"{$this->meta_key}_{$field->name}"};
-            $values[$field->name] = $field;
+            $this->values[$field->name] = $field;
         }
-        return $values;
+        return $this->values;
+    }
+
+    public function setMetaValueAttribute($values)
+    {
+        if (!is_array($values)) {
+            return $this;
+        }
+        foreach ($this->fields as $field) {
+            if (!isset($values[$field->name])) {
+                continue;
+            }
+            $field->meta_key = "{$this->meta_key}_{$field->name}";
+            $field->meta_value = $values[$field->name];
+            $this->values[$field->name] = $field;
+        }
+        parent::setMetaValueAttribute('');
+    }
+
+    public function toArray()
+    {
+        return $this->values;
     }
 
 }
