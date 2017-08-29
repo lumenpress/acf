@@ -65,14 +65,19 @@ class Repeater extends Field implements \IteratorAggregate
             return [];
         }
         foreach ($this->fields as $field) {
-            $field->setRelatedParent($this);
             for ($i=0; $i < $this->metaValue?:0; $i++) {
+                $metaKey = "{$this->meta_key}_{$i}_{$field->name}";
+                if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
+                    continue;
+                }
                 $field = clone $field;
-                $field->meta_key = "{$this->meta_key}_{$i}_{$field->name}";
-                $field->meta_value = $this->relatedParent->meta->{"{$this->meta_key}_{$i}_{$field->name}"};
+                $field->setRelatedParent($this);
+                $field->meta_key = $metaKey;
+                $field->meta_value = $metaValue;
                 $this->values[$i][$field->name] = $field;
             }
         }
+        unset($metaKey, $metaValue);
         return $this->values;
     }
 
@@ -94,14 +99,26 @@ class Repeater extends Field implements \IteratorAggregate
                 if (!isset($item[$field->name])) {
                     continue;
                 }
-                $field->setRelatedParent($this);
                 $field = clone $field;
+                $field->setRelatedParent($this);
                 $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
                 $field->meta_value = $item[$field->name];
                 $this->values[$index][$field->name] = $field;
             }
         }
         parent::setMetaValueAttribute(count($values));
+    }
+
+    public function updateValue()
+    {
+        if (!parent::updateValue()) {
+            return false;
+        }
+        foreach ($this->values as $item) {
+            foreach ($item as $field) {
+                $field->updateValue();
+            }
+        }
     }
 
 }

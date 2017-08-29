@@ -101,10 +101,14 @@ class FlexibleContent extends Field implements \IteratorAggregate
                 $this->values[$index]['_layout'] = $name;
                 if ($layout->name == $name) {
                     foreach ($layout->fields as $field) {
+                        $metaKey = "{$this->meta_key}_{$index}_{$field->name}";
+                        if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
+                            continue;
+                        }
                         $field = clone $field;
                         $field->setRelatedParent($this);
-                        $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
-                        $field->meta_value = $this->relatedParent->meta->{"{$this->meta_key}_{$index}_{$field->name}"};
+                        $field->meta_key = $metaKey;
+                        $field->meta_value = $metaValue;
                         $this->values[$index][$field->name] = $field;
                     }
                 }
@@ -137,8 +141,8 @@ class FlexibleContent extends Field implements \IteratorAggregate
                         if (!isset($item[$field->name])) {
                             continue;
                         }
-                        $field->setRelatedParent($this);
                         $field = clone $field;
+                        $field->setRelatedParent($this);
                         $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
                         $field->meta_value = $item[$field->name];
                         $this->values[$index][$field->name] = $field;
@@ -170,6 +174,18 @@ class FlexibleContent extends Field implements \IteratorAggregate
         $this->setLayoutsToContent();
 
         return true;
+    }
+
+    public function updateValue()
+    {
+        if (!parent::updateValue()) {
+            return false;
+        }
+        foreach ($this->values as $item) {
+            foreach ($item as $field) {
+                $field->updateValue();
+            }
+        }
     }
 
     protected function setLayoutsToContent()
