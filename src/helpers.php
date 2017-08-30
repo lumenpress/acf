@@ -8,7 +8,7 @@ if (!function_exists('lumenpress_is_url')) {
 }
 
 if (!function_exists('lumenpress_url')) {
-    function lumenpress_url($value)
+    function lumenpress_url($value = '')
     {
         if (lumenpress_is_url($value)) {
             return $value;
@@ -18,7 +18,7 @@ if (!function_exists('lumenpress_url')) {
 }
 
 if (!function_exists('lumenpress_asset_url')) {
-    function lumenpress_asset_url($value)
+    function lumenpress_asset_url($value = '')
     {
         if (lumenpress_is_url($value)) {
             return $value;
@@ -28,7 +28,7 @@ if (!function_exists('lumenpress_asset_url')) {
 }
 
 if (!function_exists('lumenpress_asset_path')) {
-    function lumenpress_asset_path($value)
+    function lumenpress_asset_path($value = '')
     {
         if (file_exists($value)) {
             return $value;

@@ -19,6 +19,10 @@ class File extends Field
     {
         parent::getMetaValueAttribute($value);
 
+        if (empty($this->metaValue)) {
+            return;
+        }
+
         if (is_numeric($this->metaValue)) {
             $attachment = Attachment::find($this->metaValue);
             return $attachment ? $attachment->link : '';

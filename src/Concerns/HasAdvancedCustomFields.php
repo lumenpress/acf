@@ -4,6 +4,7 @@ namespace Lumenpress\Acf\Concerns;
 
 use Lumenpress\Acf\Models\FieldGroup;
 use Lumenpress\ORM\Models\Post;
+use Lumenpress\Acf\HasAdvancedCustomFields as ACF;
 
 trait HasAdvancedCustomFields
 {
@@ -14,24 +15,11 @@ trait HasAdvancedCustomFields
      */
     public function acf($key = null)
     {
-        $relation = $this->hasAcf();
+        $relation = new ACF($this);
         if ($key) {
-            $relation->where($this->getAcfKey(), $key);
+            $relation->whereKeyIs($key);
         }
         return $relation;
-    }
-
-    /**
-     * Define a one-to-many relationship.
-     *
-     * @param  string  $related
-     * @param  string  $foreignKey
-     * @param  string  $localKey
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function hasAcf($related = null, $foreignKey = null, $localKey = null)
-    {
-        return $this->hasMany($this->getAcfRelated(), $this->getAcfForeignKey(), $localKey);
     }
 
     /**
@@ -82,53 +70,4 @@ trait HasAdvancedCustomFields
         return $bool;
     }
 
-    /**
-     * [getAcfKey description]
-     * @return [type] [description]
-     */
-    protected function getAcfKey()
-    {
-        return $this->table == 'options' ? 'option_key' : 'meta_key';
-    }
-
-    /**
-     * [getAcfForeignKey description]
-     * @return [type] [description]
-     */
-    protected function getAcfForeignKey()
-    {
-        switch ($this->table) {
-            case 'posts':
-                return 'post_id';
-            case 'terms':
-                return 'term_id';
-            case 'users':
-                return 'user_id';
-            case 'comments':
-                return 'comment_id';
-            default:
-                # code...
-                break;
-        }
-    }
-
-    /**
-     * [getAcfRelated description]
-     * @return [type] [description]
-     */
-    protected function getAcfRelated()
-    {
-        switch ($this->table) {
-            case 'posts':
-                return \Lumenpress\Acf\Models\PostField::class;
-            case 'terms':
-                return \Lumenpress\Acf\Models\TermField::class;
-            case 'users':
-                return \Lumenpress\Acf\Models\UserField::class;
-            case 'comments':
-                return \Lumenpress\Acf\Models\CommentField::class;
-            default:
-                return \Lumenpress\Acf\Models\OptionField::class;
-        }
-    }
 }
