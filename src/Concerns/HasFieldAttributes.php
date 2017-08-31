@@ -148,45 +148,18 @@ trait HasFieldAttributes
             return false;
         }
 
-        $meta = new FieldMeta;
+        $meta = $this->newFieldMetaQuery()
+            ->objectKey($this->relatedParent->id)
+            ->key($this->meta_key)
+            ->first();
 
-        switch ($this->relatedParent->getTable()) {
-            case 'posts':
-                $table = 'postmeta';
-                $objectKey = 'post_id';
-                break;
-            case 'terms':
-                $table = 'termmeta';
-                $objectKey = 'term_id';
-                break;
-            case 'comments':
-                $table = 'commentmeta';
-                $objectKey = 'comment_id';
-                break;
-            case 'users':
-                $table = 'usermeta';
-                $objectKey = 'user_id';
-                break;
-            // default:
-            //     $query = \DB::table('options');
-            //     $objectKey = 'option_id';
-            //     break;
+        if (!$meta) {
+            $meta = $this->newFieldMetaQuery()->getModel()->newInstance();
+            $meta->object_id = $this->relatedParent->id;
+            $meta->key = $this->metaKey;
         }
 
-        $meta->setTable($table);
-        $meta->setObjectKeyName($objectKey);
-
-        $meta->object_id = $this->relatedParent->id;
-        $meta->key = $this->metaKey;
         $meta->value = is_array($this->metaValue) ? serialize($this->metaValue) : $this->metaValue;
-
-        $result = \DB::table($table)->where('meta_key', $this->meta_key)
-            ->where($objectKey, $this->relatedParent->id)->first();
-
-        if ($result) {
-            $meta->exists = true;
-            $meta->id = $result->meta_id;
-        }
 
         return $meta->save();
     }
@@ -197,22 +170,26 @@ trait HasFieldAttributes
             return false;
         }
 
+        return $this->newFieldMetaQuery()
+            ->objectKey($this->relatedParent->id)
+            ->key($this->meta_key)
+            ->delete();
+    }
+
+    public function newFieldMetaQuery()
+    {
         switch ($this->relatedParent->getTable()) {
             case 'posts':
                 $table = 'postmeta';
-                $objectKey = 'post_id';
                 break;
             case 'terms':
                 $table = 'termmeta';
-                $objectKey = 'term_id';
                 break;
             case 'comments':
                 $table = 'commentmeta';
-                $objectKey = 'comment_id';
                 break;
             case 'users':
                 $table = 'usermeta';
-                $objectKey = 'user_id';
                 break;
             // default:
             //     $query = \DB::table('options');
@@ -220,7 +197,6 @@ trait HasFieldAttributes
             //     break;
         }
 
-        return \DB::table($table)->where('meta_key', $this->meta_key)
-            ->where($objectKey, $this->relatedParent->id)->delete();
+        return FieldMeta::table($table);
     }
 }
