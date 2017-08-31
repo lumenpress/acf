@@ -4,11 +4,7 @@ namespace Lumenpress\Acf\Concerns;
 
 use Illuminate\Support\Str;
 use Lumenpress\Acf\Fields\Field;
-use Lumenpress\Acf\Models\PostField;
-use Lumenpress\Acf\Models\TermField;
-use Lumenpress\Acf\Models\CommentField;
-use Lumenpress\Acf\Models\UserField;
-use Lumenpress\Acf\Models\OptionField;
+use Lumenpress\Acf\Models\FieldMeta;
 
 trait HasFieldAttributes
 {
@@ -152,41 +148,45 @@ trait HasFieldAttributes
             return false;
         }
 
-        $className = null;
-        $objectKey = null;
-        
+        $meta = new FieldMeta;
+
         switch ($this->relatedParent->getTable()) {
             case 'posts':
-                $className = PostField::class;
+                $table = 'postmeta';
                 $objectKey = 'post_id';
                 break;
             case 'terms':
-                $className = TermField::class;
+                $table = 'termmeta';
                 $objectKey = 'term_id';
                 break;
             case 'comments':
-                $className = CommentField::class;
+                $table = 'commentmeta';
                 $objectKey = 'comment_id';
                 break;
             case 'users':
-                $className = UserField::class;
+                $table = 'usermeta';
                 $objectKey = 'user_id';
                 break;
-            default:
-                $className = OptionField::class;
-                break;
+            // default:
+            //     $query = \DB::table('options');
+            //     $objectKey = 'option_id';
+            //     break;
         }
 
-        $meta = $className::where('meta_key', $this->meta_key)
-            ->where($objectKey, $this->relatedParent->id)->first();
+        $meta->setTable($table);
+        $meta->setObjectKeyName($objectKey);
 
-        if (is_null($meta)) {
-            $meta = new $className;
-            $meta->objectId = $this->relatedParent->id;
-        }
-
+        $meta->object_id = $this->relatedParent->id;
         $meta->key = $this->metaKey;
         $meta->value = is_array($this->metaValue) ? serialize($this->metaValue) : $this->metaValue;
+
+        $result = \DB::table($table)->where('meta_key', $this->meta_key)
+            ->where($objectKey, $this->relatedParent->id)->first();
+
+        if ($result) {
+            $meta->exists = true;
+            $meta->id = $result->meta_id;
+        }
 
         return $meta->save();
     }
@@ -197,32 +197,30 @@ trait HasFieldAttributes
             return false;
         }
 
-        $className = null;
-        $objectKey = null;
-        
         switch ($this->relatedParent->getTable()) {
             case 'posts':
-                $className = PostField::class;
+                $table = 'postmeta';
                 $objectKey = 'post_id';
                 break;
             case 'terms':
-                $className = TermField::class;
+                $table = 'termmeta';
                 $objectKey = 'term_id';
                 break;
             case 'comments':
-                $className = CommentField::class;
+                $table = 'commentmeta';
                 $objectKey = 'comment_id';
                 break;
             case 'users':
-                $className = UserField::class;
+                $table = 'usermeta';
                 $objectKey = 'user_id';
                 break;
-            default:
-                $className = OptionField::class;
-                break;
+            // default:
+            //     $query = \DB::table('options');
+            //     $objectKey = 'option_id';
+            //     break;
         }
 
-        return $className::where('meta_key', $this->meta_key)
+        return \DB::table($table)->where('meta_key', $this->meta_key)
             ->where($objectKey, $this->relatedParent->id)->delete();
     }
 }

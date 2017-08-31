@@ -7,11 +7,6 @@ use Lumenpress\Acf\Fields\Field;
 
 class FieldMetaCollection extends AbstractCollection
 {
-    public function schema($name)
-    {
-        # code...
-    }
-
     public function offsetExists($key)
     {
         if (isset($this->items[$key])) {

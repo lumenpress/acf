@@ -4,7 +4,7 @@ namespace Lumenpress\Acf\Concerns;
 
 use Lumenpress\Acf\Models\FieldGroup;
 use Lumenpress\ORM\Models\Post;
-use Lumenpress\Acf\HasAdvancedCustomFields as ACF;
+use Lumenpress\Acf\Relations\HasAdvancedCustomFields as HasACF;
 
 trait HasAdvancedCustomFields
 {
@@ -15,7 +15,7 @@ trait HasAdvancedCustomFields
      */
     public function acf($key = null)
     {
-        $relation = new ACF($this);
+        $relation = new HasACF($this);
         if ($key) {
             $relation->whereKeyIs($key);
         }

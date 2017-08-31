@@ -1,11 +1,12 @@
 <?php 
 
-namespace Lumenpress\Acf;
+namespace Lumenpress\Acf\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Lumenpress\Acf\Models\FieldMeta;
 
 class HasAdvancedCustomFields extends HasMany
 {
@@ -50,21 +51,9 @@ class HasAdvancedCustomFields extends HasMany
      */
     protected function newRelatedInstance($parent)
     {
-        $class = \Lumenpress\Acf\Models\OptionField::class;
+        return tap(new FieldMeta, function ($instance) use ($parent) {
+            $instance->setTableThroughParentTable($parent->getTable());
 
-        switch ($parent->getTable()) {
-            case 'posts':
-                $class = \Lumenpress\Acf\Models\PostField::class;
-                break;
-            case 'terms':
-                $class = \Lumenpress\Acf\Models\TermField::class;
-            case 'users':
-                $class = \Lumenpress\Acf\Models\UserField::class;
-            case 'comments':
-                $class = \Lumenpress\Acf\Models\CommentField::class;
-        }
-
-        return tap(new $class, function ($instance) use ($parent) {
             if (! $instance->getConnectionName()) {
                 $instance->setConnection($parent->getConnectionName());
             }
@@ -83,7 +72,7 @@ class HasAdvancedCustomFields extends HasMany
             case 'comments':
                 return 'commentmeta.comment_id';
             default:
-                return 'options';
+                return 'options.option_id';
         }
     }
 }
