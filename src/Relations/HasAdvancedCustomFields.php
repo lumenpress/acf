@@ -21,12 +21,14 @@ class HasAdvancedCustomFields extends HasMany
      */
     public function __construct(Model $parent)
     {
-        $instance = $this->newRelatedInstance($parent);
+        $this->parent = $parent;
+
+        $instance = $this->newRelatedInstance();
 
         parent::__construct(
             $instance->newQuery(), 
             $parent,
-            $this->getForeignKey($parent), 
+            $this->getForeignKey(), 
             $parent->getKeyName()
         );
     }
@@ -49,20 +51,20 @@ class HasAdvancedCustomFields extends HasMany
      * [getAcfRelated description]
      * @return [type] [description]
      */
-    protected function newRelatedInstance($parent)
+    protected function newRelatedInstance()
     {
-        return tap(new FieldMeta, function ($instance) use ($parent) {
-            $instance->setTableThroughParentTable($parent->getTable());
+        return tap(new FieldMeta, function ($instance) {
+            $instance->setTableThroughParentTable($this->parent->getTable());
 
             if (! $instance->getConnectionName()) {
-                $instance->setConnection($parent->getConnectionName());
+                $instance->setConnection($this->parent->getConnectionName());
             }
         });
     }
 
-    protected function getForeignKey($parent)
+    protected function getForeignKey()
     {
-        switch ($parent->getTable()) {
+        switch ($this->parent->getTable()) {
             case 'posts':
                 return 'postmeta.post_id';
             case 'terms':

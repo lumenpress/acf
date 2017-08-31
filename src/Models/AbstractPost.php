@@ -105,15 +105,7 @@ abstract class AbstractPost extends Post
         $this->attributes['post_type'] = $this->postType;
         $this->post_content = serialize($this->post_content);
 
-        if (!parent::save($options)) {
-            return false;
-        }
-
-        if (in_array('fields', $this->with)) {
-            $this->fields->save();
-        }
-
-        return true;
+        return parent::save($options);
     }
 
 }
