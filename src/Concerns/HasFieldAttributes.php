@@ -150,7 +150,7 @@ trait HasFieldAttributes
 
         $meta = $this->newFieldMetaQuery()
             ->objectKey($this->relatedParent->id)
-            ->key($this->meta_key)
+            ->where('meta_key', $this->meta_key)
             ->first();
 
         if (!$meta) {
@@ -172,7 +172,7 @@ trait HasFieldAttributes
 
         return $this->newFieldMetaQuery()
             ->objectKey($this->relatedParent->id)
-            ->key($this->meta_key)
+            ->where('meta_key', $this->meta_key)
             ->delete();
     }
 
