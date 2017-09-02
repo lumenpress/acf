@@ -1,13 +1,16 @@
 <?php 
 
-namespace Lumenpress\Acf\Tests;
+namespace Lumenpress\ACF\Tests;
 
-use Lumenpress\Acf\Schema;
-use Lumenpress\Acf\Tests\models\Taxonomy;
-use Lumenpress\Acf\Tests\models\Category;
+use Lumenpress\ACF\Schema;
+use Lumenpress\ACF\Models\Taxonomy;
+use Lumenpress\ACF\Models\Category;
 
 class TermTest extends TestCase
 {
+    /**
+     * @group term
+     */
     public function testCreatingSchema()
     {
         $result = Schema::create('category_fields', function($group) {
@@ -73,6 +76,9 @@ class TermTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @group term
+     */
     public function testTerm()
     {
         $category = new Taxonomy;
@@ -87,6 +93,9 @@ class TermTest extends TestCase
         $this->assertEquals('foo', (string)$category->acf->text, 'message');
     }
 
+    /**
+     * @group term
+     */
     public function testCategory()
     {
         $category = new Category;

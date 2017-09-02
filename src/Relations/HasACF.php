@@ -1,14 +1,14 @@
 <?php 
 
-namespace Lumenpress\Acf\Relations;
+namespace Lumenpress\ACF\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Lumenpress\Acf\Models\FieldMeta;
+use Lumenpress\ACF\Models\FieldMeta;
 
-class HasAdvancedCustomFields extends HasMany
+class HasACF extends HasMany
 {
     /**
      * Create a new has one or many relationship instance.

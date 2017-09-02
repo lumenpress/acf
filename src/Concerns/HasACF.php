@@ -1,21 +1,22 @@
 <?php 
 
-namespace Lumenpress\Acf\Concerns;
+namespace Lumenpress\ACF\Concerns;
 
-use Lumenpress\Acf\Models\FieldGroup;
+use Illuminate\Support\Str;
 use Lumenpress\ORM\Models\Post;
-use Lumenpress\Acf\Relations\HasAdvancedCustomFields as HasACF;
+use Lumenpress\ACF\Models\FieldGroup;
+use Lumenpress\ACF\Relations\HasACF as ACF;
 
-trait HasAdvancedCustomFields
+trait HasACF
 {
     /**
-     * HasAdvancedCustomFields has many Acf.
+     * HasAdvancedCustomFields has many ACF.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function acf($key = null)
     {
-        $relation = new HasACF($this);
+        $relation = new ACF($this);
         if ($key) {
             $relation->whereKeyIs($key);
         }
@@ -59,7 +60,8 @@ trait HasAdvancedCustomFields
 
         $bool = false;
         // getPostTypeLocationRuleValue
-        $method = 'get'.studly_case($param).'LocationRuleValue';
+        // 
+        $method = 'get'.Str::studly($param).'LocationRuleValue';
         if (method_exists($this, $method)) {
             $paramValue = $this->{$method}();
             eval("\$bool = '{$paramValue}' $operator '$value';");

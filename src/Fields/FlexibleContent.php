@@ -1,8 +1,8 @@
 <?php 
 
-namespace Lumenpress\Acf\Fields;
+namespace Lumenpress\ACF\Fields;
 
-use Lumenpress\Acf\Collections\LayoutCollection;
+use Lumenpress\ACF\Collections\LayoutCollection;
 
 class FlexibleContent extends Field implements \IteratorAggregate 
 {

@@ -1,9 +1,9 @@
 <?php 
 
-namespace Lumenpress\Acf\Models;
+namespace Lumenpress\ACF\Models;
 
 use Lumenpress\ORM\Models\Meta;
-use Lumenpress\Acf\Collections\FieldMetaCollection;
+use Lumenpress\ACF\Collections\FieldMetaCollection;
 
 class FieldMeta extends Meta
 {

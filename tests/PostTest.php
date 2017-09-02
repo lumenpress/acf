@@ -1,15 +1,18 @@
 <?php 
 
-namespace Lumenpress\Acf\Tests;
+namespace Lumenpress\ACF\Tests;
 
-use Lumenpress\Acf\Schema;
-use Lumenpress\Acf\Models\FieldGroup;
-use Lumenpress\Acf\Fields\Field;
-use Lumenpress\Acf\Tests\models\Post;
+use Lumenpress\ACF\Schema;
+use Lumenpress\ACF\Fields\Field;
+use Lumenpress\ACF\Models\Post;
+use Lumenpress\ACF\Models\FieldGroup;
 use Lumenpress\ORM\Collections\RelatedCollection;
 
 class PostTest extends TestCase
 {
+    /**
+     * @group post
+     */
     public function testCreatingSchema()
     {
         $result = Schema::create('post_fields', function($group) {
@@ -75,6 +78,9 @@ class PostTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @group post
+     */
     public function testPostFields()
     {
         $post = new Post;

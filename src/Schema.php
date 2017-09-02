@@ -1,8 +1,8 @@
 <?php 
 
-namespace Lumenpress\Acf;
+namespace Lumenpress\ACF;
 
-use Lumenpress\Acf\Models\FieldGroup;
+use Lumenpress\ACF\Models\FieldGroup;
 
 class Schema
 {

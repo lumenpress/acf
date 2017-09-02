@@ -1,9 +1,9 @@
 <?php 
 
-namespace Lumenpress\Acf\Collections;
+namespace Lumenpress\ACF\Collections;
 
-use Lumenpress\Acf\Fields\Field;
-use Lumenpress\Acf\Fields\FlexibleLayout;
+use Lumenpress\ACF\Fields\Field;
+use Lumenpress\ACF\Fields\FlexibleLayout;
 use Lumenpress\ORM\Collections\AbstractCollection;
 
 class LayoutCollection extends AbstractCollection

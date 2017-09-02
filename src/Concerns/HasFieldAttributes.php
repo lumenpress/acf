@@ -1,10 +1,10 @@
 <?php 
 
-namespace Lumenpress\Acf\Concerns;
+namespace Lumenpress\ACF\Concerns;
 
 use Illuminate\Support\Str;
-use Lumenpress\Acf\Fields\Field;
-use Lumenpress\Acf\Models\FieldMeta;
+use Lumenpress\ACF\Fields\Field;
+use Lumenpress\ACF\Models\FieldMeta;
 
 trait HasFieldAttributes
 {

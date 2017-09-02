@@ -1,8 +1,8 @@
 <?php 
 
-namespace Lumenpress\Acf\Fields;
+namespace Lumenpress\ACF\Fields;
 
-use Lumenpress\Acf\Collections\FieldCollection;
+use Lumenpress\ACF\Collections\FieldCollection;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 

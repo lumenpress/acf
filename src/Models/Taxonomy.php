@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Acf\Tests\models;
+namespace Lumenpress\ACF\Models;
 
 class Taxonomy extends \Lumenpress\ORM\Models\Taxonomy
 {

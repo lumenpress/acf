@@ -1,8 +1,8 @@
 <?php 
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Lumenpress\ORM\Tests\Database\CreateTables;
-use Illuminate\Support\Str;
 
 $loader = require __DIR__.'/../vendor/autoload.php';
 $psr4 = require __DIR__.'/../vendor/composer/autoload_psr4.php';

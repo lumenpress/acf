@@ -13,12 +13,12 @@
             "src/helpers.php"
         ],
         "psr-4": {
-            "Lumenpress\\Acf\\": "src"
+            "Lumenpress\\ACF\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Lumenpress\\Acf\\Tests\\": "tests"
+            "Lumenpress\\ACF\\Tests\\": "tests"
         }
     }
 }

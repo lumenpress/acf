@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Acf\Fields;
+namespace Lumenpress\ACF\Fields;
 
 class Wysiwyg extends Field
 {
@@ -25,15 +25,4 @@ class Wysiwyg extends Field
     {
         return empty($this->rawValue) ? null : luemnpress_get_the_content($this->rawValue);
     }
-
-    // *
-    //  * Mutator for value attribute.
-    //  *
-    //  * @return void
-     
-    // public function setValueAttribute($value)
-    // {
-    //     $this->rawValue = $value;
-    //     // $this->rawValue = apply_filters( 'the_content', $value );
-    // }
 }

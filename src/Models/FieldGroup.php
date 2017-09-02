@@ -1,8 +1,8 @@
 <?php 
 
-namespace Lumenpress\Acf\Models;
+namespace Lumenpress\ACF\Models;
 
-use Lumenpress\Acf\Builders\FieldGroupBuilder;
+use Lumenpress\ACF\Builders\FieldGroupBuilder;
 
 class FieldGroup extends AbstractPost
 {

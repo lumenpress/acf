@@ -1,13 +1,16 @@
 <?php 
 
-namespace Lumenpress\Acf\Tests;
+namespace Lumenpress\ACF\Tests;
 
-use Lumenpress\Acf\Schema;
-use Lumenpress\Acf\Models\FieldGroup;
-use Lumenpress\Acf\Fields\Field;
+use Lumenpress\ACF\Schema;
+use Lumenpress\ACF\Fields\Field;
+use Lumenpress\ACF\Models\FieldGroup;
 
 class SchemaTest extends TestCase
 {
+    /**
+     * @group schema
+     */
     public function testCreating()
     {
         $result = Schema::create('home', function($group) {
@@ -73,6 +76,9 @@ class SchemaTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @group schema
+     */
     public function testFieldTypes()
     {
         $types = [
@@ -118,6 +124,9 @@ class SchemaTest extends TestCase
         $this->assertInstanceOf(FieldGroup::class, $group);
     }
 
+    /**
+     * @group schema
+     */
     public function testUpdating()
     {
         $result = Schema::group('home', function($group) {
@@ -134,12 +143,18 @@ class SchemaTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @group schema
+     */
     public function testDrop()
     {
         Schema::drop('home');
         $this->assertNull(FieldGroup::findByKey('home'));
     }
 
+    /**
+     * @group schema
+     */
     public function testLoaction()
     {
         Schema::create('test_location', function($group) {
@@ -154,6 +169,9 @@ class SchemaTest extends TestCase
         });
     }
 
+    /**
+     * @group schema
+     */
     public function testLoactionAnB()
     {
         Schema::group('test_location', function($group) {
@@ -176,6 +194,9 @@ class SchemaTest extends TestCase
         });
     }
 
+    /**
+     * @group schema
+     */
     public function testLoactionAnB2()
     {
         Schema::group('test_location', function($group) {
@@ -196,6 +217,9 @@ class SchemaTest extends TestCase
         });
     }
 
+    /**
+     * @group schema
+     */
     public function testLoactionAorB()
     {
         Schema::group('test_location', function($group) {
@@ -218,6 +242,9 @@ class SchemaTest extends TestCase
         });
     }
 
+    /**
+     * @group schema
+     */
     public function testLoactionABorCD()
     {
         Schema::group('test_location', function($group) {
@@ -253,6 +280,9 @@ class SchemaTest extends TestCase
         });
     }
 
+    /**
+     * @group schema
+     */
     public function testLoactionABorCD2()
     {
         Schema::group('test_location', function($group) {

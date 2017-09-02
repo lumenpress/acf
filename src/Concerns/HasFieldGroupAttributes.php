@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Acf\Concerns;
+namespace Lumenpress\ACF\Concerns;
 
 trait HasFieldGroupAttributes
 {

@@ -1,9 +1,9 @@
 <?php 
 
-namespace Lumenpress\Acf\Collections;
+namespace Lumenpress\ACF\Collections;
 
 use Lumenpress\ORM\Collections\AbstractCollection;
-use Lumenpress\Acf\Fields\Field;
+use Lumenpress\ACF\Fields\Field;
 
 class FieldMetaCollection extends AbstractCollection
 {

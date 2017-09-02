@@ -1,16 +1,16 @@
 <?php 
 
-namespace Lumenpress\Acf\Models;
+namespace Lumenpress\ACF\Models;
 
 use Illuminate\Support\Str;
-use Lumenpress\Acf\Fields\Field;
-use Lumenpress\Acf\Fields\Text;
-use Lumenpress\Acf\Fields\CloneField;
-use Lumenpress\Acf\Fields\FlexibleContent;
-use Lumenpress\Acf\Builders\FieldBuilder;
-use Lumenpress\Acf\Collections\Fields;
-use Lumenpress\Acf\Concerns\HasFieldAttributes;
-use Lumenpress\Acf\Collections\FieldCollection;
+use Lumenpress\ACF\Fields\Field;
+use Lumenpress\ACF\Fields\Text;
+use Lumenpress\ACF\Fields\CloneField;
+use Lumenpress\ACF\Fields\FlexibleContent;
+use Lumenpress\ACF\Builders\FieldBuilder;
+use Lumenpress\ACF\Collections\Fields;
+use Lumenpress\ACF\Concerns\HasFieldAttributes;
+use Lumenpress\ACF\Collections\FieldCollection;
 
 abstract class AbstractField extends AbstractPost
 {

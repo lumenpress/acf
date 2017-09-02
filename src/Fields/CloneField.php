@@ -1,9 +1,9 @@
 <?php 
 
-namespace Lumenpress\Acf\Fields;
+namespace Lumenpress\ACF\Fields;
 
-use Lumenpress\Acf\Schema;
-use Lumenpress\Acf\Models\FieldGroup;
+use Lumenpress\ACF\Schema;
+use Lumenpress\ACF\Models\FieldGroup;
 
 class CloneField extends Field
 {

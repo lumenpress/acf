@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\Acf\Fields;
+namespace Lumenpress\ACF\Fields;
 
 class Message extends Field
 {

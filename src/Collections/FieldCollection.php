@@ -1,11 +1,11 @@
 <?php 
 
-namespace Lumenpress\Acf\Collections;
+namespace Lumenpress\ACF\Collections;
 
-use Lumenpress\Acf\Fields\Field;
-use Lumenpress\Acf\Fields\FlexibleLayout;
-use Lumenpress\Acf\Fields\Repeater;
-use Lumenpress\Acf\Fields\FlexibleContent;
+use Lumenpress\ACF\Fields\Field;
+use Lumenpress\ACF\Fields\FlexibleLayout;
+use Lumenpress\ACF\Fields\Repeater;
+use Lumenpress\ACF\Fields\FlexibleContent;
 use Lumenpress\ORM\Collections\AbstractCollection;
 
 class FieldCollection extends AbstractCollection
