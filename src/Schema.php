@@ -8,56 +8,45 @@ class Schema
 {
     public static function create($key, callable $callable)
     {
-        $key = static::getHashKey($key);
-        $group = FieldGroup::where('post_name', $key)->first();
-
-        if ($group) {
+        if ($group = FieldGroup::findByKey($key)) {
             throw new \Exception("The \"$key\" field group already exists.", 1);
         }
 
         $group = new FieldGroup;
-        $group->key = $key;
+        $group->key = static::getHashKey($key);
         $callable($group);
-        $group->save();
 
-        return $group;
+        return $group->save();
     }
 
     public static function createIfNotExist($key, callable $callable)
     {
-        $key = static::getHashKey($key);
-        $group = FieldGroup::where('post_name', $key)->first();
-
-        if ($group) {
+        if ($group = FieldGroup::findByKey($key)) {
             return false;
         }
 
         $group = new FieldGroup;
-        $group->key = $key;
+        $group->key = static::getHashKey($key);
         $callable($group);
-        $group->save();
 
-        return $group;
+        return $group->save();
     }
 
     public static function group($key, callable $callable)
     {
-        $group = FieldGroup::where('post_name', static::getHashKey($key))->first();
-
-        if (!$group) {
+        if (!($group = FieldGroup::findByKey($key))) {
             throw new \Exception("\"$key\" field group does not exist.", 1);
         }
 
         $group->LocationIsBeingUpdated = true;
         $callable($group);
-        $group->save();
 
-        return $group;
+        return $group->save();
     }
 
     public static function drop($key)
     {
-        return FieldGroup::where('post_name', static::getHashKey($key))->delete();
+        return ($group = FieldGroup::findByKey($key)) ? $group->delete() : false;
     }
 
     public static function getHashKey($key)

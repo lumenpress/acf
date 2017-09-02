@@ -43,6 +43,7 @@ abstract class AbstractPost extends Post
 
         parent::__construct($attributes);
 
+        $this->comment_status = 'closed';
         $this->ping_status = 'closed';
 
         foreach ($this->defaults as $key => $value) {
@@ -107,5 +108,4 @@ abstract class AbstractPost extends Post
 
         return parent::save($options);
     }
-
 }

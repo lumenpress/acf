@@ -42,7 +42,13 @@ trait HasContentAttributes
      */
     public function getPostContentAttribute($value)
     {
-        return is_serialized($value) ? unserialize($value) : $value;
+        if ($value === 'b:0;') {
+            return false;
+        }
+        if (($result = @unserialize($value)) !== false) {
+            return $result;
+        }
+        return $value;
     }
 
     /**

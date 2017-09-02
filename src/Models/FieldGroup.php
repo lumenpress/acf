@@ -2,6 +2,8 @@
 
 namespace Lumenpress\Acf\Models;
 
+use Lumenpress\Acf\Builders\FieldGroupBuilder;
+
 class FieldGroup extends AbstractPost
 {
     public $LocationIsBeingUpdated = false;
@@ -39,6 +41,17 @@ class FieldGroup extends AbstractPost
     }
 
     /**
+     * Create a new Eloquent query builder for the model.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function newEloquentBuilder($query)
+    {
+        return (new FieldGroupBuilder($query))->where('post_type', $this->postType);
+    }
+
+    /**
      * Accessor for active attribute.
      *
      * @return returnType
@@ -72,12 +85,14 @@ class FieldGroup extends AbstractPost
     {
         if ($this->LocationIsBeingUpdated) {
             $this->setContentAttribute('location', []);
+            $this->LocationIsBeingUpdated = false;
         }
 
         $location = [];
         $locations = $this->location;
 
         if (is_array($param)) {
+            // d($boolean, func_get_args());
             foreach (func_get_args() as $args) {
                 if (!is_array($args)) {
                     return;
@@ -88,18 +103,27 @@ class FieldGroup extends AbstractPost
             $location[] = $this->locationAttributesToArray($param, $operator, $value);
         }
 
-        if (!empty($locations) && $boolean === 'and') {
-            $locations[] = array_merge(array_pop($locations), $location);
+        if ($boolean === 'and') {
+            $last = array_pop($locations);
+            $locations[] = is_null($last) ? $location : array_merge($last, $location);
         } else {
             $locations[] = $location;
         }
+        
         $this->setLocationAttribute($locations);
+
         return $this;
     }
 
     public function orLocation($param, $operator = null, $value = null)
     {
-        return $this->location($param, $operator, $value, $boolean = 'or');
+        if (is_array($param)) {
+            foreach (func_get_args() as $index => $args) {
+                $this->location(array_shift($args), array_shift($args), array_shift($args), $index ? 'and' : 'or');
+            }
+            return $this;
+        }
+        return $this->location($param, $operator, $value, 'or');
     }
 
     public function locationRuleMatch($object)

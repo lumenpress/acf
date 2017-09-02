@@ -103,8 +103,8 @@ abstract class AbstractField extends AbstractPost
         if ($attributes instanceof \stdClass) {
             if (is_array($attributes->post_content)) {
                 $settings = $attributes->post_content;
-            } elseif (is_serialized($attributes->post_content)) {
-                $settings = unserialize($attributes->post_content);
+            } elseif (($result = @unserialize($attributes->post_content)) !== false) {
+                $settings = $result;
             }
         }
 
