@@ -6,9 +6,9 @@ use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Fields\FlexibleLayout;
 use Lumenpress\ACF\Fields\Repeater;
 use Lumenpress\ACF\Fields\FlexibleContent;
-use Lumenpress\ORM\Collections\AbstractCollection;
+use Lumenpress\ORM\Collections\Collection;
 
-class FieldCollection extends AbstractCollection
+class FieldCollection extends Collection
 {
     protected $loopIndex = 0;
 

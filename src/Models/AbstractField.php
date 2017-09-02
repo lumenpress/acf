@@ -73,12 +73,19 @@ abstract class AbstractField extends AbstractPost
      * @param  bool  $exists
      * @return static
      */
-    public function newInstance($attributes = [], $exists = false, $className = Text::class)
+    public function newInstance($attributes = [], $exists = false)
     {
+        $attributes = (array) $attributes;
+
+        $type = isset($attributes['type']) ? $attributes['type'] : 'text';
+
+        unset($attributes['type']);
+
+        $class = static::getClassNameByType($type, Text::class);
         // This method just provides a convenient way for us to generate fresh model
         // instances of this current model. It is particularly useful during the
         // hydration of new objects via the Eloquent query builder instances.
-        $model = new $className((array) $attributes);
+        $model = new $class($attributes);
 
         $model->exists = $exists;
 
@@ -99,20 +106,19 @@ abstract class AbstractField extends AbstractPost
     public function newFromBuilder($attributes = [], $connection = null)
     {
         $settings = [];
+        $attributes = (array) $attributes;
 
-        if ($attributes instanceof \stdClass) {
-            if (is_array($attributes->post_content)) {
-                $settings = $attributes->post_content;
-            } elseif (($result = @unserialize($attributes->post_content)) !== false) {
-                $settings = $result;
-            }
+        if (is_array($attributes['post_content'])) {
+            $settings = $attributes['post_content'];
+        } elseif (($options = @unserialize($attributes['post_content'])) !== false) {
+            $settings = $options;
         }
 
-        $type = isset($settings['type']) ? $settings['type'] : '';
+        $type = isset($settings['type']) ? $settings['type'] : 'text';
 
-        $model = $this->newInstance([], true, static::getClassNameByType($type, Text::class));
+        $model = $this->newInstance(['type' => $type], true);
 
-        $model->setRawAttributes((array) $attributes, true);
+        $model->setRawAttributes($attributes, true);
 
         $model->setConnection($connection ?: $this->getConnectionName());
 

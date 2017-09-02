@@ -2,10 +2,10 @@
 
 namespace Lumenpress\ACF\Collections;
 
-use Lumenpress\ORM\Collections\AbstractCollection;
 use Lumenpress\ACF\Fields\Field;
+use Lumenpress\ORM\Collections\Collection;
 
-class FieldMetaCollection extends AbstractCollection
+class FieldMetaCollection extends Collection
 {
     public function offsetExists($key)
     {

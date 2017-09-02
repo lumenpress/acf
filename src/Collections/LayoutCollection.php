@@ -4,9 +4,9 @@ namespace Lumenpress\ACF\Collections;
 
 use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Fields\FlexibleLayout;
-use Lumenpress\ORM\Collections\AbstractCollection;
+use Lumenpress\ORM\Collections\Collection;
 
-class LayoutCollection extends AbstractCollection
+class LayoutCollection extends Collection
 {
     public function layout($name)
     {

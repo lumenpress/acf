@@ -5,6 +5,8 @@ namespace Lumenpress\ACF\Tests;
 use Lumenpress\ACF\Schema;
 use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Models\Post;
+use Lumenpress\ACF\Models\Category;
+use Lumenpress\ACF\Models\Tag;
 use Lumenpress\ACF\Models\FieldGroup;
 use Lumenpress\ORM\Collections\RelatedCollection;
 
@@ -173,5 +175,45 @@ class PostTest extends TestCase
         }
 
         $post->save();
+    }
+
+    public function testMultipleTaxonomies()
+    {
+        $categories = ['category1', 'category2'];
+        $tags = 'tag1';
+
+        $post = new Post;
+        $post->title = 'test multiple taxonomies';
+
+        $post->tax->category = $categories;
+        $post->tax->post_tag = $tags;
+
+        $post->save();
+
+        // d($post->tax);
+
+        $this->assertCount(count($categories), $post->tax->category, 'message');
+        $this->assertCount(1, $post->tax->post_tag, 'message');
+
+        foreach ($post->tax->category as $category) {
+            $this->assertInstanceOf(Category::class, $category, 'message');
+        }
+
+        foreach ($post->tax->post_tag as $tag) {
+            $this->assertInstanceOf(Tag::class, $tag, 'message');
+        }
+
+        $post = Post::find($post->id);
+
+        $this->assertCount(count($categories), $post->tax->category, 'message');
+        $this->assertCount(1, $post->tax->post_tag, 'message');
+
+        foreach ($post->tax->category as $category) {
+            $this->assertInstanceOf(Category::class, $category, 'message');
+        }
+
+        foreach ($post->tax->post_tag as $tag) {
+            $this->assertInstanceOf(Tag::class, $tag, 'message');
+        }
     }
 }
