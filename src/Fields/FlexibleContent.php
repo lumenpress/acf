@@ -76,7 +76,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
                 $layouts[$key] = (new FlexibleLayout($layout))->setRelatedParent($this);
             }
 
-            $this->_layouts = LayoutCollection::create($layouts, FlexibleLayout::class);
+            $this->_layouts = new LayoutCollection($layouts);
             $this->_layouts->setRelatedParent($this);
         }
 

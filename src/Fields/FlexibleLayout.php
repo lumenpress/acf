@@ -21,10 +21,10 @@ class FlexibleLayout implements Jsonable
     public function __construct(array $attributes = [])
     {
         if (array_key_exists('fields', $attributes)) {
-            $this->fields = FieldCollection::create($attributes['fields'], Field::class);
+            $this->fields = new FieldCollection($attributes['fields']);
             unset($attributes['fields']);
         } else {
-            $this->fields = FieldCollection::create([], Field::class);
+            $this->fields = new FieldCollection;
         }
 
         $this->fields->setRelatedParent($this);

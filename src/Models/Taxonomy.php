@@ -13,5 +13,15 @@ class Taxonomy extends \Lumenpress\ORM\Models\Taxonomy
         'post_tag' => Tag::class,
     ];
 
+    /**
+     * [$postClass description]
+     * @var [type]
+     */
+    protected $postClass = Post::class;
+
+    /**
+     * [$termClass description]
+     * @var [type]
+     */
     protected $termClass = Term::class;
 }
