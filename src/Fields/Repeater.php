@@ -28,19 +28,19 @@ class Repeater extends Field implements \IteratorAggregate
         'collapsed' => '',
         'min' => 0,
         'max' => 0,
-        'layout' => 'table',
+        'layout' => 'row',
         'button_label' => '',
         // 'sub_fields' => []
     ];
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->values);
+        return new \ArrayIterator($this->value);
     }
 
     public function count()
     {
-        return count($this->values);
+        return count($this->value);
     }
 
     public function getAttribute($key)

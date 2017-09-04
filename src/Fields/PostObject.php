@@ -16,4 +16,9 @@ class PostObject extends Field
         'return_format' => 'object',
         'ui' => 1
     ];
+
+    public function post_type($type)
+    {
+        $this->setContentAttribute('post_type', $type);
+    }
 }

@@ -24,6 +24,7 @@ class File extends Field
         }
 
         if (is_numeric($this->metaValue)) {
+            return wp_get_attachment_url( $this->metaValue );
             $attachment = Attachment::find($this->metaValue);
             return $attachment ? $attachment->link : '';
         }
