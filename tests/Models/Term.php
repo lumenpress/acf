@@ -1,6 +1,6 @@
 <?php 
 
-namespace Lumenpress\ACF\Models;
+namespace Lumenpress\ACF\Tests\Models;
 
 use Lumenpress\ACF\Concerns\HasACF;
 

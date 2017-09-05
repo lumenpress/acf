@@ -3,13 +3,13 @@
 namespace Lumenpress\ACF\Tests;
 
 use Lumenpress\ACF\Schema;
-use Lumenpress\ACF\Models\Taxonomy;
-use Lumenpress\ACF\Models\Category;
+use Lumenpress\ORM\Models\Taxonomy;
+use Lumenpress\ORM\Models\Category;
 
-class TermTest extends TestCase
+class TaxonomyTest extends TestCase
 {
     /**
-     * @group term
+     * @group tax
      */
     public function testCreatingSchema()
     {
@@ -77,9 +77,9 @@ class TermTest extends TestCase
     }
 
     /**
-     * @group term
+     * @group tax
      */
-    public function testTerm()
+    public function testTaxonomy()
     {
         $category = new Taxonomy;
         $category->taxonomy = 'category';
@@ -94,7 +94,7 @@ class TermTest extends TestCase
     }
 
     /**
-     * @group term
+     * @group tax
      */
     public function testCategory()
     {

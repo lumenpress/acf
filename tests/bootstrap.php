@@ -3,6 +3,8 @@
 use Illuminate\Support\Str;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Lumenpress\ORM\Tests\Database\CreateTables;
+use Lumenpress\ORM\Models\Post;
+use Lumenpress\ORM\Models\Taxonomy;
 
 $loader = require __DIR__.'/../vendor/autoload.php';
 $psr4 = require __DIR__.'/../vendor/composer/autoload_psr4.php';
@@ -50,3 +52,8 @@ foreach (glob($path.'/tests/database/migrations/*.php') as $file) {
     $migration->down();
     $migration->up();
 }
+
+Post::register('post', Lumenpress\ACF\Tests\Models\Post::class);
+Post::register('page', Lumenpress\ACF\Tests\Models\Post::class);
+
+Taxonomy::setTermClass(Lumenpress\ACF\Tests\Models\Term::class);

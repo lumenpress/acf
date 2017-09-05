@@ -4,10 +4,11 @@ namespace Lumenpress\ACF\Tests;
 
 use Lumenpress\ACF\Schema;
 use Lumenpress\ACF\Fields\Field;
-use Lumenpress\ACF\Models\Post;
-use Lumenpress\ACF\Models\Category;
-use Lumenpress\ACF\Models\Tag;
 use Lumenpress\ACF\Models\FieldGroup;
+use Lumenpress\ACF\Tests\Models\Post;
+
+use Lumenpress\ORM\Models\Tag;
+use Lumenpress\ORM\Models\Category;
 use Lumenpress\ORM\Collections\RelatedCollection;
 
 class PostTest extends TestCase
