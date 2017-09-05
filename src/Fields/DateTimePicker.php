@@ -2,7 +2,7 @@
 
 namespace Lumenpress\ACF\Fields;
 
-class DateTimePicker extends Field
+class DateTimePicker extends DatePicker
 {
     protected $defaults = [
         // 'key' => 'field_5979ac03766dc',

@@ -2,6 +2,8 @@
 
 namespace Lumenpress\ACF\Fields;
 
+use Carbon\Carbon;
+
 class DatePicker extends Field
 {
     protected $defaults = [
@@ -13,4 +15,18 @@ class DatePicker extends Field
         'return_format' => 'd/m/Y',
         'first_day' => 1
     ];
+
+    /**
+     * Accessor for metaValue attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        try {
+            return Carbon::parse($this->metaValue)->format($this->return_format);
+        } catch (\Exception $e) {
+            return;
+        }
+    }
 }
