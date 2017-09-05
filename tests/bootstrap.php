@@ -54,6 +54,6 @@ foreach (glob($path.'/tests/database/migrations/*.php') as $file) {
 }
 
 Post::register('post', Lumenpress\ACF\Tests\Models\Post::class);
-Post::register('page', Lumenpress\ACF\Tests\Models\Post::class);
+Post::register('page', Lumenpress\ACF\Tests\Models\Page::class);
 
 Taxonomy::setTermClass(Lumenpress\ACF\Tests\Models\Term::class);
