@@ -33,6 +33,21 @@ class Repeater extends Field implements \IteratorAggregate
         // 'sub_fields' => []
     ];
 
+    /**
+     * Run a map over each of the items.
+     *
+     * @param  callable  $callback
+     * @return static
+     */
+    public function map(callable $callback)
+    {
+        $keys = array_keys($this->value);
+
+        $items = array_map($callback, $this->value, $keys);
+
+        return array_combine($keys, $items);
+    }
+
     public function getIterator()
     {
         return new \ArrayIterator($this->value);
