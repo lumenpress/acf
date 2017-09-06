@@ -44,12 +44,12 @@ class FlexibleContent extends Field implements \IteratorAggregate
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->values);
+        return new \ArrayIterator($this->value);
     }
 
     public function count()
     {
-        return count($this->values);
+        return count($this->value);
     }
 
     public function layouts(callable $callable)

@@ -2,6 +2,8 @@
 
 namespace Lumenpress\ACF\Fields;
 
+use Lumenpress\ORM\Models\Post;
+
 class PostObject extends Field
 {
     protected $defaults = [
@@ -20,5 +22,19 @@ class PostObject extends Field
     public function post_type($type)
     {
         $this->setContentAttribute('post_type', $type);
+    }
+
+    /**
+     * Accessor for metaValue attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        if (! is_numeric($this->metaValue)) {
+            return;
+        }
+
+        return Post::find($this->metaValue);
     }
 }

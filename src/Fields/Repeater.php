@@ -79,6 +79,7 @@ class Repeater extends Field implements \IteratorAggregate
                 $this->values[$i][$field->name] = $field;
             }
         }
+
         unset($metaKey, $metaValue);
 
         return $this->values;
