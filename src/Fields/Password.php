@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -13,6 +13,6 @@ class Password extends Field
         'prepend' => '',
         'append' => '',
         'readonly' => 0,
-        'disabled' => 0
+        'disabled' => 0,
     ];
 }

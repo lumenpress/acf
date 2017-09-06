@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
-class Group extends Field implements \IteratorAggregate 
+class Group extends Field implements \IteratorAggregate
 {
     /**
      * @var array
@@ -10,13 +10,13 @@ class Group extends Field implements \IteratorAggregate
     protected $values = [];
 
     /**
-     * [$with description]
+     * [$with description].
      * @var array
      */
     protected $with = ['fields'];
 
     /**
-     * [$defaults description]
+     * [$defaults description].
      * @var [type]
      */
     protected $defaults = [
@@ -43,6 +43,7 @@ class Group extends Field implements \IteratorAggregate
         if (isset($this->values[$key])) {
             return $this->values[$key];
         }
+
         return parent::getAttribute($key);
     }
 
@@ -53,7 +54,7 @@ class Group extends Field implements \IteratorAggregate
      */
     public function getMetaValueAttribute($value)
     {
-        if (!empty($this->values)) {
+        if (! empty($this->values)) {
             return $this->values;
         }
         if (is_null(parent::getMetaValueAttribute($value))) {
@@ -71,16 +72,17 @@ class Group extends Field implements \IteratorAggregate
             $this->values[$field->name] = $field;
         }
         unset($metaKey, $metaValue);
+
         return $this->values;
     }
 
     public function setMetaValueAttribute($values)
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             return $this;
         }
         foreach ($this->fields as $field) {
-            if (!isset($values[$field->name])) {
+            if (! isset($values[$field->name])) {
                 continue;
             }
             $field = clone $field;
@@ -97,6 +99,7 @@ class Group extends Field implements \IteratorAggregate
         foreach ($this->values as $field) {
             $field->updateValue();
         }
+
         return parent::updateValue();
     }
 
@@ -104,5 +107,4 @@ class Group extends Field implements \IteratorAggregate
     // {
     //     return $this->values;
     // }
-
 }

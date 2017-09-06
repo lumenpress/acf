@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -14,7 +14,7 @@ class PostObject extends Field
         'allow_null' => 0,
         'multiple' => 0,
         'return_format' => 'object',
-        'ui' => 1
+        'ui' => 1,
     ];
 
     public function post_type($type)

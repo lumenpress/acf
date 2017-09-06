@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -16,6 +16,6 @@ class Number extends Field
         'append' => '',
         'min' => '',
         'max' => '',
-        'step' => ''
+        'step' => '',
     ];
 }

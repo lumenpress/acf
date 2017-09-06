@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -9,6 +9,6 @@ class ColorPicker extends Field
         // 'label' => 'Coler Picker',
         // 'name' => 'coler_picker',
         'type' => 'color_picker',
-        'default_value' => ''
+        'default_value' => '',
     ];
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -10,6 +10,6 @@ class Url extends Field
         // 'name' => 'url',
         'type' => 'url',
         'default_value' => '',
-        'placeholder' => ''
+        'placeholder' => '',
     ];
 }

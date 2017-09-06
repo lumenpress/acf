@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -13,6 +13,6 @@ class Textarea extends Field
         'placeholder' => '',
         'maxlength' => '',
         'rows' => '',
-        'new_lines' => 'wpautop'
+        'new_lines' => 'wpautop',
     ];
 }

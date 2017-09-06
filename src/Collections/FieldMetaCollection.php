@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Collections;
 
@@ -12,11 +12,12 @@ class FieldMetaCollection extends Collection
         if (isset($this->items[$key])) {
             if ($this->items[$key] instanceof Field) {
                 // null or array or ''
-                if (!empty($this->items[$key]->value)) {
+                if (! empty($this->items[$key]->value)) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -24,7 +25,7 @@ class FieldMetaCollection extends Collection
     {
         if (isset($this->items[$key])) {
             if ($this->items[$key] instanceof Field) {
-                if (!is_null($this->items[$key]->value)) {
+                if (! is_null($this->items[$key]->value)) {
                     return $this->items[$key];
                 }
             }
@@ -51,12 +52,13 @@ class FieldMetaCollection extends Collection
     {
         parent::setRelatedParent($relatedParent);
         $this->items = $relatedParent->getAcfFieldObjects();
+
         return $this;
     }
 
     public function save()
     {
-        if (!$this->relatedParent) {
+        if (! $this->relatedParent) {
             return false;
         }
         $flag = false;
@@ -70,6 +72,7 @@ class FieldMetaCollection extends Collection
         }
         $this->changedKeys = [];
         $this->extraItems = [];
+
         return $flag;
     }
 }

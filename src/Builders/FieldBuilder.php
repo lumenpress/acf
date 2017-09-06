@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Builders;
 
@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class FieldBuilder extends Builder
 {
-
     /**
      * Get the deeply nested relations for a given top-level relation.
      *
@@ -28,5 +27,4 @@ class FieldBuilder extends Builder
 
         return $nested;
     }
-
 }

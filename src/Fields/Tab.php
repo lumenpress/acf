@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -10,6 +10,6 @@ class Tab extends Field
         'name' => '',
         'type' => 'tab',
         'placement' => 'top',
-        'endpoint' => 0
+        'endpoint' => 0,
     ];
 }

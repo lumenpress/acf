@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -11,12 +11,13 @@ class Message extends Field
         'type' => 'message',
         'message' => '',
         'new_lines' => 'wpautop',
-        'esc_html' => 0
+        'esc_html' => 0,
     ];
 
     public function content($message)
     {
         $this->message = $message;
+
         return $this;
     }
 }

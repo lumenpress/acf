@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -14,11 +14,11 @@ class Relationship extends Field
         'filters' => [
             'search',
             'post_type',
-            'taxonomy'
+            'taxonomy',
         ],
         'elements' => '',
         'min' => '',
         'max' => '',
-        'return_format' => 'object'
+        'return_format' => 'object',
     ];
 }

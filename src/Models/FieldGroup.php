@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Models;
 
@@ -94,7 +94,7 @@ class FieldGroup extends AbstractPost
         if (is_array($param)) {
             // d($boolean, func_get_args());
             foreach (func_get_args() as $args) {
-                if (!is_array($args)) {
+                if (! is_array($args)) {
                     return;
                 }
                 $location[] = call_user_func_array([$this, 'locationAttributesToArray'], $args);
@@ -109,7 +109,7 @@ class FieldGroup extends AbstractPost
         } else {
             $locations[] = $location;
         }
-        
+
         $this->setLocationAttribute($locations);
 
         return $this;
@@ -121,8 +121,10 @@ class FieldGroup extends AbstractPost
             foreach (func_get_args() as $index => $args) {
                 $this->location(array_shift($args), array_shift($args), array_shift($args), $index ? 'and' : 'or');
             }
+
             return $this;
         }
+
         return $this->location($param, $operator, $value, 'or');
     }
 
@@ -137,6 +139,7 @@ class FieldGroup extends AbstractPost
                 break;
             }
         }
+
         return $bool;
     }
 
@@ -149,6 +152,7 @@ class FieldGroup extends AbstractPost
         $location['param'] = $param;
         $location['operator'] = $operator;
         $location['value'] = $value;
+
         return $location;
     }
 }

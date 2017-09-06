@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF;
 
-use Illuminate\Support\ServiceProvider as Provider;
 use Lumenpress\ACF\Fields\Field;
+use Illuminate\Support\ServiceProvider as Provider;
 
 class ServiceProvider extends Provider
 {
@@ -40,9 +40,9 @@ class ServiceProvider extends Provider
      */
     protected function loadConfiguration()
     {
-        $acf = __DIR__ . '/../config/acf.php';
+        $acf = __DIR__.'/../config/acf.php';
 
-        if ( ! $this->isLumen()) {
+        if (! $this->isLumen()) {
             $this->publishes([$acf => config_path('acf.php')], 'config');
         }
 
@@ -51,20 +51,19 @@ class ServiceProvider extends Provider
 
     protected function registerOptionsPages()
     {
-        if (!function_exists('add_action')) {
+        if (! function_exists('add_action')) {
             return;
         }
-        add_action('after_setup_theme', function()
-        {
-            if ( wp_installing() and 'wp-activate.php' !== $GLOBALS['pagenow'] ) {
+        add_action('after_setup_theme', function () {
+            if (wp_installing() and 'wp-activate.php' !== $GLOBALS['pagenow']) {
                 return;
             }
 
-            if (!function_exists('acf_add_options_page')) {
+            if (! function_exists('acf_add_options_page')) {
                 return;
             }
 
-            if (!class_exists('acf_pro_options_page')) {
+            if (! class_exists('acf_pro_options_page')) {
                 acf_include('pro/admin/options-page.php');
             }
 
@@ -89,5 +88,4 @@ class ServiceProvider extends Provider
             Field::register($type, $field);
         }
     }
-
 }

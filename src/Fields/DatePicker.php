@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -13,7 +13,7 @@ class DatePicker extends Field
         'type' => 'date_picker',
         'display_format' => 'd/m/Y',
         'return_format' => 'd/m/Y',
-        'first_day' => 1
+        'first_day' => 1,
     ];
 
     /**

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -12,6 +12,6 @@ class Email extends Field
         'default_value' => '',
         'placeholder' => '',
         'prepend' => '',
-        'append' => ''
+        'append' => '',
     ];
 }

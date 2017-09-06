@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -15,6 +15,6 @@ class Checkbox extends Select
         'default_value' => [],
         'layout' => 'vertical',
         'toggle' => 0,
-        'return_format' => 'value'
+        'return_format' => 'value',
     ];
 }

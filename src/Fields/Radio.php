@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -15,6 +15,6 @@ class Radio extends Select
         'save_other_choice' => 0,
         'default_value' => '',
         'layout' => 'vertical',
-        'return_format' => 'value'
+        'return_format' => 'value',
     ];
 }

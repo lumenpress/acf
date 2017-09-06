@@ -3,9 +3,8 @@
 namespace Lumenpress\ACF\Models;
 
 use Lumenpress\ACF\Fields\Field;
-use Lumenpress\ACF\Concerns\HasContentAttributes;
 use Lumenpress\ORM\Models\AbstractPost as Post;
-use Lumenpress\ORM\Collections\AbstractCollection as Collection;
+use Lumenpress\ACF\Concerns\HasContentAttributes;
 
 abstract class AbstractPost extends Post
 {
@@ -64,12 +63,14 @@ abstract class AbstractPost extends Post
         // if (static::class == Lumenpress\ACF\Fields\Select::class) {
         //     d($this->appends);
         // }
-        // 
+        //
         if (in_array($method, $this->appends) || array_key_exists($method, $this->aliases)) {
             // d(static::class, $method, in_array($method, $this->appends));
             $this->$method = array_shift($parameters);
+
             return $this;
         }
+
         return parent::__call($method, $parameters);
     }
 
@@ -84,7 +85,7 @@ abstract class AbstractPost extends Post
     }
 
     /**
-     * [fields description]
+     * [fields description].
      * @param  [type] $callable [description]
      * @return [type]           [description]
      */
@@ -92,12 +93,14 @@ abstract class AbstractPost extends Post
     {
         $relation = $this->hasMany(Field::class, 'post_parent');
         if (is_callable($callable)) {
-            if (!isset($this->relations['fields'])) {
+            if (! isset($this->relations['fields'])) {
                 $this->setRelation('fields', $relation->get());
             }
             $callable($this->fields);
+
             return $this;
         }
+
         return $relation;
     }
 

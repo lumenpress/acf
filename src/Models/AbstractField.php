@@ -1,16 +1,12 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Models;
 
-use Illuminate\Support\Str;
-use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Fields\Text;
-use Lumenpress\ACF\Fields\CloneField;
-use Lumenpress\ACF\Fields\FlexibleContent;
-use Lumenpress\ACF\Builders\FieldBuilder;
+use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Collections\Fields;
-use Lumenpress\ACF\Concerns\HasFieldAttributes;
 use Lumenpress\ACF\Collections\FieldCollection;
+use Lumenpress\ACF\Concerns\HasFieldAttributes;
 
 abstract class AbstractField extends AbstractPost
 {
@@ -39,7 +35,7 @@ abstract class AbstractField extends AbstractPost
             'wrapper' => [
                 'width' => '',
                 'class' => '',
-                'id' => ''
+                'id' => '',
             ],
         ], $this->defaults);
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Concerns;
 
@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 trait HasContentAttributes
 {
     /**
-     * [$defaults description]
+     * [$defaults description].
      * @var array
      */
     protected $defaults = [];
@@ -30,7 +30,7 @@ trait HasContentAttributes
     public function setPostTitleAttribute($value)
     {
         $this->attributes['post_title'] = $value;
-        if (!$this->post_excerpt) {
+        if (! $this->post_excerpt) {
             $this->post_excerpt = str_slug($value, '_');
         }
     }
@@ -48,6 +48,7 @@ trait HasContentAttributes
         if (($result = @unserialize($value)) !== false) {
             return $result;
         }
+
         return $value;
     }
 
@@ -78,7 +79,7 @@ trait HasContentAttributes
      */
     public function setContentAttribute($key, $value = '')
     {
-        if (!is_array($this->post_content)) {
+        if (! is_array($this->post_content)) {
             $this->attributes['post_content'] = [];
         } else {
             $this->attributes['post_content'] = $this->post_content;
@@ -100,6 +101,7 @@ trait HasContentAttributes
         if (array_key_exists($key, $this->defaults)) {
             return true;
         }
+
         return false;
     }
 
@@ -131,13 +133,15 @@ trait HasContentAttributes
     {
         if ($this->hasSetMutator($key)) {
             $method = 'set'.Str::studly($key).'Attribute';
+
             return $this->{$method}($value);
         }
         if (array_key_exists($key, $this->defaults)) {
             $this->setContentAttribute($key, $value);
+
             return $this;
         }
+
         return parent::setAttribute($key, $value);
     }
-
 }

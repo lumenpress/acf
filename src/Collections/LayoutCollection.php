@@ -1,8 +1,7 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Collections;
 
-use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Fields\FlexibleLayout;
 use Lumenpress\ORM\Collections\Collection;
 
@@ -20,7 +19,8 @@ class LayoutCollection extends Collection
         $item->name = $name;
         $item->label = $name;
         $item->setRelatedParent($this->relatedParent);
-        return $this->items[$item->key] = $item;;
+
+        return $this->items[$item->key] = $item;
     }
 
     public function save()

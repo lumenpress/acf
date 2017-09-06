@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -16,6 +16,6 @@ class Taxonomy extends Field
         'save_terms' => 0,
         'load_terms' => 0,
         'return_format' => 'id',
-        'multiple' => 0
+        'multiple' => 0,
     ];
 }

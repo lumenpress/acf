@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -16,7 +16,7 @@ class Select extends Field
         'ui' => 0,
         'ajax' => 0,
         'return_format' => 'value',
-        'placeholder' => ''
+        'placeholder' => '',
     ];
 
     /**

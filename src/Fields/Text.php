@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -13,6 +13,6 @@ class Text extends Field
         'placeholder' => '',
         'prepend' => '',
         'append' => '',
-        'maxlength' => ''
+        'maxlength' => '',
     ];
 }

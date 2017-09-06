@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -11,6 +11,6 @@ class User extends Field
         'type' => 'user',
         'role' => '',
         'allow_null' => 0,
-        'multiple' => 0
+        'multiple' => 0,
     ];
 }

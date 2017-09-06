@@ -1,11 +1,9 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Collections;
 
 use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Fields\FlexibleLayout;
-use Lumenpress\ACF\Fields\Repeater;
-use Lumenpress\ACF\Fields\FlexibleContent;
 use Lumenpress\ORM\Collections\Collection;
 
 class FieldCollection extends Collection
@@ -15,7 +13,7 @@ class FieldCollection extends Collection
     protected $layoutKey;
 
     /**
-     * [__call description]
+     * [__call description].
      * @param  [type] $type       [description]
      * @param  [type] $arguments [description]
      * @return [type]             [description]
@@ -37,7 +35,7 @@ class FieldCollection extends Collection
                 // }
                 if ($item->type !== $type) {
                     $item->type = $type;
-                    $item = $item->newFromBuilder((object)$item->getAttributes());
+                    $item = $item->newFromBuilder((object) $item->getAttributes());
                 }
                 if ($type === 'clone') {
                     $item->setGroupKey($this->relatedParent->key);
@@ -62,9 +60,11 @@ class FieldCollection extends Collection
             }
             // $item->label = ucwords(str_slug($name, ' '));
             $this->changedKeys[$item->name] = true;
+
             return $this->items[] = $item;
         }
         unset($name);
+
         return parent::__call($type, $arguments);
     }
 
@@ -82,6 +82,7 @@ class FieldCollection extends Collection
                     return true;
                 }
             }
+
             return false;
         } else {
             return array_key_exists($key, $this->items);
@@ -122,6 +123,7 @@ class FieldCollection extends Collection
                 if ($item->name == $key) {
                     $item->name = $value;
                     parent::offsetSet($index, $item);
+
                     return;
                 }
             }
@@ -130,6 +132,7 @@ class FieldCollection extends Collection
             $item->name = $key;
             $item->value = $value;
             parent::offsetSet(null, $item);
+
             return;
         }
         parent::offsetSet($key, $value);
@@ -148,6 +151,7 @@ class FieldCollection extends Collection
                 if ($item->name == $key) {
                     $this->extraItems[] = $item;
                     unset($this->items[$index]);
+
                     return;
                 }
             }
@@ -162,6 +166,7 @@ class FieldCollection extends Collection
         if ($item = $this->$oldname) {
             $this->changedKeys[$newname] = true;
             $item->name = $newname;
+
             return $item;
         }
     }
@@ -183,12 +188,12 @@ class FieldCollection extends Collection
     }
 
     /**
-     * [save description]
+     * [save description].
      * @return [type] [description]
      */
     public function save()
     {
-        if (!$this->relatedParent) {
+        if (! $this->relatedParent) {
             return false;
         }
         $flag = false;
@@ -207,6 +212,7 @@ class FieldCollection extends Collection
         }
         $this->changedKeys = [];
         $this->extraItems = [];
+
         return $flag;
     }
 }

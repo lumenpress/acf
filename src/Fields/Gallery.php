@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -19,6 +19,6 @@ class Gallery extends Field
         'max_width' => '',
         'max_height' => '',
         'max_size' => '',
-        'mime_types' => ''
+        'mime_types' => '',
     ];
 }
