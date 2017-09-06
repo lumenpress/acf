@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Tests;
 
 use Lumenpress\ACF\Schema;
-use Lumenpress\ORM\Models\Taxonomy;
 use Lumenpress\ORM\Models\Category;
+use Lumenpress\ORM\Models\Taxonomy;
 
 class TaxonomyTest extends TestCase
 {
@@ -13,10 +13,10 @@ class TaxonomyTest extends TestCase
      */
     public function testCreatingSchema()
     {
-        $result = Schema::create('category_fields', function($group) {
+        $result = Schema::create('category_fields', function ($group) {
             $group->title('Category Fields');
             $group->location('taxonomy', 'category');
-            $group->fields(function($field) {
+            $group->fields(function ($field) {
                 // $field->dropAll();
                 $field->text('text');
                 $field->textarea('textarea');
@@ -52,19 +52,19 @@ class TaxonomyTest extends TestCase
                 $field->color_picker('color_picker');
                 // $field->message('Message')->content('Content');
                 // $field->tab('tab');
-                $field->group('group')->fields(function($field) {
+                $field->group('group')->fields(function ($field) {
                     $field->text('text');
                     $field->image('image');
                 });
-                $field->repeater('repeater')->fields(function($field) {
+                $field->repeater('repeater')->fields(function ($field) {
                     $field->text('text')->label('Text');
                     $field->image('image');
                 });
-                $field->flexible('flexible')->layouts(function($flexible) {
-                    $flexible->layout('layout1')->label('Layout 1')->fields(function($field) {
+                $field->flexible('flexible')->layouts(function ($flexible) {
+                    $flexible->layout('layout1')->label('Layout 1')->fields(function ($field) {
                         $field->textarea('textarea');
                     });
-                    $flexible->layout('layout2')->label('Layout 2')->fields(function($field) {
+                    $flexible->layout('layout2')->label('Layout 2')->fields(function ($field) {
                         $field->text('text');
                     });
                 });
@@ -90,7 +90,7 @@ class TaxonomyTest extends TestCase
 
         $category = Taxonomy::find($category->id);
         $this->assertEquals('bar', $category->meta->foo, 'message');
-        $this->assertEquals('foo', (string)$category->acf->text, 'message');
+        $this->assertEquals('foo', (string) $category->acf->text, 'message');
     }
 
     /**
@@ -106,6 +106,6 @@ class TaxonomyTest extends TestCase
 
         $category = Category::find($category->id);
         $this->assertEquals('bar', $category->meta->foo, 'message');
-        $this->assertEquals('foo', (string)$category->acf->text, 'message');
+        $this->assertEquals('foo', (string) $category->acf->text, 'message');
     }
 }

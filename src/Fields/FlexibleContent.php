@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
 use Lumenpress\ACF\Collections\LayoutCollection;
 
-class FlexibleContent extends Field implements \IteratorAggregate 
+class FlexibleContent extends Field implements \IteratorAggregate
 {
     protected $_layouts;
 
@@ -30,7 +30,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
         ],
         'button_label' => 'Add Row',
         'min' => '',
-        'max' => ''
+        'max' => '',
     ];
 
     public function getAttribute($key)
@@ -38,6 +38,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
         if (isset($this->values[$key])) {
             return $this->values[$key];
         }
+
         return parent::getAttribute($key);
     }
 
@@ -55,6 +56,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
     {
         $callable($this->_layouts = $this->getLayoutsAttribute(null));
         $this->setLayoutsToContent();
+
         return $this;
     }
 
@@ -65,7 +67,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
      */
     public function getLayoutsAttribute($value)
     {
-        if (!$this->_layouts) {
+        if (! $this->_layouts) {
             $layouts = $this->getContentAttribute('layouts', []);
 
             foreach ($this->fields as $field) {
@@ -90,10 +92,10 @@ class FlexibleContent extends Field implements \IteratorAggregate
      */
     public function getMetaValueAttribute($value)
     {
-        if (!empty($this->values)) {
+        if (! empty($this->values)) {
             return $this->values;
         }
-        if (!is_array(parent::getMetaValueAttribute($value))) {
+        if (! is_array(parent::getMetaValueAttribute($value))) {
             return [];
         }
         foreach ($this->metaValue as $index => $name) {
@@ -115,6 +117,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
                 }
             }
         }
+
         return $this->values;
     }
 
@@ -125,25 +128,25 @@ class FlexibleContent extends Field implements \IteratorAggregate
      */
     public function setMetaValueAttribute($values)
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             return $this;
         }
         // init
-        if (!is_array($values[0])) {
+        if (! is_array($values[0])) {
             return parent::setMetaValueAttribute($values);
         }
         foreach ($values as $index => $item) {
-            if (!is_numeric($index)) {
+            if (! is_numeric($index)) {
                 throw new \Exception("$index invalid", 1);
             }
-            if (!isset($item['_layout'])) {
-                throw new \Exception("_layout does not exists.", 1);
+            if (! isset($item['_layout'])) {
+                throw new \Exception('_layout does not exists.', 1);
             }
             foreach ($this->layouts as $layout) {
                 if ($layout->name == $item['_layout']) {
                     $this->metaValue[$index] = $this->values[$index]['_layout'] = $item['_layout'];
                     foreach ($layout->fields as $field) {
-                        if (!isset($item[$field->name])) {
+                        if (! isset($item[$field->name])) {
                             continue;
                         }
                         $field = clone $field;
@@ -171,7 +174,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
 
     public function save(array $options = [])
     {
-        if (!parent::save($options)) {
+        if (! parent::save($options)) {
             return false;
         }
 
@@ -190,6 +193,7 @@ class FlexibleContent extends Field implements \IteratorAggregate
                 }
             }
         }
+
         return parent::updateValue();
     }
 
@@ -204,5 +208,4 @@ class FlexibleContent extends Field implements \IteratorAggregate
         $this->setContentAttribute('layouts', $values);
         unset($values);
     }
-
 }

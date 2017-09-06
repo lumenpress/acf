@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -12,6 +12,6 @@ class GoogleMap extends Field
         'center_lat' => '',
         'center_lng' => '',
         'zoom' => '',
-        'height' => ''
+        'height' => '',
     ];
 }

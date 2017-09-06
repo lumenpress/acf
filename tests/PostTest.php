@@ -1,15 +1,11 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Tests;
 
 use Lumenpress\ACF\Schema;
-use Lumenpress\ACF\Fields\Field;
-use Lumenpress\ACF\Models\FieldGroup;
-use Lumenpress\ACF\Tests\Models\Post;
-
 use Lumenpress\ORM\Models\Tag;
 use Lumenpress\ORM\Models\Category;
-use Lumenpress\ORM\Collections\RelatedCollection;
+use Lumenpress\ACF\Tests\Models\Post;
 
 class PostTest extends TestCase
 {
@@ -18,10 +14,10 @@ class PostTest extends TestCase
      */
     public function testCreatingSchema()
     {
-        $result = Schema::create('post_fields', function($group) {
+        $result = Schema::create('post_fields', function ($group) {
             $group->title('Post Fields');
             $group->location('post_type', 'post');
-            $group->fields(function($field) {
+            $group->fields(function ($field) {
                 // $field->dropAll();
                 $field->text('text');
                 $field->textarea('textarea');
@@ -57,19 +53,19 @@ class PostTest extends TestCase
                 $field->color_picker('color_picker');
                 // $field->message('Message')->content('Content');
                 // $field->tab('tab');
-                $field->group('group')->fields(function($field) {
+                $field->group('group')->fields(function ($field) {
                     $field->text('text');
                     $field->image('image');
                 });
-                $field->repeater('repeater')->fields(function($field) {
+                $field->repeater('repeater')->fields(function ($field) {
                     $field->text('text')->label('Text');
                     $field->image('image');
                 });
-                $field->flexible('flexible')->layouts(function($flexible) {
-                    $flexible->layout('layout1')->label('Layout 1')->fields(function($field) {
+                $field->flexible('flexible')->layouts(function ($flexible) {
+                    $flexible->layout('layout1')->label('Layout 1')->fields(function ($field) {
                         $field->textarea('textarea');
                     });
-                    $flexible->layout('layout2')->label('Layout 2')->fields(function($field) {
+                    $flexible->layout('layout2')->label('Layout 2')->fields(function ($field) {
                         $field->text('text');
                     });
                 });
@@ -91,7 +87,7 @@ class PostTest extends TestCase
         $post->title = 'test post fields';
 
         foreach ($post->acf as $key => $value) {
-            $this->assertTrue(!isset($post->acf->$key));
+            $this->assertTrue(! isset($post->acf->$key));
         }
 
         // $file = lumenpress_asset_url('assets/LUMENPRESS.svg');
@@ -129,7 +125,7 @@ class PostTest extends TestCase
                     '_layout' => 'layout2',
                     'text' => 'Text2',
                 ],
-            ]
+            ],
         ];
 
         foreach ($data as $key => $value) {
@@ -141,9 +137,9 @@ class PostTest extends TestCase
 
         // getter
         foreach ($data['group'] as $key => $value) {
-            if (!is_array($value)) {
+            if (! is_array($value)) {
                 $this->assertTrue($post->acf->group[$key]->value == $value);
-                $this->assertTrue((string)$post->acf->group[$key] == $value);
+                $this->assertTrue((string) $post->acf->group[$key] == $value);
             }
         }
 
@@ -163,7 +159,7 @@ class PostTest extends TestCase
 
         foreach ($data['flexible'] as $index => $item) {
             foreach ($item as $key => $value) {
-                $this->assertTrue((string)$post->acf->flexible[$index][$key] == $value);
+                $this->assertTrue((string) $post->acf->flexible[$index][$key] == $value);
             }
         }
 

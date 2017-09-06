@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF;
 
@@ -34,7 +34,7 @@ class Schema
 
     public static function group($key, callable $callable)
     {
-        if (!($group = FieldGroup::findByKey($key))) {
+        if (! ($group = FieldGroup::findByKey($key))) {
             throw new \Exception("\"$key\" field group does not exist.", 1);
         }
 
@@ -54,6 +54,7 @@ class Schema
         if (stripos($key, 'group_') !== 0) {
             $key = 'group_'.substr(hash('md5', $key), 8, 16);
         }
+
         return $key;
     }
 }

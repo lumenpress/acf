@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -13,7 +13,7 @@ class TrueFalse extends Field
         'default_value' => 0,
         'ui' => 0,
         'ui_on_text' => '',
-        'ui_off_text' => ''
+        'ui_off_text' => '',
     ];
 
     /**
@@ -23,10 +23,9 @@ class TrueFalse extends Field
      */
     public function setMetaValueAttribute($value)
     {
-        if (!is_null($value)) {
+        if (! is_null($value)) {
             $value = $value ? 1 : 0;
         }
         parent::setMetaValueAttribute($value);
     }
-
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Tests;
 
@@ -13,10 +13,10 @@ class SchemaTest extends TestCase
      */
     public function testCreating()
     {
-        $result = Schema::create('home', function($group) {
+        $result = Schema::create('home', function ($group) {
             $group->title('Home Page');
             $group->location('post_type', 'post');
-            $group->fields(function($field) {
+            $group->fields(function ($field) {
                 // $field->dropAll();
                 $field->text('text');
                 $field->textarea('textarea');
@@ -52,19 +52,19 @@ class SchemaTest extends TestCase
                 $field->color_picker('color_picker');
                 // $field->message('Message')->content('Content');
                 // $field->tab('tab');
-                $field->group('group')->fields(function($field) {
+                $field->group('group')->fields(function ($field) {
                     $field->text('text');
                     $field->image('image');
                 });
-                $field->repeater('repeater')->fields(function($field) {
+                $field->repeater('repeater')->fields(function ($field) {
                     $field->text('text')->label('Text');
                     $field->image('image');
                 });
-                $field->flexible('flexible')->layouts(function($flexible) {
-                    $flexible->layout('layout1')->label('Layout 1')->fields(function($field) {
+                $field->flexible('flexible')->layouts(function ($flexible) {
+                    $flexible->layout('layout1')->label('Layout 1')->fields(function ($field) {
                         $field->textarea('textarea');
                     });
-                    $flexible->layout('layout2')->label('Layout 2')->fields(function($field) {
+                    $flexible->layout('layout2')->label('Layout 2')->fields(function ($field) {
                         $field->text('text');
                     });
                 });
@@ -129,14 +129,14 @@ class SchemaTest extends TestCase
      */
     public function testUpdating()
     {
-        $result = Schema::group('home', function($group) {
+        $result = Schema::group('home', function ($group) {
             $group->title('Home Page2');
             $group->location('post_type', 'page');
             $this->assertEquals($group->title, 'Home Page2');
             $this->assertEquals($group->location, [[[
                 'param' => 'post_type',
                 'operator' => '==',
-                'value' => 'page'
+                'value' => 'page',
             ]]]);
             $this->assertInstanceOf(FieldGroup::class, $group);
         });
@@ -157,14 +157,14 @@ class SchemaTest extends TestCase
      */
     public function testLoaction()
     {
-        Schema::create('test_location', function($group) {
+        Schema::create('test_location', function ($group) {
             $group->title('test location');
             $group->location('post_type', 'page');
             $this->assertEquals($group->title, 'test location');
             $this->assertEquals($group->location, [[[
                 'param' => 'post_type',
                 'operator' => '==',
-                'value' => 'page'
+                'value' => 'page',
             ]]]);
         });
     }
@@ -174,22 +174,22 @@ class SchemaTest extends TestCase
      */
     public function testLoactionAnB()
     {
-        Schema::group('test_location', function($group) {
+        Schema::group('test_location', function ($group) {
             $group->location(
-                ['post_type', 'page'], 
+                ['post_type', 'page'],
                 ['page_template', 'home']
             );
             $this->assertEquals($group->location, [[
                 [
                     'param' => 'post_type',
                     'operator' => '==',
-                    'value' => 'page'
+                    'value' => 'page',
                 ],
                 [
                     'param' => 'page_template',
                     'operator' => '==',
-                    'value' => 'home'
-                ]
+                    'value' => 'home',
+                ],
             ]]);
         });
     }
@@ -199,20 +199,20 @@ class SchemaTest extends TestCase
      */
     public function testLoactionAnB2()
     {
-        Schema::group('test_location', function($group) {
+        Schema::group('test_location', function ($group) {
             $group->location('post_type', 'page')
                 ->location('page_template', 'home'); // AND
             $this->assertEquals($group->location, [[
                 [
                     'param' => 'post_type',
                     'operator' => '==',
-                    'value' => 'page'
+                    'value' => 'page',
                 ],
                 [
                     'param' => 'page_template',
                     'operator' => '==',
-                    'value' => 'home'
-                ]
+                    'value' => 'home',
+                ],
             ]]);
         });
     }
@@ -222,22 +222,22 @@ class SchemaTest extends TestCase
      */
     public function testLoactionAorB()
     {
-        Schema::group('test_location', function($group) {
+        Schema::group('test_location', function ($group) {
             $group->location('post_type', 'page')->orLocation('post_type', 'post'); // AND
             $this->assertEquals($group->location, [
                 [
                     [
                         'param' => 'post_type',
                         'operator' => '==',
-                        'value' => 'page'
-                    ]
-                ],[
+                        'value' => 'page',
+                    ],
+                ], [
                     [
                         'param' => 'post_type',
                         'operator' => '==',
-                        'value' => 'post'
-                    ]
-                ]
+                        'value' => 'post',
+                    ],
+                ],
             ]);
         });
     }
@@ -247,7 +247,7 @@ class SchemaTest extends TestCase
      */
     public function testLoactionABorCD()
     {
-        Schema::group('test_location', function($group) {
+        Schema::group('test_location', function ($group) {
             $group->location('post_type', 'page')
                 ->location('page_template', 'home')
                 ->orLocation('post_type', 'post')
@@ -257,25 +257,25 @@ class SchemaTest extends TestCase
                     [
                         'param' => 'post_type',
                         'operator' => '==',
-                        'value' => 'page'
+                        'value' => 'page',
                     ],
                     [
                         'param' => 'page_template',
                         'operator' => '==',
-                        'value' => 'home'
-                    ]
-                ],[
+                        'value' => 'home',
+                    ],
+                ], [
                     [
                         'param' => 'post_type',
                         'operator' => '==',
-                        'value' => 'post'
+                        'value' => 'post',
                     ],
                     [
                         'param' => 'post_template',
                         'operator' => '==',
-                        'value' => 'home'
-                    ]
-                ]
+                        'value' => 'home',
+                    ],
+                ],
             ]);
         });
     }
@@ -285,9 +285,9 @@ class SchemaTest extends TestCase
      */
     public function testLoactionABorCD2()
     {
-        Schema::group('test_location', function($group) {
+        Schema::group('test_location', function ($group) {
             $group->location(
-                ['post_type', 'page'], 
+                ['post_type', 'page'],
                 ['page_template', 'home']
             )->orLocation(
                 ['post_type', 'post'],
@@ -298,25 +298,25 @@ class SchemaTest extends TestCase
                     [
                         'param' => 'post_type',
                         'operator' => '==',
-                        'value' => 'page'
+                        'value' => 'page',
                     ],
                     [
                         'param' => 'page_template',
                         'operator' => '==',
-                        'value' => 'home'
-                    ]
-                ],[
+                        'value' => 'home',
+                    ],
+                ], [
                     [
                         'param' => 'post_type',
                         'operator' => '==',
-                        'value' => 'post'
+                        'value' => 'post',
                     ],
                     [
                         'param' => 'post_template',
                         'operator' => '==',
-                        'value' => 'home'
-                    ]
-                ]
+                        'value' => 'home',
+                    ],
+                ],
             ]);
         });
     }

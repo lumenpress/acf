@@ -1,17 +1,17 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
 use Illuminate\Support\Str;
-use Lumenpress\ORM\Concerns\RegisterTypes;
 use Lumenpress\ACF\Models\AbstractField;
+use Lumenpress\ORM\Concerns\RegisterTypes;
 
 class Field extends AbstractField
 {
     use RegisterTypes;
 
     /**
-     * [$types description]
+     * [$types description].
      * @var array
      */
     protected static $registeredTypes = [

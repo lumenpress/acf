@@ -1,12 +1,10 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Relations;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Lumenpress\ACF\Models\FieldMeta;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class HasACF extends HasMany
 {
@@ -26,9 +24,9 @@ class HasACF extends HasMany
         $instance = $this->newRelatedInstance();
 
         parent::__construct(
-            $instance->newQuery(), 
+            $instance->newQuery(),
             $parent,
-            $this->getForeignKey(), 
+            $this->getForeignKey(),
             $parent->getKeyName()
         );
     }
@@ -39,7 +37,7 @@ class HasACF extends HasMany
     }
 
     /**
-     * [getAcfKey description]
+     * [getAcfKey description].
      * @return [type] [description]
      */
     protected function getKeyColumnName()
@@ -48,7 +46,7 @@ class HasACF extends HasMany
     }
 
     /**
-     * [getAcfRelated description]
+     * [getAcfRelated description].
      * @return [type] [description]
      */
     protected function newRelatedInstance()

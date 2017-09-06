@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
-use Lumenpress\ACF\Collections\FieldCollection;
 use Illuminate\Contracts\Support\Jsonable;
+use Lumenpress\ACF\Collections\FieldCollection;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 
 class FlexibleLayout implements Jsonable
@@ -38,11 +38,13 @@ class FlexibleLayout implements Jsonable
     {
         return isset($this->attributes[$key]);
     }
+
     public function __get($key)
     {
         if ($key === 'id') {
             return $this->getIdAttribute(null);
         }
+
         return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
@@ -54,6 +56,7 @@ class FlexibleLayout implements Jsonable
     public function __call($key, $values)
     {
         $this->attributes[$key] = array_shift($values);
+
         return $this;
     }
 
@@ -86,6 +89,7 @@ class FlexibleLayout implements Jsonable
     public function setRelatedParent(&$relatedParent)
     {
         $this->relatedParent = $relatedParent;
+
         return $this;
     }
 
@@ -100,5 +104,4 @@ class FlexibleLayout implements Jsonable
     {
         return $this->fields->save();
     }
-
 }

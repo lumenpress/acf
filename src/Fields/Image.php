@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -18,6 +18,6 @@ class Image extends File
         'max_width' => '',
         'max_height' => '',
         'max_size' => '',
-        'mime_types' => ''
+        'mime_types' => '',
     ];
 }

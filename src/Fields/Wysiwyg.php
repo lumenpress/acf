@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -13,7 +13,7 @@ class Wysiwyg extends Field
         'tabs' => 'all',
         'toolbar' => 'full',
         'media_upload' => 1,
-        'delay' => 0
+        'delay' => 0,
     ];
 
     /**

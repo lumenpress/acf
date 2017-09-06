@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -10,6 +10,6 @@ class Oembed extends Field
         // 'name' => 'oembed',
         'type' => 'oembed',
         'width' => '',
-        'height' => ''
+        'height' => '',
     ];
 }

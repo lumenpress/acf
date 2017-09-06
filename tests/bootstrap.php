@@ -1,10 +1,10 @@
-<?php 
+<?php
+
 
 use Illuminate\Support\Str;
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Lumenpress\ORM\Tests\Database\CreateTables;
 use Lumenpress\ORM\Models\Post;
 use Lumenpress\ORM\Models\Taxonomy;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 $loader = require __DIR__.'/../vendor/autoload.php';
 $psr4 = require __DIR__.'/../vendor/composer/autoload_psr4.php';
@@ -22,14 +22,14 @@ date_default_timezone_set(getenv('APP_TIMEZONE'));
 $capsule = new Capsule;
 
 $capsule->addConnection([
-    'driver'    => getenv('DB_DRIVER')?:'mysql',
-    'host'      => getenv('DB_HOST')?:'mysql',
-    'database'  => getenv('DB_NAME')?:'wordpress',
-    'username'  => getenv('DB_USER')?:'wordpress',
-    'password'  => getenv('DB_PASSWORD')?:'wordpress',
+    'driver'    => getenv('DB_DRIVER') ?: 'mysql',
+    'host'      => getenv('DB_HOST') ?: 'mysql',
+    'database'  => getenv('DB_NAME') ?: 'wordpress',
+    'username'  => getenv('DB_USER') ?: 'wordpress',
+    'password'  => getenv('DB_PASSWORD') ?: 'wordpress',
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
-    'prefix'    => getenv('DB_PREFIX')?:'wp_testing_',
+    'prefix'    => getenv('DB_PREFIX') ?: 'wp_testing_',
 ]);
 
 // Set the event dispatcher used by Eloquent models... (optional)

@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 
 return [
 
@@ -37,7 +38,7 @@ return [
                 //     'page_title'    => 'Submenu Settings',
                 //     'menu_title'    => 'Submenu Settings',
                 // )
-            ]
+            ],
         ],
 
     ],

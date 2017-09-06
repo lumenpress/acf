@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -12,7 +12,7 @@ class File extends Field
         'library' => 'all',
         'min_size' => '',
         'max_size' => '',
-        'mime_types' => ''
+        'mime_types' => '',
     ];
 
     public function getMetaValueAttribute($value)
@@ -24,24 +24,25 @@ class File extends Field
         }
 
         if (is_numeric($this->metaValue)) {
-            return wp_get_attachment_url( $this->metaValue );
+            return wp_get_attachment_url($this->metaValue);
             $attachment = Attachment::find($this->metaValue);
+
             return $attachment ? $attachment->link : '';
         }
 
-        if(lumenpress_is_url($this->metaValue)) {
+        if (lumenpress_is_url($this->metaValue)) {
             return $this->metaValue;
         }
 
         if (file_exists($file = lumenpress_asset_path($this->metaValue))) {
             return lumenpress_asset_url($this->metaValue);
-            // return 'data:image/' . pathinfo($file, PATHINFO_EXTENSION) 
+            // return 'data:image/' . pathinfo($file, PATHINFO_EXTENSION)
             //     . ';base64,' . base64_encode(file_get_contents($file));
         }
     }
 
     /**
-     * [updateValue description]
+     * [updateValue description].
      * @return [type] [description]
      */
     public function updateValue()
@@ -49,10 +50,10 @@ class File extends Field
         if (is_string($this->metaValue)) {
             $this->metaValue = Attachment::upload($this->metaValue)->ID;
         }
-        if (!is_numeric($this->metaValue)) {
+        if (! is_numeric($this->metaValue)) {
             return;
         }
+
         return parent::updateValue();
     }
-
 }

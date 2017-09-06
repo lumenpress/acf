@@ -1,9 +1,8 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Concerns;
 
 use Illuminate\Support\Str;
-use Lumenpress\ORM\Models\Post;
 use Lumenpress\ACF\Models\FieldGroup;
 use Lumenpress\ACF\Relations\HasACF as ACF;
 
@@ -20,19 +19,20 @@ trait HasACF
         if ($key) {
             $relation->whereKeyIs($key);
         }
+
         return $relation;
     }
 
     /**
-     * [getAcfFieldObjects description]
+     * [getAcfFieldObjects description].
      * @return [type] [description]
      */
     public function getAcfFieldObjects()
     {
         $fields = [];
-        FieldGroup::where('post_status', 'publish')->get()->filter(function($item) {
+        FieldGroup::where('post_status', 'publish')->get()->filter(function ($item) {
             return $item->locationRuleMatch($this);
-        })->each(function($item) use (&$fields) {
+        })->each(function ($item) use (&$fields) {
             foreach ($item->fields as $field) {
                 $field->setRelatedParent($this);
                 $field->meta_key = $field->name;
@@ -40,15 +40,16 @@ trait HasACF
                 $fields[$field->name] = $field;
             }
         });
+
         return $fields;
     }
 
     /**
-     * [isLocation description]
+     * [isLocation description].
      * @param  [type]  $param    [description]
      * @param  [type]  $operator [description]
      * @param  [type]  $value    [description]
-     * @return boolean           [description]
+     * @return bool           [description]
      */
     public function locationRuleMatch($param, $operator, $value)
     {
@@ -60,7 +61,7 @@ trait HasACF
 
         $bool = false;
         // getPostTypeLocationRuleValue
-        // 
+        //
         $method = 'get'.Str::studly($param).'LocationRuleValue';
         if (method_exists($this, $method)) {
             $paramValue = $this->{$method}();
@@ -69,7 +70,7 @@ trait HasACF
             $paramValue = $this->$param;
             eval("\$bool = '{$this->$param}' $operator '$value';");
         }
+
         return $bool;
     }
-
 }

@@ -1,44 +1,43 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Concerns;
 
-use Illuminate\Support\Str;
-use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Models\FieldMeta;
 
 trait HasFieldAttributes
 {
     /**
-     * [$relatedParent description]
+     * [$relatedParent description].
      * @var [type]
      */
     protected $relatedParent;
 
     /**
-     * [$metaKey description]
+     * [$metaKey description].
      * @var [type]
      */
     protected $metaKey;
 
     /**
-     * [$metaValue description]
+     * [$metaValue description].
      * @var [type]
      */
     protected $metaValue;
 
     /**
-     * [setRelatedParent description]
+     * [setRelatedParent description].
      * @param [type] &$relatedParent [description]
      */
     public function setRelatedParent(&$relatedParent)
     {
         $this->relatedParent = $relatedParent;
         $this->append('meta_key', 'meta_value');
+
         return $this;
     }
 
     /**
-     * [setPostExcerptAttribute description]
+     * [setPostExcerptAttribute description].
      * @param [type] $value [description]
      */
     public function setPostExcerptAttribute($value)
@@ -73,12 +72,13 @@ trait HasFieldAttributes
      */
     public function getMetaKeyAttribute($value)
     {
-        if (!$this->relatedParent) {
+        if (! $this->relatedParent) {
             return;
         }
-        if (!$this->metaKey) {
+        if (! $this->metaKey) {
             $this->metaKey = $this->name;
         }
+
         return $this->metaKey;
     }
 
@@ -105,6 +105,7 @@ trait HasFieldAttributes
             }
             $this->metaValue = $this->relatedParent->meta->{$this->name};
         }
+
         return $this->metaValue;
     }
 
@@ -139,7 +140,7 @@ trait HasFieldAttributes
     }
 
     /**
-     * [updateValue description]
+     * [updateValue description].
      * @return [type] [description]
      */
     public function updateValue()
@@ -153,7 +154,7 @@ trait HasFieldAttributes
             ->where('meta_key', $this->meta_key)
             ->first();
 
-        if (!$meta) {
+        if (! $meta) {
             $meta = $this->newFieldMetaQuery()->getModel()->newInstance();
             $meta->object_id = $this->relatedParent->id;
             $meta->key = $this->metaKey;

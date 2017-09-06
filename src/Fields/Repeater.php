@@ -1,23 +1,23 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
-class Repeater extends Field implements \IteratorAggregate 
+class Repeater extends Field implements \IteratorAggregate
 {
     /**
-     * [$values description]
+     * [$values description].
      * @var [type]
      */
     protected $values = [];
 
     /**
-     * [$with description]
+     * [$with description].
      * @var array
      */
     protected $with = ['fields'];
 
     /**
-     * [$defaults description]
+     * [$defaults description].
      * @var [type]
      */
     protected $defaults = [
@@ -48,6 +48,7 @@ class Repeater extends Field implements \IteratorAggregate
         if (isset($this->values[$key])) {
             return $this->values[$key];
         }
+
         return parent::getAttribute($key);
     }
 
@@ -58,7 +59,7 @@ class Repeater extends Field implements \IteratorAggregate
      */
     public function getMetaValueAttribute($value)
     {
-        if (!empty($this->values)) {
+        if (! empty($this->values)) {
             return $this->values;
         }
         // init
@@ -66,7 +67,7 @@ class Repeater extends Field implements \IteratorAggregate
             return [];
         }
         foreach ($this->fields as $field) {
-            for ($i=0; $i < $this->metaValue?:0; $i++) {
+            for ($i = 0; $i < $this->metaValue ?: 0; $i++) {
                 $metaKey = "{$this->meta_key}_{$i}_{$field->name}";
                 if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
                     continue;
@@ -79,6 +80,7 @@ class Repeater extends Field implements \IteratorAggregate
             }
         }
         unset($metaKey, $metaValue);
+
         return $this->values;
     }
 
@@ -89,15 +91,15 @@ class Repeater extends Field implements \IteratorAggregate
      */
     public function setMetaValueAttribute($values)
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             return parent::setMetaValueAttribute($values);
         }
         foreach ($values as $index => $item) {
-            if (!is_numeric($index)) {
+            if (! is_numeric($index)) {
                 throw new \Exception("$index invalid", 1);
             }
             foreach ($this->fields as $field) {
-                if (!isset($item[$field->name])) {
+                if (! isset($item[$field->name])) {
                     continue;
                 }
                 $field = clone $field;
@@ -117,6 +119,7 @@ class Repeater extends Field implements \IteratorAggregate
                 $field->updateValue();
             }
         }
+
         return parent::updateValue();
     }
 
@@ -127,7 +130,7 @@ class Repeater extends Field implements \IteratorAggregate
                 $field->deleteValue();
             }
         }
+
         return parent::deleteValue();
     }
-
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -18,7 +18,7 @@ class CloneField extends Field
         'display' => 'seamless',
         'layout' => 'block',
         'prefix_label' => 0,
-        'prefix_name' => 0
+        'prefix_name' => 0,
     ];
 
     public function setGroupKey($groupKey)

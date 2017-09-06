@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Lumenpress\ACF\Fields;
 
@@ -13,6 +13,6 @@ class PageLink extends Field
         'taxonomy' => [],
         'allow_null' => 0,
         'allow_archives' => 1,
-        'multiple' => 0
+        'multiple' => 0,
     ];
 }
