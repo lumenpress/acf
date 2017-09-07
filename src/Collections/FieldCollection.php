@@ -4,7 +4,7 @@ namespace Lumenpress\ACF\Collections;
 
 use Lumenpress\ACF\Fields\Field;
 use Lumenpress\ACF\Fields\FlexibleLayout;
-use Lumenpress\ORM\Collections\Collection;
+use Lumenpress\Fluid\Collections\Collection;
 
 class FieldCollection extends Collection
 {

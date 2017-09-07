@@ -3,7 +3,7 @@
 namespace Lumenpress\ACF\Models;
 
 use Lumenpress\ACF\Fields\Field;
-use Lumenpress\ORM\Models\AbstractPost as Post;
+use Lumenpress\Fluid\Models\AbstractPost as Post;
 use Lumenpress\ACF\Concerns\HasContentAttributes;
 
 abstract class AbstractPost extends Post

@@ -3,7 +3,7 @@
 namespace Lumenpress\ACF\Collections;
 
 use Lumenpress\ACF\Fields\Field;
-use Lumenpress\ORM\Collections\Collection;
+use Lumenpress\Fluid\Collections\Collection;
 
 class FieldMetaCollection extends Collection
 {

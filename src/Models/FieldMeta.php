@@ -2,7 +2,7 @@
 
 namespace Lumenpress\ACF\Models;
 
-use Lumenpress\ORM\Models\Meta;
+use Lumenpress\Fluid\Models\Meta;
 use Lumenpress\ACF\Collections\FieldMetaCollection;
 
 class FieldMeta extends Meta

@@ -1,4 +1,4 @@
-# Advanced Custom Fields Plugin for LumenPress ORM
+# Advanced Custom Fields Plugin for Fluid
 
 - [Installation](#installation)
 - [Schema](#schema)
@@ -303,7 +303,7 @@ Schema::group($groupKey, function (FieldGroup $group) {
 ## Models
 
 ```php
-class Post extends \Lumenpress\ORM\Models\Post
+class Post extends \Lumenpress\Fluid\Models\Post
 {
     use HasAdvancedCustomFields;
 }

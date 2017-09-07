@@ -2,14 +2,14 @@
 
 
 use Illuminate\Support\Str;
-use Lumenpress\ORM\Models\Post;
-use Lumenpress\ORM\Models\Taxonomy;
+use Lumenpress\Fluid\Models\Post;
+use Lumenpress\Fluid\Models\Taxonomy;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 $loader = require __DIR__.'/../vendor/autoload.php';
 $psr4 = require __DIR__.'/../vendor/composer/autoload_psr4.php';
-$path = dirname($psr4['Lumenpress\\ORM\\'][0]);
-$loader->addPsr4('Lumenpress\\ORM\\Tests\\', $path.'/tests');
+$path = dirname($psr4['Lumenpress\\Fluid\\'][0]);
+$loader->addPsr4('Lumenpress\\Fluid\\Tests\\', $path.'/tests');
 
 try {
     (new Dotenv\Dotenv(__DIR__.'/../../'))->load();
@@ -47,7 +47,7 @@ $capsule->bootEloquent();
 foreach (glob($path.'/tests/database/migrations/*.php') as $file) {
     require_once $file;
     $class = Str::studly(substr(basename($file, '.php'), 18));
-    $class = "Lumenpress\ORM\Tests\database\migrations\\".$class;
+    $class = "Lumenpress\Fluid\Tests\database\migrations\\".$class;
     $migration = new $class;
     $migration->down();
     $migration->up();

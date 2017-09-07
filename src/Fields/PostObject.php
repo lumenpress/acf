@@ -2,7 +2,7 @@
 
 namespace Lumenpress\ACF\Fields;
 
-use Lumenpress\ORM\Models\Post;
+use Lumenpress\Fluid\Models\Post;
 
 class PostObject extends Field
 {

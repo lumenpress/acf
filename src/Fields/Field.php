@@ -4,7 +4,7 @@ namespace Lumenpress\ACF\Fields;
 
 use Illuminate\Support\Str;
 use Lumenpress\ACF\Models\AbstractField;
-use Lumenpress\ORM\Concerns\RegisterTypes;
+use Lumenpress\Fluid\Concerns\RegisterTypes;
 
 class Field extends AbstractField
 {

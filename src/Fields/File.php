@@ -2,7 +2,7 @@
 
 namespace Lumenpress\ACF\Fields;
 
-use Lumenpress\ORM\Models\Attachment;
+use Lumenpress\Fluid\Models\Attachment;
 
 class File extends Field
 {

@@ -3,8 +3,8 @@
 namespace Lumenpress\ACF\Tests;
 
 use Lumenpress\ACF\Schema;
-use Lumenpress\ORM\Models\Category;
-use Lumenpress\ORM\Models\Taxonomy;
+use Lumenpress\Fluid\Models\Category;
+use Lumenpress\Fluid\Models\Taxonomy;
 
 class TaxonomyTest extends TestCase
 {

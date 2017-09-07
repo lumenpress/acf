@@ -3,8 +3,8 @@
 namespace Lumenpress\ACF\Tests;
 
 use Lumenpress\ACF\Schema;
-use Lumenpress\ORM\Models\Tag;
-use Lumenpress\ORM\Models\Category;
+use Lumenpress\Fluid\Models\Tag;
+use Lumenpress\Fluid\Models\Category;
 use Lumenpress\ACF\Tests\Models\Post;
 
 class PostTest extends TestCase

@@ -1,7 +1,7 @@
 {
     "name": "lumenpress/acf",
     "require": {
-        "lumenpress/orm": "dev-master"
+        "lumenpress/fluid": "dev-master"
     },
     "require-dev": {
         "kint-php/kint": "^2.1",
