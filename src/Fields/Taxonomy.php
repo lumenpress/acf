@@ -2,6 +2,8 @@
 
 namespace Lumenpress\ACF\Fields;
 
+use Lumenpress\Fluid\Models\Taxonomy as Tax;
+
 class Taxonomy extends Field
 {
     protected $defaults = [
@@ -18,4 +20,26 @@ class Taxonomy extends Field
         'return_format' => 'id',
         'multiple' => 0,
     ];
+
+    /**
+     * Accessor for metaValue attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        if (is_null(parent::getMetaValueAttribute($value))) {
+            return;
+        }
+
+        if (is_array($this->metaValue)) {
+            return array_filter(array_map(function ($value) {
+                return Tax::where('taxonomy', $this->taxonomy)->where('term_id', $value)->first();
+            }, $this->metaValue));
+        }
+
+        if (is_numeric($this->metaValue)) {
+            return Tax::where('taxonomy', $this->taxonomy)->where('term_id', $this->metaValue)->first();
+        }
+    }
 }

@@ -90,7 +90,7 @@ class TaxonomyTest extends TestCase
 
         $category = Taxonomy::find($category->id);
         $this->assertEquals('bar', $category->meta->foo, 'message');
-        $this->assertEquals('foo', (string) $category->acf->text, 'message');
+        $this->assertEquals('foo', $category->acf->text, 'message');
     }
 
     /**
@@ -106,6 +106,6 @@ class TaxonomyTest extends TestCase
 
         $category = Category::find($category->id);
         $this->assertEquals('bar', $category->meta->foo, 'message');
-        $this->assertEquals('foo', (string) $category->acf->text, 'message');
+        $this->assertEquals('foo', $category->acf->text, 'message');
     }
 }

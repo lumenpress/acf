@@ -2,13 +2,17 @@
 
 namespace Lumenpress\ACF\Fields;
 
-use Lumenpress\ACF\Collections\LayoutCollection;
+use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Jsonable;
+use Lumenpress\ACF\Collections\FieldCollection;
+use Illuminate\Database\Eloquent\JsonEncodingException;
+use Lumenpress\Fluid\Collections\Collection as AbstractCollection;
 
-class FlexibleContent extends Field implements \IteratorAggregate
+class FlexibleContent extends Field
 {
     protected $_layouts;
 
-    protected $values = [];
+    protected $values;
 
     protected $hidden = ['fields'];
 
@@ -32,40 +36,6 @@ class FlexibleContent extends Field implements \IteratorAggregate
         'min' => '',
         'max' => '',
     ];
-
-    public function getAttribute($key)
-    {
-        if (isset($this->values[$key])) {
-            return $this->values[$key];
-        }
-
-        return parent::getAttribute($key);
-    }
-
-    /**
-     * Run a map over each of the items.
-     *
-     * @param  callable  $callback
-     * @return static
-     */
-    public function map(callable $callback)
-    {
-        $keys = array_keys($this->value);
-
-        $items = array_map($callback, $this->value, $keys);
-
-        return array_combine($keys, $items);
-    }
-
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->value);
-    }
-
-    public function count()
-    {
-        return count($this->value);
-    }
 
     public function layouts(callable $callable)
     {
@@ -107,33 +77,39 @@ class FlexibleContent extends Field implements \IteratorAggregate
      */
     public function getMetaValueAttribute($value)
     {
-        if (! empty($this->values)) {
-            return $this->values;
-        }
         if (! is_array(parent::getMetaValueAttribute($value))) {
             return [];
         }
-        foreach ($this->metaValue as $index => $name) {
-            foreach ($this->layouts as $layout) {
-                $this->values[$index]['_layout'] = $name;
-                if ($layout->name == $name) {
-                    foreach ($layout->fields as $field) {
-                        $metaKey = "{$this->meta_key}_{$index}_{$field->name}";
-                        // d($this->relatedParent);
-                        if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
-                            continue;
+
+        if (is_null($this->values)) {
+            foreach ($this->metaValue as $index => $name) {
+                foreach ($this->layouts as $layout) {
+                    $this->values[$index]['_layout'] = $name;
+                    if ($layout->name == $name) {
+                        foreach ($layout->fields as $field) {
+                            $metaKey = "{$this->meta_key}_{$index}_{$field->name}";
+                            // d($this->relatedParent);
+                            if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
+                                continue;
+                            }
+                            $field = clone $field;
+                            $field->setRelatedParent($this->relatedParent);
+                            $field->meta_key = $metaKey;
+                            $field->meta_value = $metaValue;
+                            $this->values[$index][$field->name] = $field;
                         }
-                        $field = clone $field;
-                        $field->setRelatedParent($this->relatedParent);
-                        $field->meta_key = $metaKey;
-                        $field->meta_value = $metaValue;
-                        $this->values[$index][$field->name] = $field;
                     }
                 }
             }
         }
 
-        return $this->values;
+        return (new Collection($this->values))->map(function($row) {
+            $item = [];
+            foreach ($row as $key => $column) {
+                $item[$key] = $column instanceof Field ? $column->value : $column;
+            }
+            return $item;
+        });
     }
 
     /**
@@ -222,5 +198,131 @@ class FlexibleContent extends Field implements \IteratorAggregate
 
         $this->setContentAttribute('layouts', $values);
         unset($values);
+    }
+}
+
+class FlexibleLayout implements Jsonable
+{
+    public $fields;
+
+    protected $relatedParent;
+
+    protected $attributes = [
+        'display' => 'block',
+        'min' => '',
+        'max' => '',
+    ];
+
+    public function __construct(array $attributes = [])
+    {
+        if (array_key_exists('fields', $attributes)) {
+            $this->fields = new FieldCollection($attributes['fields']);
+            unset($attributes['fields']);
+        } else {
+            $this->fields = new FieldCollection;
+        }
+
+        $this->fields->setRelatedParent($this);
+
+        foreach ($attributes as $key => $value) {
+            $this->$key = $value;
+        }
+    }
+
+    public function __isset($key)
+    {
+        return isset($this->attributes[$key]);
+    }
+
+    public function __get($key)
+    {
+        if ($key === 'id') {
+            return $this->getIdAttribute(null);
+        }
+
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+    }
+
+    public function __set($key, $value)
+    {
+        $this->attributes[$key] = $value;
+    }
+
+    public function __call($key, $values)
+    {
+        $this->attributes[$key] = array_shift($values);
+
+        return $this;
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function toArray()
+    {
+        return array_merge($this->attributes, ['fields' => $this->fields]);
+    }
+
+    public function toJson($options = 0)
+    {
+        $json = json_encode($this->toArray(), $options);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw JsonEncodingException::forModel($this, json_last_error_msg());
+        }
+
+        return $json;
+    }
+
+    public function getIdAttribute($value)
+    {
+        return $this->relatedParent->id;
+    }
+
+    public function setRelatedParent(&$relatedParent)
+    {
+        $this->relatedParent = $relatedParent;
+
+        return $this;
+    }
+
+    public function fields($callable = null)
+    {
+        if (is_callable($callable)) {
+            $callable($this->fields);
+        }
+    }
+
+    public function save()
+    {
+        return $this->fields->save();
+    }
+}
+
+class LayoutCollection extends AbstractCollection
+{
+    public function layout($name)
+    {
+        foreach ($this->items as $index => $item) {
+            if ($item->name == $name) {
+                return $item;
+            }
+        }
+        $item = new FlexibleLayout;
+        $item->key = uniqid();
+        $item->name = $name;
+        $item->label = $name;
+        $item->setRelatedParent($this->relatedParent);
+
+        return $this->items[$item->key] = $item;
+    }
+
+    public function save()
+    {
+        foreach ($this->items as $item) {
+            $item->save();
+        }
     }
 }

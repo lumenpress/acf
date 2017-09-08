@@ -2,7 +2,9 @@
 
 namespace Lumenpress\ACF\Fields;
 
-class PageLink extends Field
+use Lumenpress\Fluid\Models\Post;
+
+class PageLink extends PostObject
 {
     protected $defaults = [
         // 'key' => 'field_5979abae766d6',
@@ -15,4 +17,24 @@ class PageLink extends Field
         'allow_archives' => 1,
         'multiple' => 0,
     ];
+
+    /**
+     * Accessor for metaValue attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        $value = parent::getMetaValueAttribute($value);
+
+        if (is_array($value)) {
+            return array_map(function($item) {
+                return $item->link;
+            }, $value);
+        }
+
+        if ($value instanceof Post) {
+            return $value->link;
+        }
+    }
 }

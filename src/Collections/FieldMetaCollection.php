@@ -9,25 +9,14 @@ class FieldMetaCollection extends Collection
 {
     public function offsetExists($key)
     {
-        if (isset($this->items[$key])) {
-            if ($this->items[$key] instanceof Field) {
-                // null or array or ''
-                if (! empty($this->items[$key]->value)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return ! is_null($this->offsetGet($key));
     }
 
     public function offsetGet($key)
     {
         if (isset($this->items[$key])) {
             if ($this->items[$key] instanceof Field) {
-                if (! is_null($this->items[$key]->value)) {
-                    return $this->items[$key];
-                }
+                return $this->items[$key]->value;
             }
         }
     }

@@ -4,6 +4,7 @@ namespace Lumenpress\ACF\Tests;
 
 use Lumenpress\ACF\Schema;
 use Lumenpress\Fluid\Models\Tag;
+use Illuminate\Support\Collection;
 use Lumenpress\Fluid\Models\Category;
 use Lumenpress\ACF\Tests\Models\Post;
 
@@ -80,14 +81,14 @@ class PostTest extends TestCase
     /**
      * @group post
      */
-    public function testPostFields()
+    public function dtestPostFields()
     {
         $post = new Post;
 
         $post->title = 'test post fields';
 
         foreach ($post->acf as $key => $value) {
-            $this->assertTrue(! isset($post->acf->$key));
+            $this->assertTrue(! isset($post->acf->$key), $key);
         }
 
         // $file = lumenpress_asset_url('assets/LUMENPRESS.svg');
@@ -174,43 +175,282 @@ class PostTest extends TestCase
         $post->save();
     }
 
-    public function testMultipleTaxonomies()
+    /**
+     * @group basic-field
+     */
+    public function testBasicField()
     {
-        $categories = ['category1', 'category2'];
-        $tags = 'tag1';
+        Schema::create('basic_fields', function ($group) {
+            $group->title('basic fields');
+            $group->location('post_type', 'post');
+            $group->fields(function ($field) {
+                $field->text('basic_text');
+                $field->textarea('basic_textarea');
+                $field->number('basic_number')->label('Number');
+                $field->email('basic_email')->label('Email');
+                $field->url('basic_url')->label('URL');
+                $field->password('basic_password')->label('Password');
+            });
+        });
+
+        $data = [
+            'basic_text' => 'Text',
+            'basic_textarea' => 'Textarea',
+            'basic_number' => 2,
+            'basic_email' => 'hello@example.com',
+            'basic_url' => 'http://example.com',
+            'basic_password' => '123456',
+        ];
 
         $post = new Post;
-        $post->title = 'test multiple taxonomies';
+        $post->title = 'test basic fields';
 
-        $post->tax->category = $categories;
-        $post->tax->post_tag = $tags;
+        foreach ($data as $key => $value) {
+            // isset
+            $this->assertTrue(! isset($post->acf->$key));
+            // setter
+            $post->acf->$key = $value;
+            // isset
+            $this->assertTrue(isset($post->acf->$key));
+            // getter
+            $this->assertEquals($value, $post->acf->$key, $key);
+        }
+
+        $post->save();
+        $post = Post::find($post->id);
+
+        foreach ($data as $key => $value) {
+            // isset
+            $this->assertTrue(isset($post->acf->$key));
+            // getter
+            $this->assertEquals($value, $post->acf->$key, $key);
+        }
+    }
+
+    /**
+     * @group choice-field
+     */
+    public function testChoiceFields()
+    {
+        Schema::create('choice_fields', function ($group) {
+            $group->title('choice fields');
+            $group->location('post_type', 'post');
+            $group->fields(function ($field) {
+                $field->true_false('choice_true_false');
+                $field->checkbox('choice_checkbox')->choices(['checkbox1', 'checkbox2']);
+                $field->radio('choice_radio')->choices(['radio1', 'radio2']);
+                $field->select('choice_single_select')->choices(['select1', 'select2']);
+                $field->select('choice_multiple_select')->choices(['select1', 'select2'])->multiple(1);
+            });
+        });
+
+        $post = new Post;
+        $post->title = 'test choice fields';
+
+        $data = [
+            'choice_true_false' => 1,
+            'choice_radio' => 'radio1',
+            'choice_checkbox' => ['checkbox1', 'checkbox2'],
+            'choice_single_select' => 'select1',
+            'choice_multiple_select' => ['select1', 'select2'],
+        ];
+
+        foreach ($data as $key => $value) {
+            // isset
+            $this->assertTrue(! isset($post->acf->$key));
+            // setter
+            $post->acf->$key = $value;
+            // isset
+            $this->assertTrue(isset($post->acf->$key));
+            // getter
+            $this->assertEquals($value, $post->acf->$key, $key);
+        }
+
+        $post->save();
+        $post = Post::find($post->id);
+
+        foreach ($data as $key => $value) {
+            // isset
+            $this->assertTrue(isset($post->acf->$key));
+            // getter
+            $this->assertEquals($value, $post->acf->$key, $key);
+        }
+    }
+
+    /**
+     * @group relational
+     */
+    public function testRelational()
+    {
+        Schema::create('relational_fields', function ($group) {
+            $group->title('relational fields');
+            $group->location('post_type', 'post');
+            $group->fields(function ($field) {
+                $field->link('relational_link');
+                $field->page_link('relational_page_link');
+                $field->post_object('relational_post_object');
+                $field->relationship('relational_relationship');
+                $field->taxonomy('relational_taxonomy');
+                // $field->user('relational_user');
+            });
+        });
+
+        $postObject = new Post;
+        $postObject->title = 'relational post object';
+        $postObject->save();
+
+        $postObject2 = new Post;
+        $postObject2->title = 'relational post object';
+        $postObject2->save();
+
+        $post = new Post;
+        $post->title = 'test relational fields';
+
+        $data = [
+            'relational_link' => 'http://example.com',
+            'relational_page_link' => $postObject->id,
+            'relational_post_object' => $postObject2->id,
+            'relational_relationship' => [$postObject->id , $postObject2->id],
+        ];
+
+        foreach ($data as $key => $value) {
+            $post->acf->$key = $value;
+        }
+
+        $this->assertEquals((string) $post->acf->relational_link, 'http://example.com', 'message');
+        $this->assertEquals($post->acf->relational_page_link, $postObject->link, 'message');
+        $this->assertEquals($post->acf->relational_post_object->id, $postObject2->id, 'message');
+
+        $post->save();
+        $post = Post::find($post->id);
+
+        $this->assertEquals((string) $post->acf->relational_link, 'http://example.com', 'message');
+        $this->assertEquals($post->acf->relational_page_link, $postObject->link, 'message');
+        $this->assertEquals($post->acf->relational_post_object->id, $postObject2->id, 'message');
+    }
+
+    /**
+     * @group group-field
+     */
+    public function testGroupField()
+    {
+        Schema::create('group_field', function ($group) {
+            $group->title('Group Field');
+            $group->location('post_type', 'post');
+            $group->fields(function ($field) {
+                $field->group('group_field')->fields(function ($field) {
+                    $field->text('text');
+                    $field->textarea('content');
+                    // $field->image('image');
+                });
+            });
+        });
+
+        $post = new Post;
+        $post->title = 'test group field';
+
+        $fields = [
+            'text' => 'Text111111111111111', 
+            'content' => 'content1111111'
+        ];
+
+        $post->acf->group_field = $fields;
 
         $post->save();
 
-        // d($post->tax);
-
-        $this->assertCount(count($categories), $post->tax->category, 'message');
-        $this->assertCount(1, $post->tax->post_tag, 'message');
-
-        foreach ($post->tax->category as $category) {
-            $this->assertInstanceOf(Category::class, $category, 'message');
-        }
-
-        foreach ($post->tax->post_tag as $tag) {
-            $this->assertInstanceOf(Tag::class, $tag, 'message');
-        }
+        $this->assertEquals($post->acf->group_field, $fields, 'message');
 
         $post = Post::find($post->id);
 
-        $this->assertCount(count($categories), $post->tax->category, 'message');
-        $this->assertCount(1, $post->tax->post_tag, 'message');
+        $this->assertEquals($post->acf->group_field, $fields, 'message');
+    }
 
-        foreach ($post->tax->category as $category) {
-            $this->assertInstanceOf(Category::class, $category, 'message');
-        }
+    /**
+     * @group repeater-field
+     */
+    public function testRepeaterField()
+    {
+        Schema::create('repeater_field', function ($group) {
+            $group->title('Repeater Field');
+            $group->location('post_type', 'post');
+            $group->fields(function ($field) {
+                $field->repeater('repeater_field')->fields(function ($field) {
+                    $field->text('text');
+                    $field->textarea('content');
+                });
+            });
+        });
 
-        foreach ($post->tax->post_tag as $tag) {
-            $this->assertInstanceOf(Tag::class, $tag, 'message');
-        }
+        $post = new Post;
+        $post->title = 'test repeater field';
+
+        $data = [
+            [
+                'text' => 'Text111111111111111', 
+                'content' => 'content1111111'
+            ],
+            [
+                'text' => 'Text111111111111111', 
+                'content' => 'content1111111'
+            ]
+        ];
+
+        $post->acf->repeater_field = $data;
+
+        $this->assertInstanceOf(Collection::class, $post->acf->repeater_field, 'message');
+        $this->assertEquals($data, $post->acf->repeater_field->all(), 'message');
+
+        $post->save();
+        $post = Post::find($post->id);
+
+        $this->assertInstanceOf(Collection::class, $post->acf->repeater_field, 'message');
+        $this->assertEquals($data, $post->acf->repeater_field->all(), 'message');
+    }
+
+    /**
+     * @group flexible-field
+     */
+    public function testFlexibleField()
+    {
+
+        Schema::create('flex_field', function ($group) {
+            $group->title('Flexible Content Field');
+            $group->location('post_type', 'post');
+            $group->fields(function ($field) {
+                $field->flexible('flex_field')->layouts(function ($flexible) {
+                    $flexible->layout('layout1')->label('Layout 1')->fields(function ($field) {
+                        $field->textarea('textarea');
+                    });
+                    $flexible->layout('layout2')->label('Layout 2')->fields(function ($field) {
+                        $field->text('text');
+                    });
+                });
+            });
+        });
+
+        $post = new Post;
+        $post->title = 'test flexible field';
+
+        $data = [
+            [
+                '_layout' => 'layout1',
+                'textarea' => 'Text111111111111111', 
+            ],
+            [
+                '_layout' => 'layout2',
+                'text' => 'content1111111'
+            ]
+        ];
+
+        $post->acf->flex_field = $data;
+
+        $this->assertInstanceOf(Collection::class, $post->acf->flex_field, 'message');
+        $this->assertEquals($data, $post->acf->flex_field->all(), 'message');
+
+        $post->save();
+        $post = Post::find($post->id);
+
+        $this->assertInstanceOf(Collection::class, $post->acf->flex_field, 'message');
+        $this->assertEquals($data, $post->acf->flex_field->all(), 'message');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Lumenpress\ACF\Fields;
 
-class Relationship extends Field
+class Relationship extends PostObject
 {
     protected $defaults = [
         // 'key' => 'field_5979abc1766d7',
@@ -21,4 +21,20 @@ class Relationship extends Field
         'max' => '',
         'return_format' => 'object',
     ];
+
+    /**
+     * Accessor for metaValue attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        if (is_null($posts = parent::getMetaValueAttribute($value))) {
+            return;
+        }
+        if (!is_array($this->metaValue)) {
+            return;
+        }
+        return $posts;
+    }
 }

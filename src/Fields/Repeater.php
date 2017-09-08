@@ -2,13 +2,15 @@
 
 namespace Lumenpress\ACF\Fields;
 
-class Repeater extends Field implements \IteratorAggregate
+use Illuminate\Support\Collection;
+
+class Repeater extends Field
 {
     /**
-     * [$values description].
+     * [$items description].
      * @var [type]
      */
-    protected $values = [];
+    protected $items;
 
     /**
      * [$with description].
@@ -21,9 +23,6 @@ class Repeater extends Field implements \IteratorAggregate
      * @var [type]
      */
     protected $defaults = [
-        // 'key' => 'field_5979ac4d766e1',
-        // 'label' => 'Repeater',
-        // 'name' => 'repeater',
         'type' => 'repeater',
         'collapsed' => '',
         'min' => 0,
@@ -34,70 +33,41 @@ class Repeater extends Field implements \IteratorAggregate
     ];
 
     /**
-     * Run a map over each of the items.
-     *
-     * @param  callable  $callback
-     * @return static
-     */
-    public function map(callable $callback)
-    {
-        $keys = array_keys($this->value);
-
-        $items = array_map($callback, $this->value, $keys);
-
-        return array_combine($keys, $items);
-    }
-
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->value);
-    }
-
-    public function count()
-    {
-        return count($this->value);
-    }
-
-    public function getAttribute($key)
-    {
-        if (isset($this->values[$key])) {
-            return $this->values[$key];
-        }
-
-        return parent::getAttribute($key);
-    }
-
-    /**
      * Accessor for Value attribute.
      *
      * @return returnType
      */
     public function getMetaValueAttribute($value)
     {
-        if (! empty($this->values)) {
-            return $this->values;
-        }
         // init
         if (is_null(parent::getMetaValueAttribute($value))) {
             return [];
         }
-        foreach ($this->fields as $field) {
-            for ($i = 0; $i < $this->metaValue ?: 0; $i++) {
-                $metaKey = "{$this->meta_key}_{$i}_{$field->name}";
-                if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
-                    continue;
+
+        if (is_null($this->items)) {
+            $this->items = [];
+            foreach ($this->fields as $field) {
+                for ($i = 0; $i < $this->metaValue ?: 0; $i++) {
+                    $metaKey = "{$this->meta_key}_{$i}_{$field->name}";
+                    if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
+                        continue;
+                    }
+                    $field = clone $field;
+                    $field->setRelatedParent($this->relatedParent);
+                    $field->meta_key = $metaKey;
+                    $field->meta_value = $metaValue;
+                    $this->items[$i][$field->name] = $field;
                 }
-                $field = clone $field;
-                $field->setRelatedParent($this->relatedParent);
-                $field->meta_key = $metaKey;
-                $field->meta_value = $metaValue;
-                $this->values[$i][$field->name] = $field;
             }
         }
 
-        unset($metaKey, $metaValue);
-
-        return $this->values;
+        return (new Collection($this->items))->map(function($row) {
+            $item = [];
+            foreach ($row as $key => $column) {
+                $item[$key] = $column->value;
+            }
+            return $item;
+        });
     }
 
     /**
@@ -122,7 +92,7 @@ class Repeater extends Field implements \IteratorAggregate
                 $field->setRelatedParent($this->relatedParent);
                 $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
                 $field->meta_value = $item[$field->name];
-                $this->values[$index][$field->name] = $field;
+                $this->items[$index][$field->name] = $field;
             }
         }
         parent::setMetaValueAttribute(count($values));
@@ -130,7 +100,7 @@ class Repeater extends Field implements \IteratorAggregate
 
     public function updateValue()
     {
-        foreach ($this->values as $item) {
+        foreach ($this->items as $item) {
             foreach ($item as $field) {
                 $field->updateValue();
             }
@@ -141,7 +111,7 @@ class Repeater extends Field implements \IteratorAggregate
 
     public function deleteValue()
     {
-        foreach ($this->values as $item) {
+        foreach ($this->items as $item) {
             foreach ($item as $field) {
                 $field->deleteValue();
             }

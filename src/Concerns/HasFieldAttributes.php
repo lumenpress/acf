@@ -116,7 +116,11 @@ trait HasFieldAttributes
      */
     public function setMetaValueAttribute($value)
     {
-        $this->metaValue = $value;
+        if (($result = @unserialize($value)) !== false) {
+            $this->metaValue = $result;
+        } else {
+            $this->metaValue = $value;
+        }
     }
 
     /**

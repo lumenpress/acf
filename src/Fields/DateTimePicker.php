@@ -2,7 +2,7 @@
 
 namespace Lumenpress\ACF\Fields;
 
-class DateTimePicker extends DatePicker
+class DateTimePicker extends Field
 {
     protected $defaults = [
         // 'key' => 'field_5979ac03766dc',
@@ -13,4 +13,21 @@ class DateTimePicker extends DatePicker
         'return_format' => 'd/m/Y g:i a',
         'first_day' => 1,
     ];
+
+    /**
+     * Accessor for metaValue attribute.
+     *
+     * @return returnType
+     */
+    public function getMetaValueAttribute($value)
+    {
+        if (!$this->metaValue) {
+            return;
+        }
+        try {
+            return Carbon::parse($this->metaValue)->format($this->return_format);
+        } catch (\Exception $e) {
+            return;
+        }
+    }
 }
