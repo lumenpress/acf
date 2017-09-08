@@ -2,8 +2,6 @@
 
 namespace Lumenpress\ACF\Fields;
 
-use Carbon\Carbon;
-
 class DatePicker extends DateTimePicker
 {
     protected $defaults = [
