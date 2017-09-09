@@ -23,6 +23,8 @@ class DateTimePicker extends Field
      */
     public function getMetaValueAttribute($value)
     {
+        parent::getMetaValueAttribute($value);
+
         if (!$this->metaValue) {
             return;
         }

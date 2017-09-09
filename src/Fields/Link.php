@@ -16,6 +16,8 @@ class Link extends Field
      */
     public function getMetaValueAttribute($value)
     {
+        parent::getMetaValueAttribute($value);
+
         return is_array($this->metaValue) ? new LinkObject($this->metaValue, 'url') : null;
     }
 
