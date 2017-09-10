@@ -26,7 +26,7 @@ $capsule->addConnection([
     'host'      => getenv('DB_HOST') ?: 'mysql',
     'database'  => getenv('DB_NAME') ?: 'wordpress',
     'username'  => getenv('DB_USER') ?: 'wordpress',
-    'password'  => getenv('DB_PASSWORD') ?: 'wordpress',
+    'password'  => getenv('DB_PASSWORD') === false ? 'wordpress' : getenv('DB_PASSWORD'),
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
     'prefix'    => getenv('DB_PREFIX') ?: 'wp_testing_',
