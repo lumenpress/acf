@@ -25,7 +25,7 @@ class DateTimePicker extends Field
     {
         parent::getMetaValueAttribute($value);
 
-        if (!$this->metaValue) {
+        if (! $this->metaValue) {
             return;
         }
         try {

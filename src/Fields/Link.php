@@ -30,9 +30,9 @@ class Link extends Field
     {
         if (is_string($value)) {
             $value = [
-                'url' => $value, 
-                'title' => '', 
-                'target' => ''
+                'url' => $value,
+                'title' => '',
+                'target' => '',
             ];
         }
         parent::setMetaValueAttribute($value);

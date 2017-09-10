@@ -3,9 +3,7 @@
 namespace LumenPress\ACF\Tests;
 
 use LumenPress\ACF\Schema;
-use LumenPress\Nimble\Models\Tag;
 use Illuminate\Support\Collection;
-use LumenPress\Nimble\Models\Category;
 use LumenPress\ACF\Tests\Models\Post;
 
 class PostTest extends TestCase
@@ -310,7 +308,7 @@ class PostTest extends TestCase
             'relational_link' => 'http://example.com',
             'relational_page_link' => $postObject->id,
             'relational_post_object' => $postObject2->id,
-            'relational_relationship' => [$postObject->id , $postObject2->id],
+            'relational_relationship' => [$postObject->id, $postObject2->id],
         ];
 
         foreach ($data as $key => $value) {
@@ -350,8 +348,8 @@ class PostTest extends TestCase
         $post->title = 'test group field';
 
         $fields = [
-            'text' => 'Text111111111111111', 
-            'content' => 'content1111111'
+            'text' => 'Text111111111111111',
+            'content' => 'content1111111',
         ];
 
         $post->acf->group_field = $fields;
@@ -386,13 +384,13 @@ class PostTest extends TestCase
 
         $data = [
             [
-                'text' => 'Text111111111111111', 
-                'content' => 'content1111111'
+                'text' => 'Text111111111111111',
+                'content' => 'content1111111',
             ],
             [
-                'text' => 'Text111111111111111', 
-                'content' => 'content1111111'
-            ]
+                'text' => 'Text111111111111111',
+                'content' => 'content1111111',
+            ],
         ];
 
         $post->acf->repeater_field = $data;
@@ -412,7 +410,6 @@ class PostTest extends TestCase
      */
     public function testFlexibleField()
     {
-
         Schema::create('flex_field', function ($group) {
             $group->title('Flexible Content Field');
             $group->location('post_type', 'post');
@@ -434,12 +431,12 @@ class PostTest extends TestCase
         $data = [
             [
                 '_layout' => 'layout1',
-                'textarea' => 'Text111111111111111', 
+                'textarea' => 'Text111111111111111',
             ],
             [
                 '_layout' => 'layout2',
-                'text' => 'content1111111'
-            ]
+                'text' => 'content1111111',
+            ],
         ];
 
         $post->acf->flex_field = $data;

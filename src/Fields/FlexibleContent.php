@@ -103,11 +103,12 @@ class FlexibleContent extends Field
             }
         }
 
-        return (new Collection($this->values))->map(function($row) {
+        return (new Collection($this->values))->map(function ($row) {
             $item = [];
             foreach ($row as $key => $column) {
                 $item[$key] = $column instanceof Field ? $column->value : $column;
             }
+
             return $item;
         });
     }

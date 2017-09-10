@@ -28,7 +28,7 @@ class PageLink extends PostObject
         $value = parent::getMetaValueAttribute($value);
 
         if (is_array($value)) {
-            return array_map(function($item) {
+            return array_map(function ($item) {
                 return $item->link;
             }, $value);
         }
