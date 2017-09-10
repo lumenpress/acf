@@ -1,8 +1,8 @@
 <?php
 
-namespace Lumenpress\ACF\Fields;
+namespace LumenPress\ACF\Fields;
 
-use Lumenpress\Fluid\Models\Post;
+use LumenPress\Nimble\Models\Post;
 
 class PageLink extends PostObject
 {

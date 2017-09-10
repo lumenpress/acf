@@ -1,6 +1,6 @@
 <?php
 
-namespace Lumenpress\ACF\Concerns;
+namespace LumenPress\ACF\Concerns;
 
 use Illuminate\Support\Str;
 

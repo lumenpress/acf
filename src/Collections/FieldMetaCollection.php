@@ -1,9 +1,9 @@
 <?php
 
-namespace Lumenpress\ACF\Collections;
+namespace LumenPress\ACF\Collections;
 
-use Lumenpress\ACF\Fields\Field;
-use Lumenpress\Fluid\Collections\Collection;
+use LumenPress\ACF\Fields\Field;
+use LumenPress\Nimble\Collections\Collection;
 
 class FieldMetaCollection extends Collection
 {

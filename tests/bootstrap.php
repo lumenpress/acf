@@ -2,14 +2,14 @@
 
 
 use Illuminate\Support\Str;
-use Lumenpress\Fluid\Models\Post;
-use Lumenpress\Fluid\Models\Taxonomy;
+use LumenPress\Nimble\Models\Post;
+use LumenPress\Nimble\Models\Taxonomy;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 $loader = require __DIR__.'/../vendor/autoload.php';
 $psr4 = require __DIR__.'/../vendor/composer/autoload_psr4.php';
-$path = dirname($psr4['Lumenpress\\Fluid\\'][0]);
-$loader->addPsr4('Lumenpress\\Fluid\\Tests\\', $path.'/tests');
+$path = dirname($psr4['LumenPress\\Nimble\\'][0]);
+$loader->addPsr4('LumenPress\\Nimble\\Tests\\', $path.'/tests');
 
 try {
     (new Dotenv\Dotenv(__DIR__.'/../../'))->load();
@@ -47,13 +47,13 @@ $capsule->bootEloquent();
 foreach (glob($path.'/tests/database/migrations/*.php') as $file) {
     require_once $file;
     $class = Str::studly(substr(basename($file, '.php'), 18));
-    $class = "Lumenpress\Fluid\Tests\database\migrations\\".$class;
+    $class = "LumenPress\Nimble\Tests\database\migrations\\".$class;
     $migration = new $class;
     $migration->down();
     $migration->up();
 }
 
-Post::register('post', Lumenpress\ACF\Tests\Models\Post::class);
-Post::register('page', Lumenpress\ACF\Tests\Models\Page::class);
+Post::register('post', LumenPress\ACF\Tests\Models\Post::class);
+Post::register('page', LumenPress\ACF\Tests\Models\Page::class);
 
-Taxonomy::setTermClass(Lumenpress\ACF\Tests\Models\Term::class);
+Taxonomy::setTermClass(LumenPress\ACF\Tests\Models\Term::class);

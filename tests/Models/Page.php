@@ -1,6 +1,6 @@
 <?php
 
-namespace Lumenpress\ACF\Tests\Models;
+namespace LumenPress\ACF\Tests\Models;
 
 class Page extends Post
 {

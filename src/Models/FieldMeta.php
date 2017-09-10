@@ -1,9 +1,9 @@
 <?php
 
-namespace Lumenpress\ACF\Models;
+namespace LumenPress\ACF\Models;
 
-use Lumenpress\Fluid\Models\Meta;
-use Lumenpress\ACF\Collections\FieldMetaCollection;
+use LumenPress\Nimble\Models\Meta;
+use LumenPress\ACF\Collections\FieldMetaCollection;
 
 class FieldMeta extends Meta
 {
@@ -12,7 +12,7 @@ class FieldMeta extends Meta
      *
      * @param array $models
      *
-     * @return \Lumenpress\Database\PostMetaCollection
+     * @return \LumenPress\Database\PostMetaCollection
      */
     public function newCollection(array $models = [])
     {

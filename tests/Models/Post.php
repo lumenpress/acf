@@ -1,10 +1,10 @@
 <?php
 
-namespace Lumenpress\ACF\Tests\Models;
+namespace LumenPress\ACF\Tests\Models;
 
-use Lumenpress\ACF\Concerns\HasACF;
+use LumenPress\ACF\Concerns\HasACF;
 
-class Post extends \Lumenpress\Fluid\Models\Post
+class Post extends \LumenPress\Nimble\Models\Post
 {
     use HasACF;
 }

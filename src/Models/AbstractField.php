@@ -1,12 +1,12 @@
 <?php
 
-namespace Lumenpress\ACF\Models;
+namespace LumenPress\ACF\Models;
 
-use Lumenpress\ACF\Fields\Text;
-use Lumenpress\ACF\Fields\Field;
-use Lumenpress\ACF\Collections\Fields;
-use Lumenpress\ACF\Collections\FieldCollection;
-use Lumenpress\ACF\Concerns\HasFieldAttributes;
+use LumenPress\ACF\Fields\Text;
+use LumenPress\ACF\Fields\Field;
+use LumenPress\ACF\Collections\Fields;
+use LumenPress\ACF\Collections\FieldCollection;
+use LumenPress\ACF\Concerns\HasFieldAttributes;
 
 abstract class AbstractField extends AbstractPost
 {
@@ -55,7 +55,7 @@ abstract class AbstractField extends AbstractPost
      *
      * @param array $models
      *
-     * @return \Lumenpress\Fluid\PostMetaCollection
+     * @return \LumenPress\Nimble\PostMetaCollection
      */
     public function newCollection(array $models = [])
     {

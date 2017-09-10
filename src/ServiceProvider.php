@@ -1,8 +1,8 @@
 <?php
 
-namespace Lumenpress\ACF;
+namespace LumenPress\ACF;
 
-use Lumenpress\ACF\Fields\Field;
+use LumenPress\ACF\Fields\Field;
 use Illuminate\Support\ServiceProvider as Provider;
 
 class ServiceProvider extends Provider

@@ -1,12 +1,12 @@
 <?php
 
-namespace Lumenpress\ACF\Fields;
+namespace LumenPress\ACF\Fields;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Jsonable;
-use Lumenpress\ACF\Collections\FieldCollection;
+use LumenPress\ACF\Collections\FieldCollection;
 use Illuminate\Database\Eloquent\JsonEncodingException;
-use Lumenpress\Fluid\Collections\Collection as AbstractCollection;
+use LumenPress\Nimble\Collections\Collection as AbstractCollection;
 
 class FlexibleContent extends Field
 {

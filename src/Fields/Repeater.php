@@ -1,6 +1,6 @@
 <?php
 
-namespace Lumenpress\ACF\Fields;
+namespace LumenPress\ACF\Fields;
 
 use Illuminate\Support\Collection;
 

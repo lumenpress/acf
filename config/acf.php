@@ -12,8 +12,8 @@ return [
     |
     */
     'fields' => [
-        'clone' => Lumenpress\ACF\Fields\CloneField::class,
-        'flexible' => Lumenpress\ACF\Fields\FlexibleContent::class,
+        'clone' => LumenPress\ACF\Fields\CloneField::class,
+        'flexible' => LumenPress\ACF\Fields\FlexibleContent::class,
     ],
 
     /*

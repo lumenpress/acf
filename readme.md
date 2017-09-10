@@ -29,7 +29,7 @@ Copy the `config/acf.php` file to your local config folder and register the conf
 
 ```php
 $app->configure('acf'); 
-$app->register(Lumenpress\ACF\ServiceProvider::class);
+$app->register(LumenPress\ACF\ServiceProvider::class);
 ```
 
 ## Schema
@@ -39,8 +39,8 @@ $app->register(Lumenpress\ACF\ServiceProvider::class);
 #### Creating Field Groups
 
 ```php
-use Lumenpress\ACF\Schema;
-use Lumenpress\ACF\Models\FieldGroup;
+use LumenPress\ACF\Schema;
+use LumenPress\ACF\Models\FieldGroup;
 
 Schema::create($groupKey, function (FieldGroup $group) {
     $group->title('Title'); // required
@@ -303,7 +303,7 @@ Schema::group($groupKey, function (FieldGroup $group) {
 ## Models
 
 ```php
-class Post extends \Lumenpress\Fluid\Models\Post
+class Post extends \LumenPress\Nimble\Models\Post
 {
     use HasAdvancedCustomFields;
 }

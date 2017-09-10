@@ -1,8 +1,8 @@
 <?php
 
-namespace Lumenpress\ACF\Relations;
+namespace LumenPress\ACF\Relations;
 
-use Lumenpress\ACF\Models\FieldMeta;
+use LumenPress\ACF\Models\FieldMeta;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 

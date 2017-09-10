@@ -1,8 +1,8 @@
 <?php
 
-namespace Lumenpress\ACF\Fields;
+namespace LumenPress\ACF\Fields;
 
-use Lumenpress\Fluid\Models\Attachment;
+use LumenPress\Nimble\Models\Attachment;
 
 class File extends Field
 {

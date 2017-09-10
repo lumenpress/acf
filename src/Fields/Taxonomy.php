@@ -1,8 +1,8 @@
 <?php
 
-namespace Lumenpress\ACF\Fields;
+namespace LumenPress\ACF\Fields;
 
-use Lumenpress\Fluid\Models\Taxonomy as Tax;
+use LumenPress\Nimble\Models\Taxonomy as Tax;
 
 class Taxonomy extends Field
 {

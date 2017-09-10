@@ -1,10 +1,10 @@
 <?php
 
-namespace Lumenpress\ACF\Models;
+namespace LumenPress\ACF\Models;
 
-use Lumenpress\ACF\Fields\Field;
-use Lumenpress\Fluid\Models\AbstractPost as Post;
-use Lumenpress\ACF\Concerns\HasContentAttributes;
+use LumenPress\ACF\Fields\Field;
+use LumenPress\Nimble\Models\AbstractPost as Post;
+use LumenPress\ACF\Concerns\HasContentAttributes;
 
 abstract class AbstractPost extends Post
 {
@@ -60,7 +60,7 @@ abstract class AbstractPost extends Post
         //     return $this;
         // }
         // d($method, $this->appends, in_array($method, $this->appends));
-        // if (static::class == Lumenpress\ACF\Fields\Select::class) {
+        // if (static::class == LumenPress\ACF\Fields\Select::class) {
         //     d($this->appends);
         // }
         //

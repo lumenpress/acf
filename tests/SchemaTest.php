@@ -1,10 +1,10 @@
 <?php
 
-namespace Lumenpress\ACF\Tests;
+namespace LumenPress\ACF\Tests;
 
-use Lumenpress\ACF\Schema;
-use Lumenpress\ACF\Fields\Field;
-use Lumenpress\ACF\Models\FieldGroup;
+use LumenPress\ACF\Schema;
+use LumenPress\ACF\Fields\Field;
+use LumenPress\ACF\Models\FieldGroup;
 
 class SchemaTest extends TestCase
 {

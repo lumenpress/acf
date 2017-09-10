@@ -1,8 +1,8 @@
 <?php
 
-namespace Lumenpress\ACF\Concerns;
+namespace LumenPress\ACF\Concerns;
 
-use Lumenpress\ACF\Models\FieldMeta;
+use LumenPress\ACF\Models\FieldMeta;
 
 trait HasFieldAttributes
 {

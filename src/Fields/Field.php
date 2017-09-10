@@ -1,10 +1,10 @@
 <?php
 
-namespace Lumenpress\ACF\Fields;
+namespace LumenPress\ACF\Fields;
 
 use Illuminate\Support\Str;
-use Lumenpress\ACF\Models\AbstractField;
-use Lumenpress\Fluid\Concerns\RegisterTypes;
+use LumenPress\ACF\Models\AbstractField;
+use LumenPress\Nimble\Concerns\RegisterTypes;
 
 class Field extends AbstractField
 {
@@ -25,7 +25,7 @@ class Field extends AbstractField
             return static::$registeredTypes[$type];
         }
 
-        $class = 'Lumenpress\\ACF\\Fields\\'.Str::studly(str_replace('_', ' ', $type));
+        $class = 'LumenPress\\ACF\\Fields\\'.Str::studly(str_replace('_', ' ', $type));
 
         return class_exists($class) ? $class : $default;
     }

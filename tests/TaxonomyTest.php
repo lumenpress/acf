@@ -1,10 +1,10 @@
 <?php
 
-namespace Lumenpress\ACF\Tests;
+namespace LumenPress\ACF\Tests;
 
-use Lumenpress\ACF\Schema;
-use Lumenpress\Fluid\Models\Category;
-use Lumenpress\Fluid\Models\Taxonomy;
+use LumenPress\ACF\Schema;
+use LumenPress\Nimble\Models\Category;
+use LumenPress\Nimble\Models\Taxonomy;
 
 class TaxonomyTest extends TestCase
 {

@@ -1,7 +1,7 @@
 {
     "name": "lumenpress/acf",
     "require": {
-        "lumenpress/fluid": "dev-master"
+        "lumenpress/nimble": "dev-master"
     },
     "require-dev": {
         "kint-php/kint": "^2.1",
@@ -13,12 +13,12 @@
             "src/helpers.php"
         ],
         "psr-4": {
-            "Lumenpress\\ACF\\": "src"
+            "LumenPress\\ACF\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Lumenpress\\ACF\\Tests\\": "tests"
+            "LumenPress\\ACF\\Tests\\": "tests"
         }
     }
 }

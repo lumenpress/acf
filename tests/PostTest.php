@@ -1,12 +1,12 @@
 <?php
 
-namespace Lumenpress\ACF\Tests;
+namespace LumenPress\ACF\Tests;
 
-use Lumenpress\ACF\Schema;
-use Lumenpress\Fluid\Models\Tag;
+use LumenPress\ACF\Schema;
+use LumenPress\Nimble\Models\Tag;
 use Illuminate\Support\Collection;
-use Lumenpress\Fluid\Models\Category;
-use Lumenpress\ACF\Tests\Models\Post;
+use LumenPress\Nimble\Models\Category;
+use LumenPress\ACF\Tests\Models\Post;
 
 class PostTest extends TestCase
 {

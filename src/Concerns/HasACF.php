@@ -1,10 +1,10 @@
 <?php
 
-namespace Lumenpress\ACF\Concerns;
+namespace LumenPress\ACF\Concerns;
 
 use Illuminate\Support\Str;
-use Lumenpress\ACF\Models\FieldGroup;
-use Lumenpress\ACF\Relations\HasACF as ACF;
+use LumenPress\ACF\Models\FieldGroup;
+use LumenPress\ACF\Relations\HasACF as ACF;
 
 trait HasACF
 {
