@@ -12,7 +12,7 @@ $path = dirname($psr4['LumenPress\\Nimble\\'][0]);
 $loader->addPsr4('LumenPress\\Nimble\\Tests\\', $path.'/tests');
 
 try {
-    (new Dotenv\Dotenv(__DIR__.'/../../'))->load();
+    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
