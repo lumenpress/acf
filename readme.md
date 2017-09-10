@@ -1,4 +1,6 @@
-# Advanced Custom Fields Plugin for Fluid
+# ACF(Advanced Custom Fields) for Nimble
+
+[![Build Status](https://travis-ci.org/lumenpress/acf.svg?branch=master)](https://travis-ci.org/lumenpress/acf) [![StyleCI](https://styleci.io/repos/99463909/shield?branch=master)](https://styleci.io/repos/99463909)
 
 - [Installation](#installation)
 - [Schema](#schema)
