@@ -32,9 +32,10 @@ class Relationship extends PostObject
         if (is_null($posts = parent::getMetaValueAttribute($value))) {
             return;
         }
-        if (!is_array($this->metaValue)) {
+        if (! is_array($this->metaValue)) {
             return;
         }
+
         return $posts;
     }
 }

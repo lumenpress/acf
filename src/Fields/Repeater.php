@@ -61,11 +61,12 @@ class Repeater extends Field
             }
         }
 
-        return (new Collection($this->items))->map(function($row) {
+        return (new Collection($this->items))->map(function ($row) {
             $item = [];
             foreach ($row as $key => $column) {
                 $item[$key] = $column->value;
             }
+
             return $item;
         });
     }
