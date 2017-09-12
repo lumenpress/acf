@@ -25,6 +25,7 @@ class File extends Field
 
         if (is_numeric($this->metaValue)) {
             $attachment = Attachment::find($this->metaValue);
+
             return $attachment ? $attachment->link : '';
         }
 
