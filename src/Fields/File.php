@@ -24,9 +24,7 @@ class File extends Field
         }
 
         if (is_numeric($this->metaValue)) {
-            return wp_get_attachment_url($this->metaValue);
             $attachment = Attachment::find($this->metaValue);
-
             return $attachment ? $attachment->link : '';
         }
 
@@ -48,8 +46,12 @@ class File extends Field
     public function updateValue()
     {
         if (is_string($this->metaValue)) {
-            $this->metaValue = Attachment::upload($this->metaValue)->ID;
+            $attachment = new Attachment;
+            $attachment->file = lumenpress_asset_path($this->metaValue);
+            $attachment->save();
+            $this->metaValue = $attachment->ID;
         }
+
         if (! is_numeric($this->metaValue)) {
             return;
         }
