@@ -63,7 +63,7 @@ class ServiceProvider extends Provider
                 acf_include('pro/admin/options-page.php');
             }
 
-            foreach ((array) config('acf.options_pages') as $menu_slug => $settings) {
+            foreach ((array) config('wp/acf.options_pages') as $menu_slug => $settings) {
                 $settings['menu_slug'] = $menu_slug;
                 $sub_menu = array_pull($settings, 'sub_menu');
                 $parent = acf_add_options_page($settings);
@@ -80,7 +80,7 @@ class ServiceProvider extends Provider
 
     protected function registerFields()
     {
-        foreach (config('acf.fields') as $type => $field) {
+        foreach (config('wp/acf.fields') as $type => $field) {
             Field::register($type, $field);
         }
     }
