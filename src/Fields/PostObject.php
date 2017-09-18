@@ -38,6 +38,15 @@ class PostObject extends Field
         return $this->getContentAttribute('post_type');
     }
 
+    public function post_type($value)
+    {
+        if (is_string($value)) {
+            $value = [$value];
+        }
+
+        $this->setContentAttribute('post_type', $value);
+    }
+
     /**
      * Mutator for postType attribute.
      *
