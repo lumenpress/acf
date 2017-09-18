@@ -6,6 +6,8 @@ use LumenPress\Nimble\Models\Attachment;
 
 class File extends Field
 {
+    protected $attachment;
+
     protected $defaults = [
         'type' => 'file',
         'return_format' => 'array',
@@ -17,6 +19,10 @@ class File extends Field
 
     public function getMetaValueAttribute($value)
     {
+        if ($this->attachment) {
+            return $this->attachment;
+        }
+
         parent::getMetaValueAttribute($value);
 
         if (empty($this->metaValue)) {
@@ -24,20 +30,38 @@ class File extends Field
         }
 
         if (is_numeric($this->metaValue)) {
-            $attachment = Attachment::find($this->metaValue);
-
-            return $attachment ? $attachment->link : '';
+            $this->attachment = Attachment::find($this->metaValue);
+        } else {
+            $this->attachment = Attachment::findBySrc($this->metaValue);
         }
 
-        if (lumenpress_is_url($this->metaValue)) {
-            return $this->metaValue;
+        if (! $this->attachment) {
+            $this->attachment = new Attachment;
+            $this->attachment->file = $this->metaValue;
         }
 
-        if (file_exists($file = lumenpress_asset_path($this->metaValue))) {
-            return lumenpress_asset_url($this->metaValue);
-            // return 'data:image/' . pathinfo($file, PATHINFO_EXTENSION)
-            //     . ';base64,' . base64_encode(file_get_contents($file));
+        return $this->attachment;
+    }
+
+    /**
+     * Mutator for metaValue attribute.
+     *
+     * @return void
+     */
+    public function setMetaValueAttribute($value)
+    {
+        if (is_numeric($value)) {
+            $this->attachment = Attachment::find($value);
+        } else {
+            $this->attachment = Attachment::findBySrc($value);
         }
+
+        if (! $this->attachment) {
+            $this->attachment = new Attachment;
+            $this->attachment->file = $value;
+        }
+
+        parent::setMetaValueAttribute($value);
     }
 
     /**
@@ -46,16 +70,13 @@ class File extends Field
      */
     public function updateValue()
     {
-        if (is_string($this->metaValue)) {
-            $attachment = new Attachment;
-            $attachment->file = lumenpress_asset_path($this->metaValue);
-            $attachment->save();
-            $this->metaValue = $attachment->ID;
+        if (! $this->attachment) {
+            return false;
         }
 
-        if (! is_numeric($this->metaValue)) {
-            return;
-        }
+        $this->attachment->save();
+
+        $this->metaValue = $this->attachment->ID;
 
         return parent::updateValue();
     }

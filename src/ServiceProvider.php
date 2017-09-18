@@ -40,13 +40,9 @@ class ServiceProvider extends Provider
      */
     protected function loadConfiguration()
     {
-        $acf = __DIR__.'/../config/acf.php';
-
-        if (! $this->isLumen()) {
-            $this->publishes([$acf => config_path('acf.php')], 'config');
+        foreach (glob(__DIR__.'/../config/wp/*.php') as $file) {
+            $this->mergeConfigFrom($file, 'wp/'.basename($file,'.php'));
         }
-
-        $this->mergeConfigFrom($acf, 'acf');
     }
 
     protected function registerOptionsPages()

@@ -3,9 +3,12 @@
 namespace LumenPress\ACF\Concerns;
 
 use LumenPress\ACF\Models\FieldMeta;
+use LumenPress\Nimble\Concerns\TrySerialize;
 
 trait HasFieldAttributes
 {
+    use TrySerialize;
+
     /**
      * [$relatedParent description].
      * @var [type]
@@ -116,11 +119,7 @@ trait HasFieldAttributes
      */
     public function setMetaValueAttribute($value)
     {
-        if (($result = @unserialize($value)) !== false) {
-            $this->metaValue = $result;
-        } else {
-            $this->metaValue = $value;
-        }
+        $this->metaValue = $this->trySerialize($value);
     }
 
     /**

@@ -10,9 +10,6 @@
         "vlucas/phpdotenv": "^2.4"
     },
     "autoload": {
-        "files": [
-            "src/helpers.php"
-        ],
         "psr-4": {
             "LumenPress\\ACF\\": "src"
         }

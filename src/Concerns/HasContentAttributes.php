@@ -3,9 +3,12 @@
 namespace LumenPress\ACF\Concerns;
 
 use Illuminate\Support\Str;
+use LumenPress\Nimble\Concerns\TrySerialize;
 
 trait HasContentAttributes
 {
+    use TrySerialize;
+
     /**
      * [$defaults description].
      * @var array
@@ -42,14 +45,7 @@ trait HasContentAttributes
      */
     public function getPostContentAttribute($value)
     {
-        if ($value === 'b:0;') {
-            return false;
-        }
-        if (($result = @unserialize($value)) !== false) {
-            return $result;
-        }
-
-        return $value;
+        return $this->trySerialize($value);
     }
 
     /**

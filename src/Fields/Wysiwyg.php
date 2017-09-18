@@ -23,6 +23,7 @@ class Wysiwyg extends Field
      */
     public function getValueAttribute($value)
     {
-        return empty($this->metaValue) ? null : luemnpress_get_the_content($this->metaValue);
+        parent::getValueAttribute($value);
+        return empty($this->metaValue) ? null : $this->getRichText($this->metaValue);
     }
 }

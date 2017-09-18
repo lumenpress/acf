@@ -104,10 +104,8 @@ abstract class AbstractField extends AbstractPost
         $settings = [];
         $attributes = (array) $attributes;
 
-        if (is_array($attributes['post_content'])) {
-            $settings = $attributes['post_content'];
-        } elseif (($options = @unserialize($attributes['post_content'])) !== false) {
-            $settings = $options;
+        if (isset($attributes['post_content'])) {
+            $settings = $this->trySerialize($attributes['post_content']);
         }
 
         $type = isset($settings['type']) ? $settings['type'] : 'text';
