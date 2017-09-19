@@ -12,7 +12,7 @@ class FlexibleContent extends Field
 {
     protected $_layouts;
 
-    protected $values;
+    protected $items;
 
     protected $hidden = ['fields'];
 
@@ -81,10 +81,10 @@ class FlexibleContent extends Field
             return [];
         }
 
-        if (is_null($this->values)) {
+        if (is_null($this->items)) {
             foreach ($this->metaValue as $index => $name) {
                 foreach ($this->layouts as $layout) {
-                    $this->values[$index]['_layout'] = $name;
+                    $this->items[$index]['_layout'] = $name;
                     if ($layout->name == $name) {
                         foreach ($layout->fields as $field) {
                             $metaKey = "{$this->meta_key}_{$index}_{$field->name}";
@@ -96,15 +96,17 @@ class FlexibleContent extends Field
                             $field->setRelatedParent($this->relatedParent);
                             $field->meta_key = $metaKey;
                             $field->meta_value = $metaValue;
-                            $this->values[$index][$field->name] = $field;
+                            $this->items[$index][$field->name] = $field;
                         }
                     }
                 }
             }
+            ksort($this->items);
         }
 
-        return (new Collection($this->values))->map(function ($row) {
+        return (new Collection($this->items))->map(function ($row) {
             $item = [];
+
             foreach ($row as $key => $column) {
                 $item[$key] = $column instanceof Field ? $column->value : $column;
             }
@@ -136,7 +138,7 @@ class FlexibleContent extends Field
             }
             foreach ($this->layouts as $layout) {
                 if ($layout->name == $item['_layout']) {
-                    $this->metaValue[$index] = $this->values[$index]['_layout'] = $item['_layout'];
+                    $this->metaValue[$index] = $this->items[$index]['_layout'] = $item['_layout'];
                     foreach ($layout->fields as $field) {
                         if (! isset($item[$field->name])) {
                             continue;
@@ -145,11 +147,12 @@ class FlexibleContent extends Field
                         $field->setRelatedParent($this->relatedParent);
                         $field->meta_key = "{$this->meta_key}_{$index}_{$field->name}";
                         $field->meta_value = $item[$field->name];
-                        $this->values[$index][$field->name] = $field;
+                        $this->items[$index][$field->name] = $field;
                     }
                 }
             }
         }
+        ksort($this->items);
         // parent::setMetaValueAttribute(count($values));
     }
 
@@ -178,7 +181,7 @@ class FlexibleContent extends Field
 
     public function updateValue()
     {
-        foreach ($this->values as $item) {
+        foreach ($this->items as $item) {
             foreach ($item as $field) {
                 if ($field instanceof Field) {
                     $field->updateValue();

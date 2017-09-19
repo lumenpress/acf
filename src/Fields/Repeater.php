@@ -59,10 +59,12 @@ class Repeater extends Field
                     $this->items[$i][$field->name] = $field;
                 }
             }
+            ksort($this->items);
         }
 
         return (new Collection($this->items))->map(function ($row) {
             $item = [];
+
             foreach ($row as $key => $column) {
                 $item[$key] = $column->value;
             }
@@ -81,6 +83,7 @@ class Repeater extends Field
         if (! is_array($values)) {
             return parent::setMetaValueAttribute($values);
         }
+
         foreach ($values as $index => $item) {
             if (! is_numeric($index)) {
                 throw new \Exception("$index invalid", 1);
@@ -96,6 +99,9 @@ class Repeater extends Field
                 $this->items[$index][$field->name] = $field;
             }
         }
+
+        ksort($this->items);
+
         parent::setMetaValueAttribute(count($values));
     }
 
