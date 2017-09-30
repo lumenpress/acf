@@ -41,7 +41,7 @@ class ServiceProvider extends Provider
     protected function loadConfiguration()
     {
         foreach (glob(__DIR__.'/../config/wp/*.php') as $file) {
-            $this->mergeConfigFrom($file, 'wp/'.basename($file,'.php'));
+            $this->mergeConfigFrom($file, 'wp/'.basename($file, '.php'));
         }
     }
 

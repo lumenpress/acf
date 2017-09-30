@@ -24,6 +24,7 @@ class Wysiwyg extends Field
     public function getValueAttribute($value)
     {
         parent::getValueAttribute($value);
+
         return empty($this->metaValue) ? null : $this->getRichText($this->metaValue);
     }
 }
