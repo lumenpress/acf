@@ -1,4 +1,5 @@
 <?php
+
 use LumenPress\Nimble\Models\Post;
 use LumenPress\Nimble\Models\Taxonomy;
 use Illuminate\Database\Capsule\Manager as Capsule;
