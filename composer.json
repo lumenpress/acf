@@ -2,14 +2,35 @@
     "name": "lumenpress/acf",
     "require": {
         "php": ">=5.6.4",
-        "lumenpress/nimble": "dev-master"
+        "lumenpress/nimble": "^0.1.1"
     },
     "require-dev": {
         "kint-php/kint": "^2.1",
         "phpunit/phpunit": ">=5.7",
         "vlucas/phpdotenv": "^2.4",
-        "lumenpress/testing": "^0.1.5"
+        "lumenpress/testing": "^0.1.5",
+        "composer/installers": "^1.4",
+        "advanced-custom-fields-pro/advanced-custom-fields-pro": "^5.6.2"
     },
+    "extra": {
+        "installer-paths": {
+            "vendor/johnpbloch/wordpress-core/wp-content/plugins/{$name}/": ["type:wordpress-plugin"]
+        }
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "advanced-custom-fields-pro/advanced-custom-fields-pro",
+                "version": "5.6.2",
+                "type": "wordpress-plugin",
+                "dist": {
+                    "url": "https://github.com/wp-premium/advanced-custom-fields-pro/archive/5.6.2.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
     "autoload": {
         "psr-4": {
             "LumenPress\\ACF\\": "src"
