@@ -49,7 +49,7 @@ class Repeater extends Field
             foreach ($this->fields as $field) {
                 for ($i = 0; $i < $this->metaValue ?: 0; $i++) {
                     $metaKey = "{$this->meta_key}_{$i}_{$field->name}";
-                    if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
+                    if (is_null($metaValue = $this->relatedParent->acfdata->$metaKey)) {
                         continue;
                     }
                     $field = clone $field;

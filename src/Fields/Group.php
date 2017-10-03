@@ -37,7 +37,7 @@ class Group extends Field
             $this->items = [];
             foreach ($this->fields as $field) {
                 $metaKey = "{$this->meta_key}_{$field->name}";
-                if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
+                if (is_null($metaValue = $this->relatedParent->acfdata->$metaKey)) {
                     continue;
                 }
                 $field = clone $field;

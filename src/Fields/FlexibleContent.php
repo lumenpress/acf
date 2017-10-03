@@ -89,7 +89,7 @@ class FlexibleContent extends Field
                         foreach ($layout->fields as $field) {
                             $metaKey = "{$this->meta_key}_{$index}_{$field->name}";
                             // d($this->relatedParent);
-                            if (is_null($metaValue = $this->relatedParent->meta->$metaKey)) {
+                            if (is_null($metaValue = $this->relatedParent->acfdata->$metaKey)) {
                                 continue;
                             }
                             $field = clone $field;

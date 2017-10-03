@@ -106,7 +106,7 @@ trait HasFieldAttributes
             if (is_null($this->relatedParent)) {
                 return;
             }
-            $this->metaValue = $this->relatedParent->meta->{$this->name};
+            $this->metaValue = $this->relatedParent->acfdata->{$this->name};
         }
 
         return $this->metaValue;

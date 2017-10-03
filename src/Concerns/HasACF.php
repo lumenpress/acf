@@ -4,6 +4,7 @@ namespace LumenPress\ACF\Concerns;
 
 use Illuminate\Support\Str;
 use LumenPress\ACF\Models\FieldGroup;
+use LumenPress\Nimble\Relations\HasMeta;
 use LumenPress\ACF\Relations\HasACF as ACF;
 
 trait HasACF
@@ -23,6 +24,11 @@ trait HasACF
         return $relation;
     }
 
+    public function acfdata()
+    {
+        return new HasMeta($this);
+    }
+
     /**
      * [getAcfFieldObjects description].
      * @return [type] [description]
@@ -36,7 +42,7 @@ trait HasACF
             foreach ($item->fields as $field) {
                 $field->setRelatedParent($this);
                 $field->meta_key = $field->name;
-                $field->meta_value = $this->meta->{$field->name};
+                $field->meta_value = $this->acfdata->{$field->name};
                 $fields[$field->name] = $field;
             }
         });
