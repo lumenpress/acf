@@ -3,20 +3,26 @@
 namespace LumenPress\ACF\Concerns;
 
 use Illuminate\Support\Str;
+use LumenPress\Nimble\Models\Meta;
+use LumenPress\ACF\Models\MetaField;
 use LumenPress\ACF\Models\FieldGroup;
-use LumenPress\ACF\Relations\HasDataRelation;
-use LumenPress\ACF\Relations\HasFieldRelation;
+use LumenPress\ACF\Models\OptionField;
+use LumenPress\ACF\Relations\HasMetaFields;
+use LumenPress\ACF\Relations\HasOptionFields;
 
 trait HasFields
 {
-    /**
-     * HasAdvancedCustomFields has many ACF.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function acf($key = null)
     {
-        $relation = new HasFieldRelation($this);
+        if ($this->table == 'options') {
+            $related = $this->newRelatedInstance(OptionField::class);
+            $relation = new HasOptionFields($related->newQuery(), $this);
+        } else {
+            $related = $this->newRelatedInstance(MetaField::class);
+            $relation = new HasMetaFields($related->newQuery(), $this);
+        }
+
+        unset($related);
 
         if ($key) {
             $relation->whereKeyIs($key);
@@ -27,13 +33,26 @@ trait HasFields
 
     public function acfdata()
     {
-        return new HasDataRelation($this);
+        if ($this->table == 'options') {
+            return new HasOptionFields($this->newQuery(), $this);
+        }
+
+        return new HasMetaFields($this->newRelatedInstance(Meta::class)->newQuery(), $this);
     }
 
-    /**
-     * [getAcfFieldObjects description].
-     * @return [type] [description]
-     */
+    public function newRelatedInstance($class)
+    {
+        return tap(new $class, function ($instance) {
+            if ($instance instanceof Meta) {
+                $instance->setTableThroughParentTable($this->getTable());
+            }
+
+            if (! $instance->getConnectionName()) {
+                $instance->setConnection($this->getConnectionName());
+            }
+        });
+    }
+
     public function getAcfFieldObjects()
     {
         $fields = [];
@@ -44,7 +63,8 @@ trait HasFields
             foreach ($item->fields as $field) {
                 $field->setRelatedParent($this);
                 $field->meta_key = $field->name;
-                $field->meta_value = $this->acfdata->{$field->name};
+                $name = $this->table === 'options' ? "options_{$field->name}" : $field->name;
+                $field->meta_value = $this->acfdata->$name;
                 $fields[$field->name] = $field;
             }
         });
@@ -52,13 +72,6 @@ trait HasFields
         return $fields;
     }
 
-    /**
-     * [isLocation description].
-     * @param  [type]  $param    [description]
-     * @param  [type]  $operator [description]
-     * @param  [type]  $value    [description]
-     * @return bool           [description]
-     */
     public function locationRuleMatch($param, $operator, $value)
     {
         if ($param == 'page_template') {
@@ -68,9 +81,8 @@ trait HasFields
         }
 
         $bool = false;
-        // getPostTypeLocationRuleValue
-        //
         $method = 'get'.Str::studly($param).'LocationRuleValue';
+
         if (method_exists($this, $method)) {
             $paramValue = $this->{$method}();
             eval("\$bool = '{$paramValue}' $operator '$value';");

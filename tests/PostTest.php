@@ -174,7 +174,7 @@ class PostTest extends TestCase
     }
 
     /**
-     * @group basic-field
+     * @group post
      */
     public function testBasicField()
     {
@@ -226,7 +226,7 @@ class PostTest extends TestCase
     }
 
     /**
-     * @group choice-field
+     * @group post
      */
     public function testChoiceFields()
     {
@@ -276,7 +276,7 @@ class PostTest extends TestCase
     }
 
     /**
-     * @group relational
+     * @group post
      */
     public function testRelational()
     {
@@ -328,7 +328,7 @@ class PostTest extends TestCase
     }
 
     /**
-     * @group group-field
+     * @group post
      */
     public function testGroupField()
     {
@@ -364,7 +364,7 @@ class PostTest extends TestCase
     }
 
     /**
-     * @group repeater-field
+     * @group post
      */
     public function testRepeaterField()
     {
@@ -406,7 +406,7 @@ class PostTest extends TestCase
     }
 
     /**
-     * @group flexible-field
+     * @group post
      */
     public function testFlexibleField()
     {

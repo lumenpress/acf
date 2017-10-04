@@ -2,11 +2,12 @@
 
 namespace LumenPress\ACF\Relations;
 
-use LumenPress\Nimble\Models\Meta;
+use LumenPress\ACF\Models\MetaField;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class HasDataRelation extends HasMany
+class HasMetaFields extends HasMany
 {
     protected $tmpData = [];
 
@@ -20,51 +21,26 @@ class HasDataRelation extends HasMany
      *
      * @return void
      */
-    public function __construct(Model $parent)
+    public function __construct(Builder $query, Model $parent)
     {
         $this->parent = $parent;
-        $this->foreignKey = $this->getForeignKey();
-        $this->localKey = $parent->getKeyName();
-
-        if ($this->foreignKey == null) {
-            static::$constraints = false;
-        }
-
-        $instance = $this->newRelatedInstance();
-
-        parent::__construct($instance->newQuery(), $parent, $this->foreignKey, $this->localKey);
-    }
-
-    public function isOptionsTable()
-    {
-        return $this->parent->getTable() === 'options';
+        parent::__construct($query, $parent, $this->getForeignKey(), $parent->getKeyName());
     }
 
     /**
-     * Set the base constraints on the relation query.
+     * Initialize the relation on a set of models.
      *
-     * @return void
+     * @param  array   $models
+     * @param  string  $relation
+     * @return array
      */
-    public function addConstraints()
+    public function initRelation(array $models, $relation)
     {
-        if ($this->isOptionsTable()) {
-            $this->query->where('option_name', 'like', 'options_%');
+        // foreach ($models as $model) {
+        //     $model->setRelation($relation, $this->related->newCollection());
+        // }
 
-            return;
-        }
-
-        parent::addConstraints();
-    }
-
-    protected function newRelatedInstance()
-    {
-        return tap(new Meta, function ($instance) {
-            $instance->setTableThroughParentTable($this->parent->getTable());
-
-            if (! $instance->getConnectionName()) {
-                $instance->setConnection($this->parent->getConnectionName());
-            }
-        });
+        return $models;
     }
 
     protected function getForeignKey()

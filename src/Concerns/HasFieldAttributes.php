@@ -2,7 +2,7 @@
 
 namespace LumenPress\ACF\Concerns;
 
-use LumenPress\ACF\Models\FieldMeta;
+use LumenPress\ACF\Models\MetaField;
 use LumenPress\Nimble\Concerns\TrySerialize;
 
 trait HasFieldAttributes
@@ -201,6 +201,6 @@ trait HasFieldAttributes
             //     break;
         }
 
-        return FieldMeta::table($table);
+        return MetaField::table($table);
     }
 }

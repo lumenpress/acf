@@ -5,7 +5,7 @@ namespace LumenPress\ACF\Collections;
 use LumenPress\ACF\Fields\Field;
 use LumenPress\Nimble\Collections\Collection;
 
-class FieldMetaCollection extends Collection
+class MetaFieldCollection extends Collection
 {
     public function offsetExists($key)
     {

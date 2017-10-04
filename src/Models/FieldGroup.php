@@ -131,10 +131,16 @@ class FieldGroup extends AbstractPost
     public function locationRuleMatch($object)
     {
         $bool = false;
+
         foreach ($this->location as $location) {
             foreach ($location as $args) {
+                if ($object->getTable() === 'options' && $args['param'] === 'options_page') {
+                    return true;
+                }
+
                 $bool = $object->locationRuleMatch($args['param'], $args['operator'], $args['value']);
             }
+
             if ($bool) {
                 break;
             }
@@ -149,6 +155,7 @@ class FieldGroup extends AbstractPost
             $value = $operator;
             $operator = '==';
         }
+
         $location['param'] = $param;
         $location['operator'] = $operator;
         $location['value'] = $value;
