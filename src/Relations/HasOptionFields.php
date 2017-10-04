@@ -52,7 +52,6 @@ class HasOptionFields extends Relation
      */
     public function addEagerConstraints(array $models)
     {
-
     }
 
     /**
