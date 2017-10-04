@@ -4,10 +4,10 @@ namespace LumenPress\ACF\Concerns;
 
 use Illuminate\Support\Str;
 use LumenPress\ACF\Models\FieldGroup;
-use LumenPress\Nimble\Relations\HasMeta;
-use LumenPress\ACF\Relations\HasACF as ACF;
+use LumenPress\ACF\Relations\HasDataRelation;
+use LumenPress\ACF\Relations\HasFieldRelation;
 
-trait HasACF
+trait HasFields
 {
     /**
      * HasAdvancedCustomFields has many ACF.
@@ -16,7 +16,8 @@ trait HasACF
      */
     public function acf($key = null)
     {
-        $relation = new ACF($this);
+        $relation = new HasFieldRelation($this);
+
         if ($key) {
             $relation->whereKeyIs($key);
         }
@@ -26,7 +27,7 @@ trait HasACF
 
     public function acfdata()
     {
-        return new HasMeta($this);
+        return new HasDataRelation($this);
     }
 
     /**
@@ -36,6 +37,7 @@ trait HasACF
     public function getAcfFieldObjects()
     {
         $fields = [];
+
         FieldGroup::where('post_status', 'publish')->get()->filter(function ($item) {
             return $item->locationRuleMatch($this);
         })->each(function ($item) use (&$fields) {

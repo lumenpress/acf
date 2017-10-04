@@ -2,9 +2,9 @@
 
 namespace LumenPress\ACF\Tests\Models;
 
-use LumenPress\ACF\Concerns\HasACF;
+use LumenPress\ACF\Concerns\HasFields;
 
 class Term extends \LumenPress\Nimble\Models\Term
 {
-    use HasACF;
+    use HasFields;
 }

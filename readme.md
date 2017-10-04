@@ -1,4 +1,4 @@
-# ACF(Advanced Custom Fields) for Nimble
+# Advanced Custom Fields for Nimble
 
 [![Build Status](https://travis-ci.org/lumenpress/acf.svg?branch=master)](https://travis-ci.org/lumenpress/acf) [![StyleCI](https://styleci.io/repos/99463909/shield?branch=master)](https://styleci.io/repos/99463909)
 
@@ -305,9 +305,11 @@ Schema::group($groupKey, function (FieldGroup $group) {
 ## Models
 
 ```php
+use LumenPress\ACF\Concerns\HasFields;
+
 class Post extends \LumenPress\Nimble\Models\Post
 {
-    use HasAdvancedCustomFields;
+    use HasFields;
 }
 ```
 
