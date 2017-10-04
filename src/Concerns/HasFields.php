@@ -64,7 +64,7 @@ trait HasFields
                 $field->setRelatedParent($this);
                 $field->meta_key = $field->name;
                 $name = $this->table === 'options' ? "options_{$field->name}" : $field->name;
-                $field->meta_value = $this->acfdata->$name;
+                $field->meta_value = isset($this->acfdata->$name) ? $this->acfdata->$name : null;
                 $fields[$field->name] = $field;
             }
         });
