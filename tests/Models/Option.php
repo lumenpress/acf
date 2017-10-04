@@ -15,6 +15,7 @@ class Option extends \LumenPress\Nimble\Models\Option
                 return $this->acf->$key;
             }
         }
+
         return $value;
     }
 }

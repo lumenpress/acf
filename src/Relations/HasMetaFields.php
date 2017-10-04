@@ -2,7 +2,6 @@
 
 namespace LumenPress\ACF\Relations;
 
-use LumenPress\ACF\Models\MetaField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;

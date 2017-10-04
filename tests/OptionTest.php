@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace LumenPress\ACF\Tests;
 
@@ -8,12 +8,10 @@ use LumenPress\ACF\Schema;
 // use LumenPress\Nimble\Models\Meta;
 // use Illuminate\Database\Eloquent\Relations\Relation;
 // use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Collection;
 // use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\Builder;
 // use LumenPress\ACF\Relations\HasACF;
 // use LumenPress\ACF\Models\FieldMeta;
-use LumenPress\ACF\Tests\Models\Post;
 use LumenPress\ACF\Tests\Models\Option;
 use Illuminate\Database\Capsule\Manager as DB;
 
@@ -26,10 +24,10 @@ class OptionTest extends TestCase
     {
         // require realpath(dirname(PHPUNIT_COMPOSER_INSTALL).'/lumenpress/testing').'/tests/wp-tests-load.php';
 
-        Schema::create('site_settings', function($group) {
+        Schema::create('site_settings', function ($group) {
             $group->title('Site Settings');
             $group->location('options_page', 'theme-settings');
-            $group->fields(function($field) {
+            $group->fields(function ($field) {
                 $field->image('favicon');
                 $field->textarea('tracking_code');
                 $field->wysiwyg('footer_text');
