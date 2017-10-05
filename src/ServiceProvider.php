@@ -56,7 +56,6 @@ class ServiceProvider extends Provider
         }
 
         add_action('after_setup_theme', function () {
-
             if (! function_exists('acf_add_options_page')) {
                 return;
             }
