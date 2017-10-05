@@ -30,7 +30,7 @@ class ServiceProvider extends Provider
      */
     protected function isLumen()
     {
-        return strpos($this->app->version(), 'Lumen') !== false;
+        return get_class($this->app) === 'Laravel\Lumen\Application';
     }
 
     /**
@@ -40,9 +40,13 @@ class ServiceProvider extends Provider
      */
     protected function loadConfiguration()
     {
-        foreach (glob(__DIR__.'/../config/wp/*.php') as $file) {
-            $this->mergeConfigFrom($file, 'wp/'.basename($file, '.php'));
+        $path = __DIR__.'/../config/acf.php';
+
+        if ($this->isLumen()) {
+            $this->publishes([$path => config_path('acf.php')], 'config');
         }
+
+        $this->mergeConfigFrom($path, 'acf');
     }
 
     protected function registerOptionsPages()
@@ -50,10 +54,8 @@ class ServiceProvider extends Provider
         if (! function_exists('add_action')) {
             return;
         }
+
         add_action('after_setup_theme', function () {
-            if (wp_installing() and 'wp-activate.php' !== $GLOBALS['pagenow']) {
-                return;
-            }
 
             if (! function_exists('acf_add_options_page')) {
                 return;
@@ -63,7 +65,7 @@ class ServiceProvider extends Provider
                 acf_include('pro/admin/options-page.php');
             }
 
-            foreach ((array) config('wp/acf.options_pages') as $menu_slug => $settings) {
+            foreach ((array) config('acf.options_pages') as $menu_slug => $settings) {
                 $settings['menu_slug'] = $menu_slug;
                 $sub_menu = array_pull($settings, 'sub_menu');
                 $parent = acf_add_options_page($settings);
@@ -80,7 +82,7 @@ class ServiceProvider extends Provider
 
     protected function registerFields()
     {
-        foreach (config('wp/acf.fields') as $type => $field) {
+        foreach (config('acf.fields') as $type => $field) {
             Field::register($type, $field);
         }
     }
