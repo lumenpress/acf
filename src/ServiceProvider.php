@@ -42,7 +42,7 @@ class ServiceProvider extends Provider
     {
         $path = __DIR__.'/../config/acf.php';
 
-        if ($this->isLumen()) {
+        if (! $this->isLumen()) {
             $this->publishes([$path => config_path('acf.php')], 'config');
         }
 
