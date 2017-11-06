@@ -26,8 +26,8 @@ class Select extends Field
      */
     public function setChoicesAttribute($choices)
     {
-        foreach ($choices as $key => $value) {
-            if (is_numeric($key)) {
+        if (isset($choices[0])) {
+            foreach ($choices as $key => $value) {
                 unset($choices[$key]);
                 $choices[$value] = $value;
             }
