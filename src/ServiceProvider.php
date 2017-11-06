@@ -14,6 +14,7 @@ class ServiceProvider extends Provider
      */
     public function register()
     {
+        $this->app->singleton('acf.scheme', Schema::class);
     }
 
     public function boot()
